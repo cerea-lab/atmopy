@@ -60,9 +60,9 @@ class Config:
         self.content = [("t_min", "[input]", "Float"), \
                         ("x_min", "[input]", "Float"), \
                         ("y_min", "[input]", "Float"), \
-                        ("delta_t", "[input]", "Float"), \
-                        ("delta_x", "[input]", "Float"), \
-                        ("delta_y", "[input]", "Float"), \
+                        ("Delta_t", "[input]", "Float"), \
+                        ("Delta_x", "[input]", "Float"), \
+                        ("Delta_y", "[input]", "Float"), \
                         ("Nt", "[input]", "Int"), ("Nx", "[input]", "Int"), \
                         ("Ny", "[input]", "Int"), ("Nz", "[input]", "Int"), \
                         ("file", "[input]", "input_file", "String"), \
