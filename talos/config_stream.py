@@ -29,8 +29,62 @@ class ConfigStream:
     def ListSectionLines(self, section):
         """Lists everything in specified section of config file."""
         return self.GetOutput("-s " + section)
-    def GetElement(self, element, section = ""):
-        """Returns specified element value in given section (string)."""
+    def GetElement(self, element, section = "", type = "String"):
+        """
+        Returns the value of a given field.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration
+        file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+        @type type: string
+        @param type: The type of the element to be returned. It could be:
+        'Int', 'IntList', 'IntSection', 'Float', 'FloatList', 'FloatSection',
+        'String',  'StringList' or 'StringSection'.
+
+        @rtype: given by 'type'
+        @return The value of the field in the configuration file.
+
+        @warning In case the output is a list, the section is not taken into
+        account, which means that two lists against the same field name should
+        not be introduced in the configuration file, even in two different
+        sections.
+        """
+        if type == "String":
+            return self.GetString(element, section)
+        elif type == "StringList":
+            return self.ListSectionLines(element).split('\n')[0].split()
+        elif type == "StringSection":
+            return self.ListSectionLines(element).split('\n')
+        elif type == "Int":
+            return self.GetInt(element, section)
+        elif type == "IntList":
+            return [int(x) for x in \
+                    self.ListSectionLines(element).split('\n')[0].split()]
+        elif type == "IntSection":
+            return [int(x) for x in self.ListSectionLines(element).split('\n')]
+        elif type == "Float":
+            return self.GetFloat(element, section)
+        elif type == "FloatList":
+            return [float(x) for x in \
+                    self.ListSectionLines(element).split('\n')[0].split()]
+        elif type == "FloatSection":
+            return [float(x) for x in self.ListSectionLines(element).split('\n')]
+        else:
+            raise Exception, "Type \"" + type + "\" is unknown."
+    def GetString(self, element, section = ""):
+        """
+        Returns the value of a given field.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: string
+        @return The value of the field in the configuration file.
+        """
         if section == "":
             return self.GetOutput(element)
         else:
@@ -73,6 +127,3 @@ class ConfigStream:
         return datetime.datetime(int(ret_str[0:4]), int(ret_str[4:6]), \
                                  int(ret_str[6:8]), int(ret_str[8:10]),\
                                  int(ret_str[10:12]), int(ret_str[12:14]))
-                                 
-                                                        
-
