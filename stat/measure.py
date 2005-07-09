@@ -25,10 +25,12 @@
 import math
 import numarray
 
+
 ### Sources for formulas :
 # [1] http://nwairquest.wsu.edu/projects/presentations/WRAP_CMAQ_Eval.pdf
 # [2] http://www.raqc.org/ozone/EAC/MRP/MM5_Report/Appen_A.pdf
 # [3] http://www.cleanairinfo.com/PMModelPerformanceWorkshop2004/presentations/Tonnesen_Nested_Grids_WRAP.ppt
+
 
 ## Mean Bias Error
 ## (MB) in [1], (MBE) in [2]
@@ -43,6 +45,7 @@ def mbe(data1, data2):
         raise ValueError, "Data samples do not have the same length."
     return (data1 - data2).mean()
 
+
 ## Mean Absolute Gross Error (MAGE)
 ## MAGE in [1] and [2]
 ##
@@ -56,6 +59,7 @@ def mage(data1, data2):
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (abs(data1 - data2)).mean()
+
 
 ## Mean Absolute Normalized Gross Error (MANGE)
 ## MNGE, MNE in [1], MANGE in [2]
@@ -73,6 +77,7 @@ def mange(data1, data2):
         raise ValueError, "Data samples do not have the same length."
     return (abs(data1 - data2) / data2).mean()
 
+
 ## Root Mean Square Error (RMSE)
 ## RMSE in [1] and [2]
 ##
@@ -87,6 +92,7 @@ def rmse(data1, data2):
     temp = data1 - data2
     temp = temp*temp
     return math.sqrt(temp.mean())
+
 
 ## Correlation coefficient
 ##
@@ -106,6 +112,7 @@ def correlation(data1, data2):
     return (diff1 * diff2).mean() / math.sqrt((diff1*diff1).mean() \
                                               * (diff2*diff2).mean())
 
+
 ## Coefficient of determination
 ## in [1]
 ##
@@ -121,6 +128,7 @@ def determination(data1, data2):
     correl = correlation(data1, data2)
     return  correl * correl
 
+
 ## Mean Normalized Bias Error (MNBE)
 ## MNB in [1], MNBE in [2]
 ##
@@ -134,6 +142,7 @@ def mnbe(data1, data2):
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return ((data1 - data2) / data2).mean()
+
 
 ## Mean Fractionalized Bias Error (MFBE)
 ## MFB in [1], MFBE in [2]
@@ -150,6 +159,7 @@ def mfbe(data1, data2):
         raise ValueError, "Data samples do not have the same length."
     return 2 * ((data1 - data2) / (data1 + data2)).mean()
 
+
 ## Fractional Gross Error (FE)
 ## in [1]
 ##
@@ -164,6 +174,7 @@ def fe(data1, data2):
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return 2 * (abs((data1 - data2) / (data1 + data2))).mean()
+
 
 ## Bias Factor (BF)
 ## in [3]
@@ -180,6 +191,7 @@ def bf(data1, data2):
         raise ValueError, "Data samples do not have the same length."
     return (data1/data2).mean()
 
+
 ## Peak Estimation Accuracy
 ## 
 ## \begin{displaymath}
@@ -194,6 +206,7 @@ def pea(data1, data2):
     max2 = data2.max()
     return (data1.max() - max2) / max2
 
+
 ## Normalized Mean Bias (NMB)
 ## in [1], [3]
 ##
@@ -207,6 +220,7 @@ def nmb(data1, data2):
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (data1 - data2).sum() / data2.sum()
+
 
 ## Normalized Mean Error (NME)
 ## in [1], [3]

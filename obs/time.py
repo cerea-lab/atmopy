@@ -25,6 +25,7 @@
 import numarray
 import datetime
 
+
 class Period:
     """Stores a time period."""
     start = datetime.datetime(1,1,1)
@@ -37,6 +38,15 @@ class Period:
     def __str__(self):
         """ Returns Period's presentation."""
         return str(self.start) + " -> " + str(self.end)
+
+
+def get_period(dates):
+    """ Returns the period containing all dates in dates. dates
+    is sorted.
+    Returns Period.
+    """
+    return Period(dates[0], dates[-1])
+
 
 def get_periods(start, end, length=datetime.timedelta(1), \
                 interperiod = datetime.timedelta(0), \
@@ -66,7 +76,8 @@ def get_periods(start, end, length=datetime.timedelta(1), \
             periods.append(Period(last_current,end))
     return periods
 
-def split_into_days(data, dates):
+
+def split_into_days(dates, data):
     """Returns a list of arrays which store the values
     for each day."""
     if len(data) != len(dates):
@@ -88,58 +99,10 @@ def split_into_days(data, dates):
             output_dates.append([dates[i]])
             day = dates[i].date()
 
-    return map(lambda x: numarray.array(x), output_data), \
-           output_dates
-
-def midnight(date):
-    """Move to midnight in the current day. Midnight is assumed to be
-    the beginning of the day."""
-    return date - datetime.timedelta(0, 3600 * date.hour \
-                                     + 60 * date.minute + date.second, \
-                                     date.microsecond)
+    return output_dates, map(lambda x: numarray.array(x), output_data)
 
 
-def get_period(dates):
-    """ Returns the period containing all dates in dates. dates
-    is sorted.
-    Returns Period.
-    """
-    return Period(dates[0], dates[-1])
-
-def timedelta2num(delta):
-    """
-    Converts datetime.timedelta to float day number as used in Matplotlib.
-
-    @param delta: The time-delta to be converted in days.
-    @type delta: datetime.timedelta
-    
-    @return: The number of days in 'delta'.
-    @rtype: float
-    """
-    if delta < datetime.timedelta(0):
-        num = -(date2num(datetime.datetime(1,1,1) - delta) \
-              - date2num(datetime.datetime(1,1,1)))
-    else:
-        num = date2num(datetime.datetime(1,1,1) + delta) \
-              - date2num(datetime.datetime(1,1,1))
-    return num
-           
-def get_simulation_dates(t_min, date_ref, delta_t, Nt):
-    """ Get a list of dates corresponding to the simulation data.
-    t_min can be a number of hours since date_ref, or a datetime
-    object. In this case, date_ref is ignored.
-    Returns list of datetime."""
-    sim_dates = []
-    if type(t_min) == datetime.datetime:
-        sim_date_start = t_min
-    else:
-        sim_date_start = date_ref + datetime.timedelta(hours = t_min)
-    for i in range(Nt):
-        sim_dates.append(sim_date_start + \
-                         datetime.timedelta(hours = i * delta_t))
-    return sim_dates
-
-def mask_for_common_days(simulated, obs, sim_dates, obs_dates):
+def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
     """ Creates masks for simulated data and observation data
     corresponding to data of common dates.
     Returns numarrays masks for simulated data and observation data.
@@ -172,7 +135,8 @@ def mask_for_common_days(simulated, obs, sim_dates, obs_dates):
 
     return sim_condition, obs_condition
 
-def apply_mask_for_common_days(simulated, obs, sim_dates, obs_dates, \
+
+def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
                                mask_sim, mask_obs):
     """ Applies a mask returned by mask_for_common_days on
     simulated and observation data, and gets corresponding dates.
@@ -188,11 +152,11 @@ def apply_mask_for_common_days(simulated, obs, sim_dates, obs_dates, \
     for i in mask_sim:
         common_dates.append(sim_dates[i])
 
-    return simulated[numarray.where(mask_sim)], \
-           obs[numarray.where(mask_obs)], \
-           common_dates
+    return common_dates, simulated[numarray.where(mask_sim)], \
+           obs[numarray.where(mask_obs)]
 
-def restrict_to_common_dates(simulated, obs, sim_dates, obs_dates):
+
+def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
     """ Removes items from data and dates to keep only
     dates and corresponding data which are both in observations and
     simulated.
@@ -220,11 +184,11 @@ def restrict_to_common_dates(simulated, obs, sim_dates, obs_dates):
         if sim_condition[i] == 0:
             dates.pop(i)
 
-    return simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)], \
-           dates
+    return dates, simulated[numarray.where(sim_condition)], \
+           obs[numarray.where(obs_condition)]
 
-def restrict_to_common_days(simulated, obs, sim_dates, obs_dates):
+
+def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
     """ Removes items from data and dates to keep only
     daily data which are both in observations and
     simulated. Dates lists and data have to be sorted (by increasing
@@ -267,12 +231,11 @@ def restrict_to_common_days(simulated, obs, sim_dates, obs_dates):
         else:
             old_ind = ind - 1
 
-    return simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)], \
-           common_dates
+    return common_dates, simulated[numarray.where(sim_condition)], \
+           obs[numarray.where(obs_condition)]
 
 
-def restrict_to_common_days2(simulated, obs, sim_dates, obs_dates):
+def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     """ Removes items from data and dates to keep only
     daily data which are both in observations and
     simulated.
@@ -308,53 +271,96 @@ def restrict_to_common_days2(simulated, obs, sim_dates, obs_dates):
         if sim_condition[i] == 0:
             common_dates.pop(i)
 
-    return simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)], \
-           common_dates
+    return common_dates, simulated[numarray.where(sim_condition)], \
+           obs[numarray.where(obs_condition)]
 
-def restrict_time_interval(simulated, observations, dates, \
-                           date_start, date_end):
-    """ Removes simulated data and observations to keep only
-    data corresponding to the given time interval.
-    Returns arrays for simulated data and observations, list of
-    datetime for dates."""
-    condition = numarray.ones((len(dates),))
-    for i in range(len(dates)-1, -1, -1):
-        if dates[i] < date_start or dates[i] > date_end:
-            dates.pop(i)
-            condition[i] = 0
-    return simulated[numarray.where(condition)], \
-           observations[numarray.where(condition)], \
-           dates
 
-def restrict_to_period(data, dates, period):
-    """ Removes some data and dates to keep only data corresponding
-    to the given time interval.
-    Returns array, and list of datetime for dates."""
-    condition = numarray.ones((len(dates),))
-    for i in range(len(dates)-1, -1, -1):
-        if dates[i] < period.start or dates[i] > period.end:
-            dates.pop(i)
-            condition[i] = 0
-    return data[numarray.where(condition)], \
-           dates
+def restrict_to_period(dates, data, period_date, end_date = None):
+    """
+    Returns data and associated dates within a given period.
 
-def get_data_on_period(data, dates, period):
-    """ Returns the given data (corresponding to given dates), limited
-    to the specified period. Dates are not modified.
-    Returns numarray."""
-    condition = numarray.ones((len(dates),))
-    for i in range(len(dates) - 1, -1, -1):
-        if dates[i] < period.start or dates[i] > period.end:
-            condition[i] = 0
-    return data[numarray.where(condition)]
+    @type dates: list of datetime
+    @param dates: The dates associated with data.
+    @type data: array
+    @param data: Array of data.
+    @type period_date: Period, list of datetime, or datetime
+    @param period_date: Defines:
+    0. a period (Period object);
+    1. a period through its bounds (list of datetime);
+    2. the first date of the selected period.
+    @type end_date: datetime
+    @param end_date: the last date of the selected period (if not provided by
+    'period_date').
 
-def remove_missing(data, dates, nan_value = -999):
+    @rtype: (list of datetime, array)
+    @return: The dates and data over the selected period.
+    """
+    condition = numarray.zeros(len(dates))
+    if isinstance(period_date, Period):
+        start_date = period_date.start
+        end_date = period_date.end
+    elif isinstance(period_date, (list, tuple)):
+        start_date = period_date[0]
+        end_date = period_date[-1]
+    else:
+        start_date = period_date
+    istart = 0
+    while istart < len(dates) and dates[istart] < start_date: istart += 1
+    if istart == len(dates):
+        return dates[:], data[:]
+    iend = istart + 1
+    while iend < len(dates) and dates[iend] <= start_end: istart += 1
+    return dates[istart:(iend-1)], data[istart:(iend-1)]
+
+
+def midnight(date):
+    """Move to midnight in the current day. Midnight is assumed to be
+    the beginning of the day."""
+    return date - datetime.timedelta(0, 3600 * date.hour \
+                                     + 60 * date.minute + date.second, \
+                                     date.microsecond)
+
+
+def timedelta2num(delta):
+    """
+    Converts datetime.timedelta to float day number as used in Matplotlib.
+
+    @type delta: datetime.timedelta
+    @param delta: The time-delta to be converted in days.
+    
+    @rtype: float
+    @return: The number of days in 'delta'.
+    """
+    if delta < datetime.timedelta(0):
+        num = -(date2num(datetime.datetime(1,1,1) - delta) \
+              - date2num(datetime.datetime(1,1,1)))
+    else:
+        num = date2num(datetime.datetime(1,1,1) + delta) \
+              - date2num(datetime.datetime(1,1,1))
+    return num
+           
+
+def get_simulation_dates(t_min, date_ref, delta_t, Nt):
+    """ Get a list of dates corresponding to the simulation data.
+    t_min can be a number of hours since date_ref, or a datetime
+    object. In this case, date_ref is ignored.
+    Returns list of datetime."""
+    sim_dates = []
+    if type(t_min) == datetime.datetime:
+        sim_date_start = t_min
+    else:
+        sim_date_start = date_ref + datetime.timedelta(hours = t_min)
+    for i in range(Nt):
+        sim_dates.append(sim_date_start + \
+                         datetime.timedelta(hours = i * delta_t))
+    return sim_dates
+
+
+def remove_missing(dates, data, nan_value = -999):
     """ Removes NaN values and corresponding dates.
     data is a 1D numarray.
     dates is a datetime list."""
     condition = data != nan_value
     data = data[condition]
     dates = [d for d, c in zip(dates, condition) if c]
-    return data, dates
-
+    return dates, data

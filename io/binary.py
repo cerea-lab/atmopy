@@ -25,6 +25,7 @@
 import numarray
 import datetime
 
+
 def get_filesize(filename):
     """Gets a file's size.
     Returns integer"""
@@ -40,6 +41,7 @@ def get_filesize(filename):
         pass
     return fileSize
 
+
 def get_timesteps(filename, recordLength):
     """Gets number of timsteps in a file given its
     record length (in Bytes).
@@ -49,20 +51,14 @@ def get_timesteps(filename, recordLength):
         ts = get_filesize / recordLength
     return ts
 
-def save_binary(arrayToSave, filename, \
-                dataType=numarray.numerictypes.Float32):
-    """Saves a numarray in a binary file using specified type."""
-    numarray.array(arrayToSave,
-                   type=dataType).tofile(filename)
 
-def load_binary(filename, shape, \
-                dataType=numarray.numerictypes.Float32):
+def load_binary(filename, shape, type = 'f4'):
     """Loads a binary file into an array using specified shape.
     Returns numarray."""
-    return numarray.fromfile(filename, dataType, shape)
+    return numarray.fromfile(filename, type, shape)
 
-def load_XYTbinary(filename, shape, \
-                   dataType=numarray.numerictypes.Float32):
+
+def load_binary_first_level(filename, shape, type = 'f4'):
     """Loads a binary file into an array using specified 3D shape for
     X, Y and T dimensions (a time sequence of planes).
     If the given binary file is a 4D file (XYZT), the plane Z = 1 is
@@ -70,14 +66,20 @@ def load_XYTbinary(filename, shape, \
     """
     res = []
     zsize = get_filesize(filename) \
-            / ( dataType.bytes * shape[0] * shape[1] * shape[2] )
+            / (numerictypes.getType(type).bytes * shape[0] \
+               * shape[1] * shape[2])
     if zsize != 1:
-        res = load_binary(filename, shape, dataType)
+        res = load_binary(filename, shape, type)
     else:
         newshape = list(shape)
         newshape.insert(1, zsize)
         # Use temp array to be sure that memory is freed
-        temp = load_binary(filename, newshape, dataType)
+        temp = load_binary(filename, newshape, type)
         res = temp[:,1,:,:]
         del temp
     return res
+
+
+def save_binary(arrayToSave, filename, type = 'f4'):
+    """Saves a numarray in a binary file using specified type."""
+    numarray.array(arrayToSave, type = type).tofile(filename)

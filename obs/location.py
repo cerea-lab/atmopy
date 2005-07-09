@@ -23,7 +23,10 @@
 
 
 class Station:
-    "Stores information about an observation station"
+    """
+    Stores information about an observation station
+    """
+    
     name = ""
     latitude = 0.0
     longitude = 0.0
@@ -35,8 +38,16 @@ class Station:
     def __init__(self, str=""):
         self.FromString(str)
         
+    def __str__(self):
+        return self.name + " (" + str(self.latitude) + ", " \
+               + str(self.longitude) + ") " \
+               + self.country + " " \
+               + self.type1 + " " \
+               + self.type2 + " " \
+               + self.asqa
+
     def FromString(self, str):
-        """ Sets station's attributes from string."""
+        """ Sets station attributes from string."""
         if str != "":
             values = str.strip().split()
             try:
@@ -54,7 +65,7 @@ class Station:
             self.asqa = values[8]
         
     def FromFile(self, filename, station_name):
-        """ Loads station's attributes from text file."""
+        """ Loads station attributes from text file."""
         try:
             f = open(filename, "r", 0)
             line = f.readline()
@@ -65,14 +76,6 @@ class Station:
         except IOError:
             pass
                 
-    def __str__(self):
-        return self.name + " (" + str(self.latitude) + ", " \
-               + str(self.longitude) + ") " \
-               + self.country + " " \
-               + self.type1 + " " \
-               + self.type2 + " " \
-               + self.asqa
-
     def IsInsideBox(lat_min, lat_max, lon_min, lon_max):
         """ Check wether the station is inside a given area.
         Returns Boolean.
@@ -95,55 +98,27 @@ class Station:
                            origins[1], \
                            + deltas[1] * float(lengths[1]))
 
-def filter_urban(station):
+
+def is_urban(station):
     """ Returns true if the station is of urban type, false otherwise.
     Returns Boolean."""
     return station.type1 == "URB"
 
-def filter_rural(station):
+
+def is_rural(station):
     """ Returns true if the station is of rural type, false otherwise.
     Returns Boolean."""
     return station.type1 == "RUR"
 
-def filter_notnull_latlon(station):
+
+def has_valid_latlon(station):
     """ Returns True if the station has not-null latitude and longitude,
     False otherwise.
     Returns Boolean."""
     return station.latitude != 0.0 and station.longitude != 0.0
 
-def get_simulated_at_locations(data, point_list, origins, deltas):
-    """ Gets a a list of time sequences of data at specified
-    locations using bilinear interpolation.
-    Returns list of 1D arrays.
-    """
-    ret = []
-    for i in point_list:
-        ret.append(get_simulated_at_location(data, i, origins, deltas))
-    return ret
-                  
-def get_simulated_at_stations(data, stations, origins, deltas):
-    """ Gets a a list of time sequences of data at specified
-    stations locations using bilinear interpolation.
-    Returns list of 1D arrays.
-    """
-    ret = []
-    for i in stations:
-        ret.append(get_simulated_at_station( \
-            data, i, origins, deltas))
-    return ret
 
-def get_simulated_at_station(data, station, origins, deltas):
-    """ Gets a time sequence of data at specified station
-    using bilinear interpolation.
-    Returns 1D array."""
-    # data: numarray, T Y X
-    # point: (latitude, longitude)
-    # origins: (t_min, y_min, x_min)
-    # deltas: (delta_t, delta_y, delta_x)
-    return get_simulated_at_location( \
-        data, (station.latitude, station.longitude), origins, deltas)
-
-def get_simulated_at_location(data, point, origin, delta):
+def get_simulated_at_location(origin, delta, data, point):
     """ Gets a time sequence of data at specified location
     using bilinear interpolation.
     Returns 1D array."""
@@ -171,19 +146,18 @@ def get_simulated_at_location(data, point, origin, delta):
            + (1.0 - coeff_y) * coeff_x * data[:, index_y, index_x + 1]
 
 
-def get_simulated_at_locations_closest(data, point_list, \
-                                       origins, deltas):
-    """ Gets a a list of time sequences of data at specified
-    locations using closest point.
+def get_simulated_at_locations(origins, deltas, data, point_list):
+    """ Gets a list of time sequences of data at specified
+    locations using bilinear interpolation.
     Returns list of 1D arrays.
     """
-    ret = numarray.array([])
+    ret = []
     for i in point_list:
-        ret.append(get_simulated_at_location_closest(data, i, \
-                                                     origins, deltas))
+        ret.append(get_simulated_at_location(origins, deltas, data, i))
     return ret
 
-def get_simulated_at_location_closest(data, point, origins, deltas):
+
+def get_simulated_at_location_closest(origins, deltas, data, point):
     """ Gets a time sequence of data at specified location.
     Returns 1D array."""
     # data : numarray, T Y X
@@ -203,6 +177,43 @@ def get_simulated_at_location_closest(data, point, origins, deltas):
         index_y = index_y - 1
     return data[:,index_y, index_x]
 
+
+def get_simulated_at_locations_closest(origins, deltas, data, point_list):
+    """ Gets a a list of time sequences of data at specified
+    locations using closest point.
+    Returns list of 1D arrays.
+    """
+    ret = numarray.array([])
+    for i in point_list:
+        ret.append(get_simulated_at_location_closest(origins, deltas, \
+                                                     data, i))
+    return ret
+
+
+def get_simulated_at_station(origins, deltas, data, station):
+    """ Gets a time sequence of data at specified station
+    using bilinear interpolation.
+    Returns 1D array."""
+    # data: numarray, T Y X
+    # point: (latitude, longitude)
+    # origins: (t_min, y_min, x_min)
+    # deltas: (delta_t, delta_y, delta_x)
+    return get_simulated_at_location(origins, deltas, \
+                                     data, (station.latitude, \
+                                            station.longitude))
+
+
+def get_simulated_at_stations(origins, deltas, data, stations):
+    """ Gets a a list of time sequences of data at specified
+    stations locations using bilinear interpolation.
+    Returns list of 1D arrays.
+    """
+    ret = []
+    for i in stations:
+        ret.append(get_simulated_at_station(origins, deltas, data, i))
+    return ret
+
+
 def get_station(station_list, station_name):
     """ Gets a Station object given its name and a list of stations.
     Returns Station."""
@@ -211,6 +222,7 @@ def get_station(station_list, station_name):
             ret = i
             break
     return ret
+
 
 def filter_stations(filter_func, station_list):
     """ Filters a station list in place according to the given filter.
@@ -232,6 +244,7 @@ def map_stations(bool_func, station_list):
     """
     return map(bool_func, station_list)
 
+
 def filter_stations_observations(filter_func, station_list, observations_list):
     """ Filters a station list and corresponding observations list in
     place according to the given filter which takes a station and an
@@ -242,6 +255,7 @@ def filter_stations_observations(filter_func, station_list, observations_list):
             station_list.pop(i)
             observations_list.pop(i)
     return station_list, observations_list
+
 
 def map_stations_observations(map_func, station_list, observations_list):
     """ Returns a list containing the return values of the

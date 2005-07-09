@@ -30,11 +30,13 @@ class ConfigStream:
     """Manages a configuration file. The ConfigStream class provides
     an interface to the Talos config file system, through calls to
     the extract_configuration program."""
+
     def __init__(self, file):
         import os.path
         self.filename = file
         self.extract = os.path.dirname(os.path.abspath(__file__)) \
                        + "/extract_configuration "
+
     def GetOutput(self, command):
         """ Calls external program extract_configuration (which must
         be in the PATH), and returns output of execution on success.
@@ -47,15 +49,19 @@ class ConfigStream:
         else:
             raise Exception, "Unable to launch: \"extract_configuration " \
                       + self.filename + " " + command + "\""
+
     def ListSections(self):
         """Lists all sections of config file."""
         return self.GetOutput("")
+
     def ListAll(self):
         """Lists everything in config file."""
         return self.GetOutput("-ll")
+
     def ListSectionLines(self, section):
         """Lists everything in specified section of config file."""
         return self.GetOutput("-s " + section)
+
     def GetElement(self, element, section = "", type = "String"):
         """
         Returns the value of a given field.
@@ -100,6 +106,7 @@ class ConfigStream:
             return [float(x) for x in self.ListSectionLines(element).split('\n')]
         else:
             raise Exception, "Type \"" + type + "\" is unknown."
+
     def GetString(self, element, section = ""):
         """
         Returns the value of a given field.
@@ -116,6 +123,7 @@ class ConfigStream:
             return self.GetOutput(element)
         else:
             return self.GetOutput("-s " + section + " " + element)
+
     def GetFloat(self, element, section = ""):
         """Returns specified element value in given section, as float"""
         if section == "":
@@ -123,6 +131,7 @@ class ConfigStream:
         else:
             return float(self.GetOutput("-s " + section + " " \
                                         + element))
+
     def GetInt(self, element, section = ""):
         """Returns specified element value in given section, as integer"""        
         if section == "":
@@ -130,6 +139,7 @@ class ConfigStream:
         else:
             return int(self.GetOutput("-s " + section + " " \
                                       + element))
+
     def GetDate(self, element, section = ""):
         """Returns specified element value in given section, converted
         into a datetime.datetime object with year, month and day.
@@ -141,6 +151,7 @@ class ConfigStream:
             ret_str = self.GetOutput("-s " + section + " " + element)
         return datetime.datetime(int(ret_str[0:4]), int(ret_str[4:6]),
                                  int(ret_str[6:8]))
+
     def GetDateTime(self, element, section = ""):
         """Returns specified element value in given section, converted
         into a datetime.datetime object with year, month, day, hour, minutes

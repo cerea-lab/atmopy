@@ -45,7 +45,8 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
         for i1,i2 in zip(allind[:-1], allind[1:]):
             lines.extend( plot(x[i1:i2], y[i1:i2], fmt, **kwargs) )
     return lines
-        
+
+
 def segplot_date(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y with dates, breaking the plot at any point where
@@ -67,6 +68,7 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
             lines.extend(plot_date(x[i1:i2], y[i1:i2], fmt, **kwargs) )
     return lines
 
+
 def set_style1(lines):
     """
     Sets parameters for specified lines, style #1.
@@ -85,6 +87,7 @@ def set_style1(lines):
     set(labels, rotation=60)
     draw()
 
+
 def set_style2(lines):
     """
     Sets parameters for specified lines, style #2.
@@ -102,6 +105,7 @@ def set_style2(lines):
     labels = axes().get_xticklabels()
     set(labels, rotation=60)
     draw()
+
 
 def set_style_fromconfig(config, section, lines):
     """
@@ -137,5 +141,3 @@ def set_style_fromconfig(config, section, lines):
     labels = axes().get_xticklabels()
     set(labels, rotation=labels_rotation)
     draw()
-
-    

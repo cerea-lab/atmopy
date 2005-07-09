@@ -26,8 +26,8 @@ import numarray
 import datetime
 
 
-def load_stations(filename, origins = (0,0), \
-                  deltas = (0,0), lengths = (0,0)):
+def load_stations(filename, origins = (0, 0), \
+                  deltas = (0, 0), lengths = (0, 0)):
     """ Loads stations description from text file. Removes stations
     outside the domain described by origins, deltas and
     lengths (if specified).
@@ -49,6 +49,7 @@ def load_stations(filename, origins = (0,0), \
         pass
     return stations
 
+
 def load_station(filename, station_name):
     """ Loads a station description from text file.
     Returns Station."""
@@ -66,8 +67,8 @@ def load_station(filename, station_name):
     return station
 
 
-def load_observations(name, directory="", \
-                      year="", obs_type=""):
+def load_file_observations(name, directory="", \
+                           year="", obs_type=""):
     """ Loads observations data from a file, puts it in a sequence.
     Returns sequence of dates and array of values."""
     slash = ""
@@ -100,14 +101,15 @@ def load_observations(name, directory="", \
         pass
     return numarray.array(observations, 'Float32'), dates
 
-def load_all_observations(stations, directory, year, obs_type):
+
+def load_observations(stations, directory, year, obs_type):
     """ Loads observations data from files for given stations
     Returns list of date list and list of observations arrays."""
     obs_dates_list = []
     obs_list = []
     for i in stations:
-        dates, obs = load_observations(i.name, directory, \
-                                       year, obs_type)
+        dates, obs = load_file_observations(i.name, directory, \
+                                            year, obs_type)
         obs_dates_list.append(dates)
         obs_list.append(obs)
     return obs_list, obs_dates_list
