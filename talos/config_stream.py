@@ -24,21 +24,24 @@
 
 import commands
 import datetime
-    
+
+
 class ConfigStream:
     """Manages a configuration file. The ConfigStream class provides
     an interface to the Talos config file system, through calls to
     the extract_configuration program."""
     def __init__(self, file):
+        import os.path
         self.filename = file
+        self.extract = os.path.dirname(os.path.abspath(__file__)) \
+                       + "/extract_configuration "
     def GetOutput(self, command):
         """ Calls external program extract_configuration (which must
         be in the PATH), and returns output of execution on success.
         Raises exception on failure.
         """
-        (s, o) = commands.getstatusoutput("extract_configuration " \
-                                          + self.filename + " " + \
-                                          command)
+        (s, o) = commands.getstatusoutput(self.extract + self.filename \
+                                          + " " + command)
         if s == 0:
             return o
         else:
