@@ -58,6 +58,24 @@ def is_int(str):
     return is_num
 
 
+def to_num(str):
+    """
+    Converts a string to a number.
+
+    @type str: string
+    @param str: String to be converted.
+
+    @rtype: int (preferred) or float
+    @return: The number represented by 'str'.
+    """
+    if is_int(str):
+        return int(str)
+    elif is_num(str):
+        return float(str)
+    else:
+        raise Exception, "\"" + str + "\" is not a number."
+
+
 def remove_file(files):
     """
     Removes one or more files and/or directories (without confirmation).
