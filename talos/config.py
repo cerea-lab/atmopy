@@ -79,7 +79,7 @@ class Config:
                         ("[species_list]", "", "species_list", "StringSection"), \
                         ("[dir_list]", "", "dir_list", "StringSection"), \
                         ("[file_list]", "", "file_list", "StringSection")]
-        self.content.append(additional_content)
+        self.content.extend(additional_content)
         if len(new_content) != 0:
             self.content = new_content[:]
         for x in self.content:
