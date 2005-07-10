@@ -102,6 +102,132 @@ def split_into_days(dates, data):
     return output_dates, map(lambda x: numarray.array(x), output_data)
 
 
+def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
+                        nb_range_min = 24, nb_min = 0, paired = False):
+    """
+    Returns the daily peaks for both observations and computed
+    concentrations.
+
+    @type dates: list of datetime
+    @param dates: The dates at which the concentrations are provided.
+    @type sim: numarray.array
+    @param sim: The simulated concentrations.
+    @type obs: numarray.array
+    @param obs: Observations.
+    @type hour_range: list or tuple with two elements
+    @param hour_range: Range of hours over which the peak is to be sought. If
+    not all hours of 'hour_range' are available in the observations, the day
+    is discarded. The peak in the simulated concentrations is also taken in
+    'hour_range'.
+    @type nb_range_min: int
+    @param nb_range_min: The minimum number of available observations in the
+    'hour_range' so that the daily peak should be included.
+    @type nb_min: int
+    @param nb_min: The minimum number of available observations in the day so
+    that the daily peak should be included.
+    @type paired: Boolean
+    @param paired: True if observations and simulated peaks are assumed to be
+    paired (i.e., occuring at the same hour), False otherwise.
+
+    @rtype: (list of datetime, numarray.array, list of datetime,
+    numarray.array) or (list of datetime, numarray.array, numarray.array)
+    @return: The new dates for computed concentrations, the computed peaks,
+    the corresponding measured peaks preceded by their own dates.
+    """
+    nb_range_min = min(nb_range_min, len(hour_range))
+    tmp_dates = dates[:]
+    dates, sim = split_into_days(tmp_dates, sim)
+    dates, obs = split_into_days(tmp_dates, obs)
+    output_dates = []
+    if not paired:
+        output_dates_sim = []
+    output_sim = []
+    output_obs = []
+    for i in range(len(dates)):
+        if len(dates[i]) < nb_min:
+            continue
+        j = 0
+        while j < len(dates[i]) and dates[i][j].hour < hour_range[0]:
+            j += 1
+        if j == len(dates[i]):
+            continue
+        tmp_dates = []
+        tmp_sim = []
+        tmp_obs = []
+        while j < len(dates[i]) and dates[i][j].hour < hour_range[1]:
+            tmp_dates.append(dates[i][j])
+            tmp_sim.append(sim[i][j])
+            tmp_obs.append(obs[i][j])
+            j += 1
+        if len(tmp_dates) < nb_range_min:
+            continue
+        j = numarray.array(tmp_obs).argmax()
+        output_dates.append(tmp_dates[j])
+        output_obs.append(tmp_obs[j])
+        if paired:
+            output_sim.append(tmp_sim[j])
+        else:
+            j = numarray.array(tmp_sim).argmax()
+            output_dates_sim.append(tmp_dates[j])
+            output_sim.append(tmp_sim[j])
+    if paired:
+        return output_dates, numarray.array(output_sim), \
+               numarray.array(output_obs)
+    else:
+        return output_dates_sim, numarray.array(output_sim), \
+               output_dates, numarray.array(output_obs)
+
+
+def get_daily_peaks(dates, conc, hour_range = [0, 23], \
+                    nb_range_min = 24, nb_min = 0):
+    """
+    Returns the daily peaks.
+
+    @type dates: list of datetime
+    @param dates: The dates at which the concentrations are provided.
+    @type conc: numarray.array
+    @param conc: The simulated concentrations.
+    @type hour_range: list or tuple with two elements
+    @param hour_range: Range of hours over which the peak is to be sought. If
+    not all hours of 'hour_range' are available in the observations, the day
+    is discarded. The peak in the simulated concentrations is also taken in
+    'hour_range'.
+    @type nb_range_min: int
+    @param nb_range_min: The minimum number of available observations in the
+    'hour_range' so that the daily peak should be included.
+    @type nb_min: int
+    @param nb_min: The minimum number of available observations in the day so
+    that the daily peak should be included.
+
+    @rtype: (list of datetime, numarray.array)
+    @return: The concentration peaks preceded by their dates.
+    """
+    nb_range_min = min(nb_range_min, len(hour_range))
+    dates, conc = split_into_days(dates, conc)
+    output_dates = []
+    output_conc = []
+    for i in range(len(dates)):
+        if len(dates[i]) < nb_min:
+            continue
+        j = 0
+        while j < len(dates[i]) and dates[i][j].hour < hour_range[0]:
+            j += 1
+        if j == len(dates[i]):
+            continue
+        tmp_dates = []
+        tmp_conc = []
+        while j < len(dates[i]) and dates[i][j].hour < hour_range[1]:
+            tmp_dates.append(dates[i][j])
+            tmp_conc.append(conc[i][j])
+            j += 1
+        if len(tmp_dates) < nb_range_min:
+            continue
+        j = numarray.array(tmp_conc).argmax()
+        output_dates.append(tmp_dates[j])
+        output_conc.append(tmp_conc[j])
+    return output_dates, numarray.array(output_conc)
+
+
 def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
     """ Creates masks for simulated data and observation data
     corresponding to data of common dates.
