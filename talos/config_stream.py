@@ -119,7 +119,7 @@ class ConfigStream:
         @param section: The section in which the element should be found, if any.
 
         @rtype: string
-        @return The value of the field in the configuration file.
+        @return: The value of the field in the configuration file.
         """
         if section == "":
             return self.GetOutput(element)
@@ -152,7 +152,7 @@ class ConfigStream:
         @param section: The section in which the element should be found, if any.
 
         @rtype: Boolean
-        @return The value of the field in the configuration file.
+        @return: The value of the field in the configuration file.
         """
         if section == "":
             elt = self.GetOutput(element)
@@ -167,28 +167,39 @@ class ConfigStream:
             raise Exception, "Field \"" + element + "\" is not a Boolean " \
                   "in " + self.filename + "."
 
-    def GetDate(self, element, section = ""):
-        """Returns specified element value in given section, converted
-        into a datetime.datetime object with year, month and day.
-        The value must be in the YYYYMMDD form."""
-        ret_str = ""
-        if section == "":
-            ret_str = self.GetOutput(element)
-        else:
-            ret_str = self.GetOutput("-s " + section + " " + element)
-        return datetime.datetime(int(ret_str[0:4]), int(ret_str[4:6]),
-                                 int(ret_str[6:8]))
-
     def GetDateTime(self, element, section = ""):
-        """Returns specified element value in given section, converted
-        into a datetime.datetime object with year, month, day, hour, minutes
-        and seconds.
-        The value must be in the YYYYMMDDHHMMSS form."""
+        """
+        Returns the value (datetime) of a given field.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: datetime
+        @return: The value of the field in the configuration file.
+
+        @note: The field value should be in format YYYYMMDD, YYYYMMDDHH,
+        YYYYMMDDHHMM or YYYYMMDDHHMMSS.
+        """
         ret_str = ""
         if section == "":
             ret_str = self.GetOutput(element)
         else:
             ret_str = self.GetOutput("-s " + section + " " + element)
-        return datetime.datetime(int(ret_str[0:4]), int(ret_str[4:6]), \
-                                 int(ret_str[6:8]), int(ret_str[8:10]),\
-                                 int(ret_str[10:12]), int(ret_str[12:14]))
+        year = int(ret_str[0:4])
+        month = int(ret_str[4:6])
+        day = int(ret_str[6:8])
+        if len(ret_str) > 9:
+            hour = int(ret_str[8:10])
+        else:
+            hour = 0
+        if len(ret_str) > 11:
+            minute = int(ret_str[10:12])
+        else:
+            minute = 0
+        if len(ret_str) > 13:
+            sec = int(ret_str[12:14])
+        else:
+            sec = 0
+        return datetime.datetime(year, month, day, hour, minute, sec)
