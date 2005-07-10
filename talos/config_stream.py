@@ -24,6 +24,7 @@
 
 import commands
 import datetime
+import miscellaneous
 
 
 class ConfigStream:
@@ -90,6 +91,15 @@ class ConfigStream:
             return self.ListSectionLines(element).split('\n')[0].split()
         elif type == "StringSection":
             return self.ListSectionLines(element).split('\n')
+        elif type == "Num":
+            return self.GetNum(element, section)
+        elif type == "NumList":
+            print element
+            return [miscellaneous.to_num(x) for x in \
+                    self.ListSectionLines(element).split('\n')[0].split()]
+        elif type == "NumSection":
+            return [miscellaneous.to_num(x) for x in \
+                    self.ListSectionLines(element).split('\n')]
         elif type == "Int":
             return self.GetInt(element, section)
         elif type == "IntList":
@@ -135,6 +145,25 @@ class ConfigStream:
             return self.GetOutput(element)
         else:
             return self.GetOutput("-s " + section + " " + element)
+
+    def GetNum(self, element, section = ""):
+        """
+        Returns the value (number: int or float) of a given field.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: int (preferred) or float
+        @return: The value of the field in the configuration file.
+        """
+        if section == "":
+            str = self.GetOutput(element)
+        else:
+            str = self.GetOutput("-s " + section + " " \
+                                 + element)
+        return miscellaneous.to_num(str)
 
     def GetFloat(self, element, section = ""):
         """Returns specified element value in given section, as float"""
