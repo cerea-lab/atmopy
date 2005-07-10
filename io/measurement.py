@@ -103,7 +103,7 @@ def load_file_observations(name, directory="", \
         f.close()
     except IOError:
         pass
-    return numarray.array(observations, 'Float32'), dates
+    return dates, numarray.array(observations, 'Float32')
 
 
 def load_observations(stations, directory, year, obs_type):
@@ -116,4 +116,4 @@ def load_observations(stations, directory, year, obs_type):
                                             year, obs_type)
         obs_dates_list.append(dates)
         obs_list.append(obs)
-    return obs_list, obs_dates_list
+    return obs_dates_list, obs_list
