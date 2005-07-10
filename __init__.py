@@ -28,9 +28,9 @@ For more information, please see the AtmoPy home page:
 """
 
 
-import disp
-import ens
+import display
+import ensemble
 import io
-import obs
+import observation
 import stat
 import talos

@@ -26,7 +26,7 @@ import numarray
 import datetime
 import os, sys
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
-import obs
+import observation
 sys.path.pop(0)
 
 
