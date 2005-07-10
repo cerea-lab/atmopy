@@ -285,9 +285,9 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     @param data: Array of data.
     @type period_date: Period, list of datetime, or datetime
     @param period_date: Defines:
-    0. a period (Period object);
-    1. a period through its bounds (list of datetime);
-    2. the first date of the selected period.
+       0. a period (Period object);
+       1. a period through its bounds (list of datetime);
+       2. the first date of the selected period.
     @type end_date: datetime
     @param end_date: the last date of the selected period (if not provided by
     'period_date').
@@ -365,8 +365,8 @@ def remove_missing(dates, data, rm_value = -999):
     @param dates: The dates at which data is provided.
     @type data: 1D numarray.array
     @param data: The data array to be filtered.
-    @type rm_values: float or list of floats
-    @param rm_values: The value(s) to be removed from 'data'.
+    @type rm_value: float or list of floats
+    @param rm_value: The value(s) to be removed from 'data'.
 
     @rtype: (list of datetime, 2D numarray.array)
     @return: The data array and its dates without the specified values.

@@ -23,7 +23,7 @@
 
 
 """
-Disp is a module from AtmoPy package that is in charge of visualization.
+Display is a module from AtmoPy package that is in charge of visualization.
 """
 
 

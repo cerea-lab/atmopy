@@ -77,9 +77,9 @@ class ConfigStream:
         'String',  'StringList' or 'StringSection'.
 
         @rtype: given by 'type'
-        @return The value of the field in the configuration file.
+        @return: The value of the field in the configuration file.
 
-        @warning In case the output is a list, the section is not taken into
+        @warning: In case the output is a list, the section is not taken into
         account, which means that two lists against the same field name should
         not be introduced in the configuration file, even in two different
         sections.

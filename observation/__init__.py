@@ -23,7 +23,8 @@
 
 
 """
-Obs is a module from AtmoPy package that is in charge of observational data.
+Observation is a module from AtmoPy package that is in charge of observational
+data.
 """
 
 

@@ -23,6 +23,6 @@
 
 
 """
-Ens is a module from AtmoPy package that is in charge of ensemble forecasts
-and uncertainty analysis based on ensembles.
+Ensemble is a module from AtmoPy package that is in charge of ensemble
+forecasts and uncertainty analysis based on ensembles.
 """

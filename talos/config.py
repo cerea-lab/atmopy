@@ -39,20 +39,20 @@ class Config:
         @type filename: string
         @param filename: The name of the configuration file.
         @type additional_content: list of tuples of strings
-        @type additional_content: Description of attributes (in addition to
+        @param additional_content: Description of attributes (in addition to
         the default attributes) read in the configuration file. There are
         three or four elements in each tuple:
-        0. the field name or section name (in case a whole section is put in
-        the attribute), to be read in the configuration file;
-        1. the section name (in which the field lies), discarded in case a
-        whole section is read;
-        2. the name of the attribute, optional (default: the field name);
-        3. the type of the attribute: 'Int', 'IntList', 'IntSection', 'Float',
-        'FloatList', 'FloatSection', 'String', 'StringList' or
-        'StringSection', where 'Section' means that a whole section is read
-        and returned in a list made of the section lines.
+           0. the field name or section name (in case a whole section is put
+           in the attribute), to be read in the configuration file;
+           1. the section name (in which the field lies), discarded in case a
+           whole section is read;
+           2. the name of the attribute, optional (default: the field name);
+           3. the type of the attribute: 'Int', 'IntList', 'IntSection',
+           'Float', 'FloatList', 'FloatSection', 'String', 'StringList' or
+           'StringSection', where 'Section' means that a whole section is read
+           and returned in a list made of the section lines.
         @type new_content: list of tuples of strings
-        @type new_content: Description of all attributes. It overwrites the
+        @param new_content: Description of all attributes. It overwrites the
         default attributes.
         """
         self.filename = filename
@@ -93,15 +93,15 @@ class Config:
 
         @type x: list of lists of strings
         @param x: Each element of x contains three or four elements:
-        0. the field name or section name (in case a whole section is put in
-        the attribute), to be read in the configuration file;
-        1. the section name (in which the field lies), discarded in case a
-        whole section is read;
-        2. the name of the attribute, optional (default: the field name);
-        3. the type of the attribute: 'Int', 'IntList', 'IntSection', 'Float',
-        'FloatList', 'FloatSection', 'String', 'StringList' or
-        'StringSection', where 'Section' means that a whole section is read
-        and returned in a list made of the section lines.
+           0. the field name or section name (in case a whole section is put
+           in the attribute), to be read in the configuration file;
+           1. the section name (in which the field lies), discarded in case a
+           whole section is read;
+           2. the name of the attribute, optional (default: the field name);
+           3. the type of the attribute: 'Int', 'IntList', 'IntSection',
+           'Float', 'FloatList', 'FloatSection', 'String', 'StringList' or
+           'StringSection', where 'Section' means that a whole section is read
+           and returned in a list made of the section lines.
         """
         try:
             val = self.stream.GetElement(x[0], section = x[1], type = x[-1])
