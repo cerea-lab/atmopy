@@ -48,9 +48,9 @@ class Config:
            whole section is read;
            2. the name of the attribute, optional (default: the field name);
            3. the type of the attribute: 'Int', 'IntList', 'IntSection',
-           'Float', 'FloatList', 'FloatSection', 'String', 'StringList' or
-           'StringSection', where 'Section' means that a whole section is read
-           and returned in a list made of the section lines.
+           'Bool', 'Float', 'FloatList', 'FloatSection', 'String',
+           'StringList' or 'StringSection', where 'Section' means that a whole
+           section is read and returned in a list made of the section lines.
         @type new_content: list of tuples of strings
         @param new_content: Description of all attributes. It overwrites the
         default attributes.
@@ -99,9 +99,9 @@ class Config:
            whole section is read;
            2. the name of the attribute, optional (default: the field name);
            3. the type of the attribute: 'Int', 'IntList', 'IntSection',
-           'Float', 'FloatList', 'FloatSection', 'String', 'StringList' or
-           'StringSection', where 'Section' means that a whole section is read
-           and returned in a list made of the section lines.
+           'Bool', 'Float', 'FloatList', 'FloatSection', 'String',
+           'StringList' or 'StringSection', where 'Section' means that a whole
+           section is read and returned in a list made of the section lines.
         """
         try:
             val = self.stream.GetElement(x[0], section = x[1], type = x[-1])

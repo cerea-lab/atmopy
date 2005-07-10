@@ -73,7 +73,7 @@ class ConfigStream:
         @param section: The section in which the element should be found, if any.
         @type type: string
         @param type: The type of the element to be returned. It could be:
-        'Int', 'IntList', 'IntSection', 'Float', 'FloatList', 'FloatSection',
+        'Int', 'IntList', 'IntSection', 'Bool', 'Float', 'FloatList', 'FloatSection',
         'String',  'StringList' or 'StringSection'.
 
         @rtype: given by 'type'
@@ -97,6 +97,8 @@ class ConfigStream:
                     self.ListSectionLines(element).split('\n')[0].split()]
         elif type == "IntSection":
             return [int(x) for x in self.ListSectionLines(element).split('\n')]
+        elif type == "Bool":
+            return self.GetBool(element, section)
         elif type == "Float":
             return self.GetFloat(element, section)
         elif type == "FloatList":
@@ -109,7 +111,7 @@ class ConfigStream:
 
     def GetString(self, element, section = ""):
         """
-        Returns the value of a given field.
+        Returns the value (string) of a given field.
 
         @type element: string
         @param element: The element (field) to be found in the configuration file.
@@ -139,6 +141,31 @@ class ConfigStream:
         else:
             return int(self.GetOutput("-s " + section + " " \
                                       + element))
+
+    def GetBool(self, element, section = ""):
+        """
+        Returns the value (Boolean) of a given field.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: Boolean
+        @return The value of the field in the configuration file.
+        """
+        if section == "":
+            elt = self.GetOutput(element)
+        else:
+            elt = self.GetOutput("-s " + section + " " + element)
+        elt = elt.lower()
+        if elt == "true" or elt == "t" or elt == "y" or elt == "yes":
+            return True
+        elif elt == "false" or elt == "f" or elt == "n" or elt == "no":
+            return False
+        else:
+            raise Exception, "Field \"" + element + "\" is not a Boolean " \
+                  "in " + self.filename + "."
 
     def GetDate(self, element, section = ""):
         """Returns specified element value in given section, converted
