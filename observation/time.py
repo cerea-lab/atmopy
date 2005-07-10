@@ -309,7 +309,7 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     if istart == len(dates):
         return dates[:], data[:]
     iend = istart + 1
-    while iend < len(dates) and dates[iend] <= start_end: istart += 1
+    while iend < len(dates) and dates[iend] <= end_date: iend += 1
     return dates[istart:(iend-1)], data[istart:(iend-1)]
 
 
