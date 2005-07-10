@@ -356,11 +356,26 @@ def get_simulation_dates(t_min, date_ref, delta_t, Nt):
     return sim_dates
 
 
-def remove_missing(dates, data, nan_value = -999):
-    """ Removes NaN values and corresponding dates.
-    data is a 1D numarray.
-    dates is a datetime list."""
-    condition = data != nan_value
+def remove_missing(dates, data, rm_value = -999):
+    """
+    Removes given values from a data array and removes the corresponding
+    dates.
+
+    @type dates: list of datetime
+    @param dates: The dates at which data is provided.
+    @type data: 1D numarray.array
+    @param data: The data array to be filtered.
+    @type rm_values: float or list of floats
+    @param rm_values: The value(s) to be removed from 'data'.
+
+    @rtype: (list of datetime, 2D numarray.array)
+    @return: The data array and its dates without the specified values.
+    """
+    if isinstance(rm_value, (list, tuple)):
+        for x in rm_value:
+            dates, data = remove_missing(dates, data, x)
+        return dates, data
+    condition = data != rm_value
     data = data[condition]
     dates = [d for d, c in zip(dates, condition) if c]
     return dates, data
