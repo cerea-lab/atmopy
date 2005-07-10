@@ -94,7 +94,6 @@ class ConfigStream:
         elif type == "Num":
             return self.GetNum(element, section)
         elif type == "NumList":
-            print element
             return [miscellaneous.to_num(x) for x in \
                     self.ListSectionLines(element).split('\n')[0].split()]
         elif type == "NumSection":
