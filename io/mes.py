@@ -44,10 +44,10 @@ def load_stations(filename, origins = (0, 0), \
     try:
         f = open(filename)
         for i in f.readlines():
-            station = obs.Station(i)
+            station = observation.Station(i)
             if deltas == (0,0) or \
                    station.IsInsideGridBox(origins, deltas, lengths):
-                stations.append(obs.Station(i))
+                stations.append(observation.Station(i))
         f.close()
     except IOError:
         pass
@@ -57,14 +57,14 @@ def load_stations(filename, origins = (0, 0), \
 def load_station(filename, station_name):
     """ Loads a station description from text file.
     Returns Station."""
-    station = obs.Station()
+    station = observation.Station()
     try:
         f = open(filename)
         i = f.readline()
-        station = obs.Station(i)
+        station = observation.Station(i)
         while i != "" and station.name != station_name:
             i = f.readline()
-            station = obs.Station(i)
+            station = observation.Station(i)
         f.close()
     except IOError:
         pass
