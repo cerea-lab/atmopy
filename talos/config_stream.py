@@ -96,7 +96,8 @@ class ConfigStream:
             return [int(x) for x in \
                     self.ListSectionLines(element).split('\n')[0].split()]
         elif type == "IntSection":
-            return [int(x) for x in self.ListSectionLines(element).split('\n')]
+            return [int(x) for x in \
+                    self.ListSectionLines(element).split('\n')]
         elif type == "Bool":
             return self.GetBool(element, section)
         elif type == "Float":
@@ -105,7 +106,16 @@ class ConfigStream:
             return [float(x) for x in \
                     self.ListSectionLines(element).split('\n')[0].split()]
         elif type == "FloatSection":
-            return [float(x) for x in self.ListSectionLines(element).split('\n')]
+            return [float(x) for x in \
+                    self.ListSectionLines(element).split('\n')]
+        elif type == "DateTime":
+            return self.GetDateTime(element, section)
+        elif type == "DateTimeList":
+            return [self.StringToDateTime(x) for x in \
+                    self.ListSectionLines(element).split('\n')[0].split()]
+        elif type == "DateTimeSection":
+            return [self.StringToDateTime(x) for x in \
+                    self.ListSectionLines(element).split('\n')]
         else:
             raise Exception, "Type \"" + type + "\" is unknown."
 
@@ -182,24 +192,36 @@ class ConfigStream:
         @note: The field value should be in format YYYYMMDD, YYYYMMDDHH,
         YYYYMMDDHHMM or YYYYMMDDHHMMSS.
         """
-        ret_str = ""
         if section == "":
             ret_str = self.GetOutput(element)
         else:
             ret_str = self.GetOutput("-s " + section + " " + element)
-        year = int(ret_str[0:4])
-        month = int(ret_str[4:6])
-        day = int(ret_str[6:8])
-        if len(ret_str) > 9:
-            hour = int(ret_str[8:10])
+        return self.StringToDateTime(ret_str)
+
+    def StringToDateTime(self, str):
+        """
+        Converts a string into a datetime object.
+
+        @type str: string
+        @param str: String to be converted. It must be in format YYYYMMDD,
+        YYYYMMDDHH, YYYYMMDDHHMM or YYYYMMDDHHMMSS.
+
+        @rtype: datetime
+        @return: The datetime object corresponding to 'str'.
+        """
+        year = int(str[0:4])
+        month = int(str[4:6])
+        day = int(str[6:8])
+        if len(str) > 9:
+            hour = int(str[8:10])
         else:
             hour = 0
-        if len(ret_str) > 11:
-            minute = int(ret_str[10:12])
+        if len(str) > 11:
+            minute = int(str[10:12])
         else:
             minute = 0
-        if len(ret_str) > 13:
-            sec = int(ret_str[12:14])
+        if len(str) > 13:
+            sec = int(str[12:14])
         else:
             sec = 0
         return datetime.datetime(year, month, day, hour, minute, sec)
