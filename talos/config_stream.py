@@ -75,7 +75,8 @@ class ConfigStream:
         @type type: string
         @param type: The type of the element to be returned. It could be:
         'Int', 'IntList', 'IntSection', 'Bool', 'Float', 'FloatList', 'FloatSection',
-        'String',  'StringList' or 'StringSection'.
+        'String',  'StringList', 'StringSection', 'Num', 'NumList' or
+        'NumSection'. 'Num' means 'Int' or 'Float'.
 
         @rtype: given by 'type'
         @return: The value of the field in the configuration file.
