@@ -57,7 +57,7 @@ class Config:
         """
         self.filename = filename
         self.stream = config_stream.ConfigStream(self.filename)
-        self.content = [("t_min", "[input]", "Float"), \
+        self.content = [("t_min", "[input]", "DateTime"), \
                         ("x_min", "[input]", "Float"), \
                         ("y_min", "[input]", "Float"), \
                         ("Delta_t", "[input]", "Float"), \
@@ -71,9 +71,9 @@ class Config:
                         ("station_file", "[input]", "String"), \
                         ("type", "[output]", "String"), \
                         ("terminal", "[output]", "String"), \
-                        ("t_range", "[output]", "IntList"), \
-                        ("x_range", "[output]", "IntList"), \
-                        ("y_range", "[output]", "IntList"), \
+                        ("t_range", "[output]", "DateTimeList"), \
+                        ("x_range", "[output]", "NumList"), \
+                        ("y_range", "[output]", "NumList"), \
                         ("station", "[output]", "String"), \
                         ("file", "[output]", "output_file", "String"), \
                         ("[species_list]", "", "species_list", "StringSection"), \
