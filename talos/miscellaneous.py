@@ -94,3 +94,28 @@ def remove_file(files):
             shutil.rmtree(file)
         elif os.path.isfile(file):
             os.remove(file)
+
+
+def apply_module_functions(module, args):
+    """
+    Applies all functions (with the right number of arguments) from a given
+    module to the arguments of 'args'.
+
+    @type module: module
+    @param module: The module in which the functions are found.
+    @type args: list
+    @param args: The arguments to call the functions with.
+
+    @rtype: (list of string, list)
+    @return: The list of the applied functions and the list of the results.
+    """
+    Nargs = len(args)
+    functions = []
+    results = []
+    import inspect, types
+    for f in [x for x in dir(module) \
+              if inspect.isfunction(getattr(module, x))]:
+        if len(inspect.getargspec(getattr(module, f))[0]) == Nargs:
+            functions.append(f)
+            results.append(getattr(module, f)(*args))
+    return functions, results
