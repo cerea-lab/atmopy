@@ -160,14 +160,14 @@ def mfbe(data1, data2):
     return 2 * ((data1 - data2) / (data1 + data2)).mean()
 
 
-## Fractional Gross Error (FE)
+## Fractional Gross Error (FGE)
 ## in [1]
 ##
 ## \begin{displaymath}
 ##   \textrm{FE} = \frac{2}{n} \sum_{i=1}^{n} \arrowvert
 ##   \frac{x_i - y_i}{x_i + y_i} \arrowvert
 ## \end{displaymath}
-def fe(data1, data2):
+def fge(data1, data2):
     """ Computes Fractional Gross Error (FE) between
     data1 and data2 1D arrays.
     Returns real."""
