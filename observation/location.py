@@ -91,12 +91,10 @@ class Station:
         cells.
         Returns Boolean.
         """
-        return IsInsideBox(origins[0], \
-                           origins[0]
-                           + deltas[0] * float(lengths[0]), \
-                           origins[1], \
-                           origins[1], \
-                           + deltas[1] * float(lengths[1]))
+        return self.IsInsideBox(origins[0], origins[0] \
+                                + deltas[0] * float(lengths[0]), \
+                                origins[1], origins[1] \
+                                + deltas[1] * float(lengths[1]))
 
 
 def is_urban(station):
