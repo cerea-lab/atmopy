@@ -76,7 +76,7 @@ class Station:
         except IOError:
             pass
                 
-    def IsInsideBox(lat_min, lat_max, lon_min, lon_max):
+    def IsInsideBox(self, lat_min, lat_max, lon_min, lon_max):
         """ Check wether the station is inside a given area.
         Returns Boolean.
         """
@@ -85,7 +85,7 @@ class Station:
                and self.longitude >= lon_min \
                and self.longitude <= lon_max
 
-    def IsInsideGridBox(origins, deltas, lengths):
+    def IsInsideGridBox(self, origins, deltas, lengths):
         """ Check wether the station is located inside a given
         area defined by (lat, lon) origins, deltas on and lengths of
         cells.
