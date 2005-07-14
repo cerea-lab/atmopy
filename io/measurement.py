@@ -71,49 +71,39 @@ def load_station(filename, station_name):
     return station
 
 
-def load_file_observations(name, directory="", \
-                           year="", obs_type=""):
+def load_file_observations(name, directory):
     """ Loads observations data from a file, puts it in a sequence.
     Returns sequence of dates and array of values."""
-    slash = ""
-    if directory != "" and year != "" and obs_type != "":
-        if directory[-1] != '/':
-            slash = "/"
-        filename = directory + slash + obs_type + "_" \
-                   + name + "." + year
-    else:
-        filename = name
+    filename = os.path.normpath(directory) + '/' + name
     dates = []
     observations = []
     try:
         f = open(filename)
         for i in f.readlines():
-            date = i.strip().split()[0]
-            (year, month, day) = (int(date[0:4]),
-                                  int(date[4:6]),
-                                  int(date[6:8]))
+            line = i.split()
+            date = line[0]
+            year = int(date[0:4])
+            month = int(date[4:6])
+            day = int(date[6:8])
             if len(date) == 10:
-                # obs hours are in 01->24 format, we need 00->23
-                hour = int(date[8:10]) - 1
-                dates.append(datetime.datetime(year, month, \
-                                               day, hour))
+                hour = int(date[8:10])
+                dates.append(datetime.datetime(year, month, day, hour))
             else:
                 dates.append(datetime.datetime(year, month, day))
-            observations.append(float(i.strip().split()[1]))
+            observations.append(float(line[1]))
         f.close()
     except IOError:
         pass
     return dates, numarray.array(observations, 'Float32')
 
 
-def load_observations(stations, directory, year, obs_type):
+def load_observations(stations, directory):
     """ Loads observations data from files for given stations
     Returns list of date list and list of observations arrays."""
     obs_dates_list = []
     obs_list = []
     for i in stations:
-        dates, obs = load_file_observations(i.name, directory, \
-                                            year, obs_type)
+        dates, obs = load_file_observations(i.name, directory)
         obs_dates_list.append(dates)
         obs_list.append(obs)
     return obs_dates_list, obs_list
