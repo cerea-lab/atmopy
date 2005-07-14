@@ -119,3 +119,51 @@ def apply_module_functions(module, args):
             functions.append(f)
             results.append(getattr(module, f)(*args))
     return functions, results
+
+
+class PrintInPlace:
+    """
+    PrintInPlace enables to write and overwrite data on screen.
+    """
+    def __init__(self, length = 0):
+        """
+        @type length: integer
+        @param length: Number of characters to be overwritten next time
+        something is printed on screen.
+        """
+        self.length = length
+    def __call__(self, elt):
+        """
+        Prints a string on screen.
+
+        @type elt: string
+        @param elt: String to be printed on screen.
+        """
+        sys.stdout.write(chr(8) * self.length + ' ' * self.length \
+                         + chr(8) * self.length + str(elt))
+        sys.stdout.flush()
+        self.length = len(str(elt))
+    def Print(self, elt):
+        """
+        Prints a string on screen.
+
+        @type elt: string
+        @param elt: String to be printed on screen.
+        """
+        self.__call__(elt)
+    def Reinit(self):
+        """
+        Reinits the instance: no character is removed next time something is
+        printed on screen.
+        """
+        self.length = 0
+    def Clear(self):
+        """
+        Reinits the instance: no character is removed next time something is
+        printed on screen, and the characters that were supposed to be
+        overwritten are cleared.
+        """
+        sys.stdout.write(chr(8) * self.length + ' ' * self.length \
+                         + chr(8) * self.length)
+        sys.stdout.flush()
+        self.length = 0
