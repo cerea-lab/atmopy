@@ -30,7 +30,7 @@ import observation
 sys.path.pop(0)
 
 
-def load_stations(filename, origins = (0, 0), \
+def load_stations(filename, type, origins = (0, 0), \
                   deltas = (0, 0), lengths = (0, 0)):
     """ Loads stations description from text file. Removes stations
     outside the domain described by origins, deltas and
@@ -44,32 +44,24 @@ def load_stations(filename, origins = (0, 0), \
     try:
         f = open(filename)
         for i in f.readlines():
-            station = observation.Station(i)
+            station = observation.Station(i, type)
             if deltas == (0,0) or \
                    station.IsInsideGridBox(origins, deltas, lengths):
-                stations.append(observation.Station(i))
+                stations.append(station)
         f.close()
     except IOError:
         pass
     return stations
 
 
-def load_station(filename, station_name):
+def load_station(filename, type, station_name):
     """ Loads a station description from text file.
     Returns Station."""
-    station = observation.Station()
-    try:
-        f = open(filename)
-        i = f.readline()
-        station = observation.Station(i)
-        while i != "" and station.name != station_name:
-            i = f.readline()
-            station = observation.Station(i)
-        f.close()
-    except IOError:
-        pass
-    return station
-
+    lines = open(filename).readlines()
+    for line in lines:
+        station = observation.Station(line, type)
+        if station.name == station_name:
+            return station
 
 def load_file_observations(name, directory):
     """ Loads observations data from a file, puts it in a sequence.

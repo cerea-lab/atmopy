@@ -27,55 +27,76 @@ class Station:
     Stores information about an observation station
     """
     
-    name = ""
-    latitude = 0.0
-    longitude = 0.0
-    country = ""
-    aasqa = ""
-    type1 = ""
-    type2 = ""
+    def __init__(self, str = "", type = ""):
+        """
+        Initializes the instance in case 'str' and 'type' are not empty.
 
-    def __init__(self, str=""):
-        self.FromString(str)
+        @type str: string
+        @param str: The string to initialize the station with.
+        @type type: string
+        @param type: The type of the initialization string 'str'. It could be
+        Pioneer or Emep.
+        """
+        if str != "" and type != "":
+            getattr(self, "From" + type.capitalize() + "String")(str)
         
     def __str__(self):
-        return self.name + " (" + str(self.latitude) + ", " \
-               + str(self.longitude) + ") " \
+        return self.name + " [" + self.real_name + "] (" \
+               + str(self.latitude) + ", " + str(self.longitude) + ") " \
+               + self.type + " " \
                + self.country + " " \
-               + self.type1 + " " \
-               + self.type2 + " " \
-               + self.asqa
+               + self.network
 
-    def FromString(self, str):
-        """ Sets station attributes from string."""
-        if str != "":
-            values = str.strip().split()
-            try:
-                self.longitude = float(values[0])
-            except ValueError:
-                self.longitude = 0.0                
-            try:
-                self.latitude = float(values[1])
-            except ValueError:
-                self.latitude = 0.0                
-            self.country = values[4]
-            self.type1 = values[5]
-            self.type2 = values[6]
-            self.name = values[7]
-            self.asqa = values[8]
-        
-    def FromFile(self, filename, station_name):
-        """ Loads station attributes from text file."""
+    def FromPioneerString(self, str):
+        """
+        Sets station attributes from a string.
+
+        @type str: string
+        @param str: The string in Pioneer format that defines the station. The
+        string contains the following fields (separated by blank spaces):
+           0. the longitude (float);
+           1. the latitude (float);
+           2. discarded field;
+           3. discarded field;
+           4. country;
+           5. station type;
+           6. discarded field;
+           7. station name;
+           8. AASQA (network);
+           9. other fields (discarded).
+        """
+        values = str.strip().split()
         try:
-            f = open(filename, "r", 0)
-            line = f.readline()
-            while station_name != self.name and line != "":
-                line = f.readline()
-                self.FromString(line)
-            f.close()
-        except IOError:
-            pass
-                
+            self.longitude = float(values[0])
+        except ValueError:
+            self.longitude = 999.
+        try:
+            self.latitude = float(values[1])
+        except ValueError:
+            self.latitude = 999.
+        self.country = values[4]
+        self.type = values[5]
+        self.name = values[7]
+        self.network = values[8]
+        
+    def FromFile(self, filename, station_name, type):
+        """
+        Loads station attributes from a text file.
+
+        @type filename: string
+        @param filename: The text file in which station attributes are to be
+        found.
+        @type station_name: string
+        @param station_name: The name of the station.
+        @type type: string
+        @param type: The type of station file: Pioneer or Emep.
+        """
+        lines = open(filename).readlines()
+        for line in lines:
+            if Station(line, type).name == station_name:
+                self.FromString(line, type)
+                break
+    
     def IsInsideBox(self, lat_min, lat_max, lon_min, lon_max):
         """ Check wether the station is inside a given area.
         Returns Boolean.
