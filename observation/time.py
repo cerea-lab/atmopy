@@ -466,19 +466,14 @@ def timedelta2num(delta):
     return num
            
 
-def get_simulation_dates(t_min, date_ref, delta_t, Nt):
+def get_simulation_dates(t_min, delta_t, Nt):
     """ Get a list of dates corresponding to the simulation data.
     t_min can be a number of hours since date_ref, or a datetime
     object. In this case, date_ref is ignored.
     Returns list of datetime."""
     sim_dates = []
-    if type(t_min) == datetime.datetime:
-        sim_date_start = t_min
-    else:
-        sim_date_start = date_ref + datetime.timedelta(hours = t_min)
     for i in range(Nt):
-        sim_dates.append(sim_date_start + \
-                         datetime.timedelta(hours = i * delta_t))
+        sim_dates.append(t_min + datetime.timedelta(hours = i * delta_t))
     return sim_dates
 
 
