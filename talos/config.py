@@ -70,6 +70,7 @@ class Config:
                         ("species", "[input]", "String"), \
                         ("obs_dir", "[input]", "String"), \
                         ("station_file", "[input]", "String"), \
+                        ("station_file_type", "[input]", "String"), \
                         ("type", "[output]", "String"), \
                         ("terminal", "[output]", "String"), \
                         ("t_range", "[output]", "DateTimeList"), \
