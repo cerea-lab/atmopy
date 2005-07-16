@@ -33,5 +33,5 @@ import datetime
 import math
 
 from location import *
-from time import *
+from temporal import *
 from space_time import *
