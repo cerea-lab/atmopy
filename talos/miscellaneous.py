@@ -174,12 +174,13 @@ class PrintInPlace:
 
 def print_stdout_file(elt, file, end_line = True):
     """
-    Prints an element on standard output and in a file.
+    Prints an element on standard output and in a file (if ready).
 
     @type elt: convertible to string
     @param elt: The element to be printed.
-    @type file: file descriptor
-    @param file: The file into which the element is to be printed.
+    @type file: file descriptor or None
+    @param file: The file into which the element is to be printed. If nothing
+    is to be printed in a file, 'file' should be None.
     @type end_line: Boolean
     @param end_line: True if a line break should be appended after 'elt',
     False otherwise.
@@ -189,5 +190,6 @@ def print_stdout_file(elt, file, end_line = True):
         output += '\n'
     sys.stdout.write(output)
     sys.stdout.flush()
-    file.write(output)
-    file.flush()
+    if file != None:
+        file.write(output)
+        file.flush()
