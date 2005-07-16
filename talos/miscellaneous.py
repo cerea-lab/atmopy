@@ -22,6 +22,9 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
+import sys
+
+
 def is_num(str):
     """
     Tests whether a string is a number.
@@ -167,3 +170,24 @@ class PrintInPlace:
                          + chr(8) * self.length)
         sys.stdout.flush()
         self.length = 0
+
+
+def print_stdout_file(elt, file, end_line = True):
+    """
+    Prints an element on standard output and in a file.
+
+    @type elt: convertible to string
+    @param elt: The element to be printed.
+    @type file: file descriptor
+    @param file: The file into which the element is to be printed.
+    @type end_line: Boolean
+    @param end_line: True if a line break should be appended after 'elt',
+    False otherwise.
+    """
+    output = str(elt)
+    if end_line:
+        output += '\n'
+    sys.stdout.write(output)
+    sys.stdout.flush()
+    file.write(output)
+    file.flush()
