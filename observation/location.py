@@ -47,6 +47,18 @@ class Station:
                + self.country + " " \
                + self.network
 
+    def GetRealName(self):
+        """
+        Returns the real name of the station.
+
+        @rtype: string
+        @return: The real name of the station.
+        """
+        try:
+            return self.real_name
+        except:
+            return self.name
+
     def FromPioneerString(self, str):
         """
         Sets station attributes from a string.
