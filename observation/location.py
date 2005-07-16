@@ -59,6 +59,35 @@ class Station:
         except:
             return self.name
 
+    def FromEmepString(self, str):
+        """
+        Sets station attributes from a string.
+
+        @type str: string
+        @param str: The string in Emep format that defines the station. The
+        string contains the following fields (separated by blank spaces):
+           0. the station name (Emep code);
+           1. the station real-name;
+           2. the latitude (DD MM SS [NS]);
+           3. the longitude (DD MM SS [EO]);
+           4. altitude (float).
+        """
+        l = str.strip().split()
+        self.name = l[0]
+        self.country = self.name[:2]
+        self.real_name = " ".join(l[1:-9])
+        self.altitude = float(l[-1])
+        self.longitude = float(l[-5]) \
+                         + float(l[-4]) / 60. + float(l[-3]) / 3600.
+        if l[-2].lower() != 'e':
+            self.longitude *= -1.
+        self.latitude = float(l[-9]) \
+                        + float(l[-8]) / 60. + float(l[-7]) / 3600.
+        if l[-6].lower() != 'n':
+            self.latitude *= -1.
+        self.network = "EMEP"
+        self.type = "EMEP"
+        
     def FromPioneerString(self, str):
         """
         Sets station attributes from a string.
@@ -90,35 +119,6 @@ class Station:
         self.type = values[5]
         self.name = values[7]
         self.network = values[8]
-        
-    def FromEmepString(self, str):
-        """
-        Sets station attributes from a string.
-
-        @type str: string
-        @param str: The string in Emep format that defines the station. The
-        string contains the following fields (separated by blank spaces):
-           0. the station name (Emep code);
-           1. the station real-name;
-           2. the latitude (DD MM SS [NS]);
-           3. the longitude (DD MM SS [EO]);
-           4. altitude (float).
-        """
-        l = str.strip().split()
-        self.name = l[0]
-        self.country = self.name[:2]
-        self.real_name = " ".join(l[1:-9])
-        self.altitude = float(l[-1])
-        self.longitude = float(l[-5]) \
-                         + float(l[-4]) / 60. + float(l[-3]) / 3600.
-        if l[-2].lower() != 'e':
-            self.longitude *= -1.
-        self.latitude = float(l[-9]) \
-                        + float(l[-8]) / 60. + float(l[-7]) / 3600.
-        if l[-6].lower() != 'n':
-            self.latitude *= -1.
-        self.network = "EMEP"
-        self.type = "EMEP"
         
     def FromFile(self, filename, station_name, type):
         """
