@@ -59,6 +59,45 @@ class Station:
         except:
             return self.name
 
+    def FromBdqaString(self, str):
+        """
+        Sets station attributes from a string.
+
+        @type str: string
+        @param str: The string in BDQA format that defines the station. The
+        string contains the following fields (separated by blank spaces):
+           0. the station name (BDQA code);
+           1. the station real-name;
+           2. the latitude (float);
+           3. the longitude (float);
+           4. the type.
+        """
+        def convert(str):
+            latlon = str.strip()
+            pos = True
+            if latlon[0] == '-':
+                latlon = latlon[1:]
+                pos = False
+            latlon = latlon.split('.')[0]
+            if len(latlon) > 6:
+                return 999.
+            latlon = latlon.zfill(6)
+            res = float(latlon[0:2]) \
+                  + float(latlon[2:4]) / 60. + float(latlon[4:6]) / 3600.
+            if pos:
+                return res
+            else:
+                return -res
+        l = str.strip().split(',')
+        self.name = l[0]
+        self.real_name = l[1]
+        self.latitude = convert(l[2])
+        self.longitude = convert(l[3])
+        self.altitude = float(l[4])
+        self.network = "BDQA"
+        self.type = l[5]
+        self.country = "FR"
+        
     def FromEmepString(self, str):
         """
         Sets station attributes from a string.
