@@ -171,7 +171,7 @@ class Station:
         @type type: string
         @param type: The type of station file: Pioneer or Emep.
         """
-        lines = open(filename).readlines()
+        lines = [x for x in open(filename).readlines() if x.strip() != '']
         for line in lines:
             if Station(line, type).name == station_name:
                 self.FromString(line, type)
