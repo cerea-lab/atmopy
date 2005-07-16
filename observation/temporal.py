@@ -331,8 +331,8 @@ def masks_for_common_dates(dates0, dates1):
     N1 = len(dates1)
 
     # Masks: lists of Booleans.
-    mask0 = numarray.zeros(N0, Bool)
-    mask1 = numarray.zeros(N1, Bool)
+    mask0 = numarray.zeros(N0, "Bool")
+    mask1 = numarray.zeros(N1, "Bool")
 
     i0 = 0
     i1 = 0
