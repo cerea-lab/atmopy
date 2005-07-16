@@ -305,13 +305,49 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
        except ValueError:
            pass
 
-    # print len(sim_condition)-1, range(len(sim_condition)-1, -1, -1), dates
     for i in range(len(sim_condition)-1, -1, -1):
         if sim_condition[i] == 0:
             dates.pop(i)
 
     return dates, simulated[numarray.where(sim_condition)], \
            obs[numarray.where(obs_condition)]
+
+
+def masks_for_common_dates(dates0, dates1):
+    """
+    Computes masks to be applied so that data sets available at 'dates0' and
+    'dates1' may be defined at the same dates.
+
+    @type dates0: list of datetime
+    @param dates0: The first list of dates.
+    @type dates1: list of datetime
+    @param dates1: The second list of dates.
+
+    @rtype: (numarray.array(type=Bool), numarray.array(type=Bool))
+    @return: The masks are returned for both lists in Boolean arrays. There
+    are common dates wherever a Boolean is True.
+    """
+    N0 = len(dates0)
+    N1 = len(dates1)
+
+    # Masks: lists of Booleans.
+    mask0 = numarray.zeros(N0, Bool)
+    mask1 = numarray.zeros(N1, Bool)
+
+    i0 = 0
+    i1 = 0
+
+    while i0 < N0:
+        while i1 < N1 and dates1[i1] < dates0[i0]:
+            i1 += 1
+        if i1 == N1:
+            break
+        if dates1[i1] == dates0[i0]:
+            mask0[i0] = True
+            mask1[i1] = True
+        i0 += 1
+    
+    return mask0, mask1
 
 
 def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
