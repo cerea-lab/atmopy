@@ -39,8 +39,18 @@ import numarray
 ##   \textrm{MBE} = \frac{1}{n} \sum_{i=1}^{n} x_i - y_i 
 ## \end{displaymath}
 def mbe(data1, data2):
-    """ Computes Mean Bias Error between data1 and data2.
-    Returns real."""
+    """
+    Computes Mean Bias Error between data1 and data2.
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute bias from.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute bias from.
+
+    @rtype: float
+    @return: Mean Bias Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (data1 - data2).mean()
@@ -53,9 +63,19 @@ def mbe(data1, data2):
 ##   \textrm{MAGE} = \frac{1}{n} \sum_{i=1}^{n} |x_i - y_i|
 ## \end{displaymath}
 def mage(data1, data2):
-    """ Computes Mean Absolute Gross Error (MAGE) between data1 and
+    """
+    Computes Mean Absolute Gross Error (MAGE) between data1 and
     data2.
-    Returns real."""
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute error.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute error.
+
+    @rtype: float
+    @return: Mean Absolute Gross Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (abs(data1 - data2)).mean()
@@ -69,10 +89,21 @@ def mage(data1, data2):
 ##   \sum_{i=1}^{n} \frac{|x_i - y_i|}{y_i}
 ## \end{displaymath}
 def mange(data1, data2):
-    """ Computes Mean Absolute Normalized Gross Error (MANGE) between
+    """
+    Computes Mean Absolute Normalized Gross Error (MANGE) between
     data1 and data2 1D arrays.
     MNGE = 1 / n * NME
-    Returns real."""
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute error.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute error.
+
+    @rtype: float
+    @return: Mean Absolute Normalized Gross Error (MANGE) between data1
+    and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (abs(data1 - data2) / data2).mean()
@@ -86,7 +117,17 @@ def mange(data1, data2):
 ## \end{displaymath}
 def rmse(data1, data2):
     """ Computes Root Mean Square Error (RMSE) between data1 and data2.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute error.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute error.
+
+    @rtype: float
+    @return: Root Mean Square Error (RMSE) between data1
+    and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     temp = data1 - data2
@@ -104,7 +145,15 @@ def rmse(data1, data2):
 ## \end{displaymath}
 def correlation(data1, data2):
     """ Computes the correlation between data1 and data2.
-    Returns real."""
+    @type data1: numarray.array
+    @param data1: 1D array to compute correlation.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute correlation.
+
+    @rtype: float
+    @return: Correlation coefficient between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     diff1 = data1 - data1.mean()
@@ -124,7 +173,16 @@ def correlation(data1, data2):
 def determination(data1, data2):
     """ Computes the coefficient of determination between data1 and
     data2. This is the correlation coefficient squared.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute coefficient of determination.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute coefficient of determination.
+
+    @rtype: float
+    @return: Coefficient of determination between data1 and data2.
+    """
     correl = correlation(data1, data2)
     return  correl * correl
 
@@ -138,7 +196,16 @@ def determination(data1, data2):
 def mnbe(data1, data2):
     """ Computes Mean Normalized Bias Error (MNBE) between
     data1 and data2 1D arrays.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute MNBE.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute MNBE.
+
+    @rtype: float
+    @return: Mean Normalized Bias Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return ((data1 - data2) / data2).mean()
@@ -154,7 +221,16 @@ def mnbe(data1, data2):
 def mfbe(data1, data2):
     """ Computes Mean Fractionalized Bias Error (MFBE) between
     data1 and data2 1D arrays.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute MFBE.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute MFBE.
+
+    @rtype: float
+    @return: Mean Fractionalized Bias Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return 2 * ((data1 - data2) / (data1 + data2)).mean()
@@ -170,7 +246,16 @@ def mfbe(data1, data2):
 def fge(data1, data2):
     """ Computes Fractional Gross Error (FE) between
     data1 and data2 1D arrays.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute FE.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute FE.
+
+    @rtype: float
+    @return: Fractional Gross Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return 2 * (abs((data1 - data2) / (data1 + data2))).mean()
@@ -185,7 +270,15 @@ def fge(data1, data2):
 ## \end{displaymath}
 def bf(data1, data2):
     """ Computes Bias Factor (BF) of data1 and data2.
-    Returns Real.
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute BF.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute BF.
+
+    @rtype: float
+    @return: Bias Factor of data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
@@ -202,7 +295,16 @@ def pea(data1, data2):
     """ Computes Peak Estimation Accuracy between data1 and data2.
     This can be paired or unpaired peak prediction accuracy
     depending on simulated data used (interpolated or not..)
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute Peak Estimation Accuracy.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute Peak Estimation Accuracy.
+
+    @rtype: float
+    @return: Peak Estimation Accuracy of data1 and data2.
+    """
     max2 = data2.max()
     return (data1.max() - max2) / max2
 
@@ -216,7 +318,16 @@ def pea(data1, data2):
 ## \end{displaymath}
 def nmb(data1, data2):
     """ Computes Normalized Mean Bias (NMB) between data1 and data2.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute NMB.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute NMB.
+
+    @rtype: float
+    @return: Normalized Mean Bias between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (data1 - data2).sum() / data2.sum()
@@ -231,7 +342,16 @@ def nmb(data1, data2):
 ## \end{displaymath}
 def nme(data1, data2):
     """ Computes Normalized Mean Error (NME) between data1 and data2.
-    Returns real."""
+
+    @type data1: numarray.array
+    @param data1: 1D array to compute NME.
+
+    @type data2: numarray.array
+    @param data2: 1D array to compute NME.
+
+    @rtype: float
+    @return: Normalized Mean Error between data1 and data2.
+    """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
     return (abs(data1 - data2)).sum() / data2.sum()
