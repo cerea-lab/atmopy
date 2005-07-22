@@ -300,11 +300,11 @@ def get_simulated_at_locations(origins, deltas, data, point_list):
     Gets a list of time sequences of data at specified
     locations using bilinear interpolation.
 
-    @type origin: (*, float, float) tuple
-    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
     Only y_min and x_min are used in this function.
-    @type delta: (*, float, float) tuple
-    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
     @type data: 3D numarray.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
@@ -325,11 +325,11 @@ def get_simulated_at_location_closest(origins, deltas, data, point):
     Gets a time sequence of data at specified location using closest
     neighbour values.
 
-    @type origin: (*, float, float) tuple
-    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
     Only y_min and x_min are used in this function.
-    @type delta: (*, float, float) tuple
-    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
     @type data: 3D numarray.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
@@ -362,11 +362,11 @@ def get_simulated_at_locations_closest(origins, deltas, data, point_list):
     Gets a list of time sequences of data at specified
     locations using closest neighbours.
 
-    @type origin: (*, float, float) tuple
-    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
     Only y_min and x_min are used in this function.
-    @type delta: (*, float, float) tuple
-    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
     @type data: 3D numarray.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
@@ -388,11 +388,11 @@ def get_simulated_at_station(origins, deltas, data, station):
     Gets a time sequence of data at specified station
     using bilinear interpolation.
 
-    @type origin: (*, float, float) tuple
-    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
     Only y_min and x_min are used in this function.
-    @type delta: (*, float, float) tuple
-    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
     @type data: 3D numarray.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
@@ -415,11 +415,11 @@ def get_simulated_at_stations(origins, deltas, data, stations):
     Gets a list of time sequences of data at specified
     stations using bilinear interpolation.
 
-    @type origin: (*, float, float) tuple
-    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
     Only y_min and x_min are used in this function.
-    @type delta: (*, float, float) tuple
-    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
     @type data: 3D numarray.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.

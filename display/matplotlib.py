@@ -35,13 +35,13 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
     @type y: sequence of float or int
     @param y: Data to plot in ordinates
     @type fmt: string
-    @param ftm: Line style and color, combined in a single format string, as in
-'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @param fmt: Line style and color, combined in a single format string, as in
+    'bo' for blue circles. See Matplotlib 'plot' command for more details.
     @type maxdelta: float or int
     @param maxdelta: Maximum delta between two consecutive x values for
     which a line should be drawn.
     @type kwargs: keyword argument list
-    @param **kwargs: The **kwargs can be used to set line properties
+    @param kwargs: The **kwargs can be used to set line properties
     (any property that has a set_* method).  You can use this to set
     a line label (for auto legends), linewidth, anitialising, marker
     face color, etc. See Matplotlib 'plot' command documentation for
@@ -71,19 +71,19 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y with dates, breaking the plot at any point where
     x[i] - x[i-1] > maxdelta. kwargs are passed on to plot
-
+    
     @type x: sequence of dates represented as float days
     @param x: Dates to plot in absciss.
     @type y: sequence of float or int
     @param y: y values at those dates.
     @type fmt: string
-    @param ftm: Line style and color, combined in a single format string, as in
-'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @param fmt: Line style and color, combined in a single format string, as in
+    'bo' for blue circles. See Matplotlib 'plot' command for more details.
     @type maxdelta: float or int
     @param maxdelta: Maximum delta between two consecutive x values for
     which a line should be drawn.
     @type kwargs: keyword argument list
-    @param **kwargs: The **kwargs can be used to set line properties
+    @param kwargs: The **kwargs can be used to set line properties
     (any property that has a set_* method).  You can use this to set
     a line label (for auto legends), linewidth, anitialising, marker
     face color, etc. See Matplotlib 'plot' command documentation for
@@ -170,7 +170,7 @@ def set_style_fromconfig(config, section, lines):
     For more details about style options, see matplotlib reference page.
 
     @type config: ConfigStream
-    @param: The configstream containing the style definition.
+    @param config: The configstream containing the style definition.
     @type section: string
     @param section: Name of the section in ConfigStream in which the style is defined.
     @type lines: matplotlib.lines

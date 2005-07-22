@@ -617,7 +617,7 @@ def get_simulation_dates(t_min, delta_t, Nt):
     @type t_min: datetime.datetime
     @param t_min: t_min is the time reference for simulation data.
     @type delta_t: int
-    @param delta: The time delta between two consecutive time values,
+    @param delta_t: The time delta between two consecutive time values,
     in hours.
     @type Nt: int
     @param Nt: Number of time values.
