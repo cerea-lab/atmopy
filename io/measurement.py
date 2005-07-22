@@ -32,14 +32,30 @@ sys.path.pop(0)
 
 def load_stations(filename, type, origins = (0, 0), \
                   deltas = (0, 0), lengths = (0, 0)):
-    """ Loads stations description from text file. Removes stations
+    """
+    Loads stations description from text file. Removes stations
     outside the domain described by origins, deltas and
     lengths (if specified).
-    filename: name of the file that describes the stations.
-    origins: coordinates of the first cell in the mesh.
-    deltas: mesh sizes.
-    lengths: lengths of the mesh.
-    Returns sequence of Station."""
+
+    @type filename: string
+    @param filename: Name of the file that describes the stations.
+
+    @type type: string
+    @param type: The type of the initialization strings in the file. It could be
+    Pioneer or Emep.
+
+    @type origins: (float, float)
+    @param origins: (latitude, longitude) as coordinates of the first cell in the mesh.
+
+    @type deltas: (float, float)
+    @param deltas: mesh sizes on latitude and longitude.
+
+    @type lengths: (int, int)
+    @param lengths: lengths of the mesh on latitude and longitude.
+
+    @rtype: sequence of Station
+    @return: sequence of stations loaded from specified file.
+    """
     stations = []
     try:
         f = open(filename)
@@ -55,8 +71,21 @@ def load_stations(filename, type, origins = (0, 0), \
 
 
 def load_station(filename, type, station_name):
-    """ Loads a station description from text file.
-    Returns Station."""
+    """
+    Loads a specific station description from text file containing
+    stations descriptions.
+
+    @type filename: string
+    @param filename: Name of the file that describes the stations.
+    @type type: string
+    @param type: The type of the initialization strings in the file. It could be
+    Pioneer or Emep.
+    @type station_name: string
+    @param station_name: Name of the station to load from the file.
+
+    @rtype: Station
+    @return: Station loaded from specified file.
+    """
     lines = open(filename).readlines()
     for line in lines:
         station = observation.Station(line, type)
@@ -64,8 +93,18 @@ def load_station(filename, type, station_name):
             return station
 
 def load_file_observations(name, directory):
-    """ Loads observations data from a file, puts it in a sequence.
-    Returns sequence of dates and array of values."""
+    """
+    Loads observations data from a file and puts it in a sequence.
+
+    @type name: string
+    @param name: Name of the file to load data from (without directory).
+    @type directory: string
+    @param directory: location of the specified file.
+
+    @rtype: datetime.datetime sequence, 1D numarray.array
+    @return: Sequence of datetime and corresponding observation values in 1D array.
+    """
+
     filename = os.path.normpath(directory) + '/' + name
     dates = []
     observations = []
@@ -90,8 +129,19 @@ def load_file_observations(name, directory):
 
 
 def load_observations(stations, directory):
-    """ Loads observations data from files for given stations
-    Returns list of date list and list of observations arrays."""
+    """
+    Loads observations data from files for given stations
+    File names are guessed from station.name.
+    
+    @type stations: list of Station
+    @param stations: Stations for which observation data must be returned.
+    @type directory: string
+    @param directory: location of the observation files.
+
+    @rtype: list of datetime.datetime lists, list of numarray.array.
+    @return: A list of dates list (one list of dates per Station), and a
+    list of observations arrays (one array per Station).
+    """
     obs_dates_list = []
     obs_list = []
     for i in stations:

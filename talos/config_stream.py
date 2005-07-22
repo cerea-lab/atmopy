@@ -42,6 +42,13 @@ class ConfigStream:
         """ Calls external program extract_configuration (which must
         be in the PATH), and returns output of execution on success.
         Raises exception on failure.
+
+        @type command: string
+        @param command: Options string to pass to extract_configuration program.
+
+        @rtype: string
+        @return: extract_configuration Output and error messages, or
+        launch an exception if an error occured.
         """
         (s, o) = commands.getstatusoutput(self.extract + self.filename \
                                           + " " + command)
@@ -52,15 +59,33 @@ class ConfigStream:
                       + self.filename + " " + command + "\""
 
     def ListSections(self):
-        """Lists all sections of config file."""
+        """
+        Lists all sections of config file.
+
+        @rtype: string
+        @return: String containing all sections of config file.
+        """
         return self.GetOutput("")
 
     def ListAll(self):
-        """Lists everything in config file."""
+        """
+        Lists everything in config file.
+
+        @rtype: string
+        @return: String containing everything in config file.
+        """
         return self.GetOutput("-ll")
 
     def ListSectionLines(self, section):
-        """Lists everything in specified section of config file."""
+        """
+        Lists everything in specified section of config file.
+
+        @type section: string
+        @param section: Name of the section to list elements from.
+        
+        @rtype: string
+        @return: String containing everything in given section of config file.
+        """
         return self.GetOutput("-s " + section)
 
     def GetElement(self, element, section = "", type = "String"):
@@ -166,7 +191,17 @@ class ConfigStream:
         return miscellaneous.to_num(str)
 
     def GetFloat(self, element, section = ""):
-        """Returns specified element value in given section, as float"""
+        """
+        Returns specified element value in given section, as float.
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: float
+        @return: The specified element value in given section, as float.
+        """
         if section == "":
             return float(self.GetOutput(element))
         else:
@@ -174,7 +209,17 @@ class ConfigStream:
                                         + element))
 
     def GetInt(self, element, section = ""):
-        """Returns specified element value in given section, as integer"""        
+        """
+        Returns specified element value in given section, as integer
+
+        @type element: string
+        @param element: The element (field) to be found in the configuration file.
+        @type section: string
+        @param section: The section in which the element should be found, if any.
+
+        @rtype: int
+        @return: The specified element value in given section, as integer.
+        """
         if section == "":
             return int(self.GetOutput(element))
         else:

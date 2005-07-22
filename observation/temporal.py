@@ -41,9 +41,14 @@ class Period:
 
 
 def get_period(dates):
-    """ Returns the period containing all dates in dates. dates
-    is sorted.
-    Returns Period.
+    """
+    Returns the period englobing all dates in dates. dates
+    must be sorted.
+
+    @type dates: sequence of datetime.datetime
+    @param dates: Sequence of dates for which to find the englobing period.
+    @rtype: Period
+    @return: Period englobing all dates in dates.
     """
     return Period(dates[0], dates[-1])
 
@@ -51,11 +56,30 @@ def get_period(dates):
 def get_periods(start, end, length=datetime.timedelta(1), \
                 interperiod = datetime.timedelta(0), \
                 fit_last = False):
-    """ Returns a list of periods of given length (except last period
+    """
+    Returns a list of periods of given length (except last period
     if fit_last is True), beginning at given start date, ending
     at given end date, and with an interperiod time between them.
     By default, interperiod is null and length of period is one day.
-    Returns list of Period."""
+
+    @type start: datetime.datetime
+    @param start: Start of desired periods sequence.
+    @type end: datetime.datetime
+    @param end: End of desired periods sequence.
+    @type length: datetime.timedelta
+    @param length: Length of one period (1 day by default).
+    @type interperiod: datetime.timedelta
+    @param interperiod: Interval of time between two consecutive
+    periods (0 by default).
+    @type fit_last: Boolean
+    @param fit_last: If last period does not match the end date and
+    fit_last is True, then the last period is shorter than the others.
+    Otherwise the last period is of given length and is inside the
+    start-end time interval (a time interval not covered with any period
+    of the result sequence is therefore present)
+    @rtype: sequence of Period
+    @return: A sequence of periods, covering the given start-end interval.
+    """
     periods = []
     if length != datetime.timedelta(0):
         in_period = False
@@ -78,8 +102,17 @@ def get_periods(start, end, length=datetime.timedelta(1), \
 
 
 def split_into_days(dates, data):
-    """Returns a list of arrays which store the values
-    for each day."""
+    """
+    Gets a sequence of arrays which store the values for each day.
+
+    @type dates: sequence of datetime.datetime
+    @param dates: Sequence of dates corresponding to the given data.
+    @type data: 1D numarray.array
+    @param data: Array of data to split into arrays for days.
+    @rtype: sequence of dates sequences, sequence of numarray.array
+    @return: A list of dates sequences, splitted by days, and the
+    corresponding sequence of numarray.array.
+    """
     if len(data) != len(dates):
         raise ValueError, "Data and dates are not of the same length."
 
@@ -229,9 +262,22 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
 
 
 def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
-    """ Creates masks for simulated data and observation data
+    """
+    Creates masks for simulated data and observation data
     corresponding to data of common dates.
-    Returns numarrays masks for simulated data and observation data.
+
+    @type sim_dates: sequence of datetime.datetime
+    @param sim_dates: Dates for simulation data.
+    @type simulated: 1D numarray.array
+    @param simulated: Simulation data, 1D array
+    @type obs_dates: sequence of datetime.datetime
+    @param obs_dates: Dates for observation data. 
+    @type obs: 1D numarray.array
+    @param obs: Observation data, 1D array.
+    @rtype: numarray.array, numarray.array
+    @return: Array masks for simulated and observation data. In each array,
+    null values indicates that the corresponding data value has no common date
+    in the other array, whereas a 1 value indicates the opposite.
     """
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
@@ -266,8 +312,27 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
                                mask_sim, mask_obs):
     """ Applies a mask returned by mask_for_common_days on
     simulated and observation data, and gets corresponding dates.
-    Returns numarray for simulated and observations, list of datetime
-    for dates.
+
+    @type sim_dates: sequence of datetime.datetime
+    @param sim_dates: Dates for simulation data.
+    @type simulated: 1D numarray.array
+    @param simulated: Simulation data, 1D array
+    @type obs_dates: sequence of datetime.datetime
+    @param obs_dates: Dates for observation data. 
+    @type obs: 1D numarray.array
+    @param obs: Observation data, 1D array.
+    @type mask_sim: 1D numarray.array
+    @param mask_sim: Mask array for simulation data corresponding to dates common
+    to simulation and observation. This array can be obtain thanks to
+    mask_for_common_days.
+    @type mask_obs: 1D numarray.array
+    @param mask_obs: Mask array for observation data corresponding to dates common
+    to simulation and observation. This array can be obtain thanks to
+    mask_for_common_days.
+
+    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @return: List of dates common to observation and simulation data, and
+    corresponding data arrays for simulation and observation.
     """
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
@@ -283,11 +348,23 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
 
 
 def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
-    """ Removes items from data and dates to keep only
+    """
+    Gets items from data and dates so as to keep only
     dates and corresponding data which are both in observations and
-    simulated.
-    Returns Arrays for simulated and observations, list of datetime
-    for dates."""
+    simulated data.
+
+    @type sim_dates: sequence of datetime.datetime
+    @param sim_dates: Dates for simulation data.
+    @type simulated: 1D numarray.array
+    @param simulated: Simulation data, 1D array.
+    @type obs_dates: sequence of datetime.datetime
+    @param obs_dates: Dates for observation data. 
+    @type obs: 1D numarray.array
+    @param obs: Observation data, 1D array.
+    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @return: List of dates common to observation and simulation data, and
+    corresponding data arrays for simulation and observation.
+    """
 
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
@@ -351,12 +428,24 @@ def masks_for_common_dates(dates0, dates1):
 
 
 def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
-    """ Removes items from data and dates to keep only
+    """
+    Gets items from data and dates so as to keep only
     daily data which are both in observations and
-    simulated. Dates lists and data have to be sorted (by increasing
+    simulated data. Dates lists and data have to be sorted (by increasing
     time).
-    Returns Arrays for simulated and observations, list of datetime
-    for dates."""
+
+    @type sim_dates: sequence of datetime.datetime
+    @param sim_dates: Dates for simulation data.
+    @type simulated: 1D numarray.array
+    @param simulated: Simulation data, 1D array.
+    @type obs_dates: sequence of datetime.datetime
+    @param obs_dates: Dates for observation data. 
+    @type obs: 1D numarray.array
+    @param obs: Observation data, 1D array.
+    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @return: List of dates common to observation and simulation data, and
+    corresponding data arrays for simulation and observation.
+    """
 
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
@@ -398,12 +487,24 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
 
 
 def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
-    """ Removes items from data and dates to keep only
+    """
+    Gets items from data and dates so as to keep only
     daily data which are both in observations and
     simulated.
-    Returns Arrays for simulated and observations, list of datetime
-    for dates."""
 
+    @type sim_dates: sequence of datetime.datetime
+    @param sim_dates: Dates for simulation data.
+    @type simulated: 1D numarray.array
+    @param simulated: Simulation data, 1D array.
+    @type obs_dates: sequence of datetime.datetime
+    @param obs_dates: Dates for observation data. 
+    @type obs: 1D numarray.array
+    @param obs: Observation data, 1D array.
+    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @return: List of dates common to observation and simulation data, and
+    corresponding data arrays for simulation and observation.
+    """
+    
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
         raise ValueError, "Incompatible dimensions!"
@@ -476,8 +577,15 @@ def restrict_to_period(dates, data, period_date, end_date = None):
 
 
 def midnight(date):
-    """Move to midnight in the current day. Midnight is assumed to be
-    the beginning of the day."""
+    """
+    Move to midnight in the current day. Midnight is assumed to be
+    the beginning of the day.
+
+    @type date: datetime.datetime
+    @param date: The date in the current day.
+    @rtype: datetime.datetime
+    @return: Midnight in the current day specified by date.
+    """
     return date - datetime.timedelta(0, 3600 * date.hour \
                                      + 60 * date.minute + date.second, \
                                      date.microsecond)
@@ -503,10 +611,19 @@ def timedelta2num(delta):
            
 
 def get_simulation_dates(t_min, delta_t, Nt):
-    """ Get a list of dates corresponding to the simulation data.
-    t_min can be a number of hours since date_ref, or a datetime
-    object. In this case, date_ref is ignored.
-    Returns list of datetime."""
+    """
+    Gets a list of dates corresponding to the simulation data.
+
+    @type t_min: datetime.datetime
+    @param t_min: t_min is the time reference for simulation data.
+    @type delta_t: int
+    @param delta: The time delta between two consecutive time values,
+    in hours.
+    @type Nt: int
+    @param Nt: Number of time values.
+    @rtype: sequence of datetime.datetime
+    @return: A sequence of time values corresponding to the simulation data.
+    """
     sim_dates = []
     for i in range(Nt):
         sim_dates.append(t_min + datetime.timedelta(hours = i * delta_t))

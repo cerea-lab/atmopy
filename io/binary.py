@@ -27,8 +27,15 @@ import datetime
 
 
 def get_filesize(filename):
-    """Gets a file's size.
-    Returns integer"""
+    """
+    Gets a file's size.
+
+    @type filename: string
+    @param filename: The name of the file.
+
+    @rtype: int
+    @return: File's size, 0 if no readable file found.
+    """
     fileSize = 0
     try:
         f = open(filename, "r", 0)
@@ -43,9 +50,19 @@ def get_filesize(filename):
 
 
 def get_timesteps(filename, recordLength):
-    """Gets number of timsteps in a file given its
+    """
+    Gets the number of timesteps in a file given its
     record length (in Bytes).
-    Returns integer."""
+
+    @type filename: string
+    @param filename: The name of the file.
+
+    @type recordLength: integer
+    @param recordLength: Size of one record.
+
+    @rtype: int
+    @return: Number of timesteps.
+    """
     ts = 0
     if (recordLength != 0):
         ts = get_filesize / recordLength
@@ -53,16 +70,44 @@ def get_timesteps(filename, recordLength):
 
 
 def load_binary(filename, shape, type = 'f4'):
-    """Loads a binary file into an array using specified shape.
-    Returns numarray."""
+    """
+    Loads a binary file into an array using specified shape.
+    Returns numarray.
+
+    @type filename: string or Python file object.
+    @param filename: The name of the file to load.
+
+    @type shape: tuple
+    @param shape: The shape of the array to load from file.
+
+    @type type: string
+    @param type: Type of data read. Default is 'f4'
+
+    @rtype: numarray.array
+    @return: New array filled with binary data from specified file.
+    """
     return numarray.fromfile(filename, type, shape)
 
 
 def load_binary_first_level(filename, shape, type = 'f4'):
-    """Loads a binary file into an array using specified 3D shape for
+    """
+    Loads a binary file into an array using specified 3D shape for
     X, Y and T dimensions (a time sequence of planes).
     If the given binary file is a 4D file (XYZT), the plane Z = 1 is
     extracted.
+    
+    @type filename: string or Python file object.
+    @param filename: The name of the file to load.
+
+    @type shape: tuple
+    @param shape: The 3D shape of the array to load from file.
+
+    @type type: string
+    @param type: Type of data read. Default is 'f4'
+
+    @rtype: numarray.array
+    @return: New 3D array os given shape filled with binary data
+    from specified file.
     """
     res = []
     zsize = get_filesize(filename) \
@@ -81,5 +126,16 @@ def load_binary_first_level(filename, shape, type = 'f4'):
 
 
 def save_binary(arrayToSave, filename, type = 'f4'):
-    """Saves a numarray in a binary file using specified type."""
+    """
+    Saves a numarray in a binary file using specified type.
+
+    @type arrayToSave: numarray.array
+    @param arrayToSave: The array to save.
+
+    @type filename: string or python file object
+    @param filename: The name of the file to save the array into.
+
+    @type type: string
+    @param type: Format of data to save the array in file.
+    """
     numarray.array(arrayToSave, type = type).tofile(filename)

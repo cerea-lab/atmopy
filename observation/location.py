@@ -178,8 +178,20 @@ class Station:
                 break
     
     def IsInsideBox(self, lat_min, lat_max, lon_min, lon_max):
-        """ Check wether the station is inside a given area.
-        Returns Boolean.
+        """
+        Checks wether the station is inside a given area.
+
+        @type lat_min: float
+        @param lat_min: Minimum latitude for area.
+        @type lat_max: float
+        @param lat_max: Maximum latitude for area.
+        @type lon_min: float
+        @param lon_min: Minimum longitude for area.
+        @type lon_max: float
+        @param lon_max: Maximum longitude for area.
+
+        @rtype: Boolean
+        @return: True if Station is in given area, False otherwise.
         """
         return self.latitude >= lat_min \
                and self.latitude <= lat_max \
@@ -187,10 +199,21 @@ class Station:
                and self.longitude <= lon_max
 
     def IsInsideGridBox(self, origins, deltas, lengths):
-        """ Check wether the station is located inside a given
-        area defined by (lat, lon) origins, deltas on and lengths of
+        """
+        Checks wether the station is located inside a given
+        area defined by (lat, lon) origins, deltas and lengths of
         cells.
-        Returns Boolean.
+
+        @type origins: (float, float) tuple
+        @param origins: (latitude, longitude) coordinates of the SW
+        origin for the area.
+        @type deltas: (float, float) tuple
+        @param deltas: (deltax, deltay) distance between two cells on latitude
+        and longitude.
+        @type lengths: (int, int) tupe
+        @param lengths: (sizex, sizey) number of cells on latitude and longitude.
+        @rtype: Boolean
+        @return: True if station is in given area, False otherwise.
         """
         return self.IsInsideBox(origins[0], origins[0] \
                                 + deltas[0] * float(lengths[0] - 1), \
@@ -199,33 +222,60 @@ class Station:
 
 
 def is_urban(station):
-    """ Returns true if the station is of urban type, false otherwise.
-    Returns Boolean."""
+    """
+    Tests if the station is of urban type.
+
+    @type station: Station
+    @param station: The station to test as urban or not.
+    @rtype: Boolean
+    @return: True if station is marked as urban, False otherwise.
+    """
     return station.type1 == "URB"
 
 
 def is_rural(station):
-    """ Returns true if the station is of rural type, false otherwise.
-    Returns Boolean."""
+    """
+    Tests if the station is of rural type.
+
+    @type station: Station
+    @param station: The station to test as rural or not.
+    @rtype: Boolean
+    @return: True if station is marked as rural, False otherwise.
+    """
     return station.type1 == "RUR"
 
 
 def has_valid_latlon(station):
-    """ Returns True if the station has not-null latitude and longitude,
-    False otherwise.
-    Returns Boolean."""
+    """
+    Tests if the given station has valid latitude and longitude (ie not null).
+    @type station: Station
+    @param station: The station to test.
+    @rtype: Boolean
+    @return: True if station has not null lagitude or longitude ,
+    False otherwise (both null).
+    """
     return station.latitude != 0.0 and station.longitude != 0.0
 
 
 def get_simulated_at_location(origin, delta, data, point):
-    """ Gets a time sequence of data at specified location
+    """
+    Gets a time sequence of data at specified location
     using bilinear interpolation.
-    Returns 1D array."""
-    # data: numarray, T Y X
-    # point: (latitude, longitude)
-    # origin: (t_min, y_min, x_min)
-    # delta: (delta_t, delta_y, delta_x)
-    
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type point: (float, float) tuple
+    @param point: (latitude, longitude) of the point where the time sequence
+    must be computed.
+    @rtype: 1D numarray.array
+    @return: Time sequence of data at given point.
+    """
     # Gets index of bottom right data point of specified point
     index_y = int((point[0] - origin[1]) / delta[1])
     index_x = int((point[1] - origin[2]) / delta[2])
@@ -246,9 +296,23 @@ def get_simulated_at_location(origin, delta, data, point):
 
 
 def get_simulated_at_locations(origins, deltas, data, point_list):
-    """ Gets a list of time sequences of data at specified
+    """
+    Gets a list of time sequences of data at specified
     locations using bilinear interpolation.
-    Returns list of 1D arrays.
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type point_list: sequence of (float, float) tuples
+    @param point_list: Sequence of (latitude, longitude) of the points where the time
+    sequences must be computed.
+    @rtype: sequence of 1D numarray.array
+    @return: Sequence of time sequences of data at given points.
     """
     ret = []
     for i in point_list:
@@ -257,8 +321,24 @@ def get_simulated_at_locations(origins, deltas, data, point_list):
 
 
 def get_simulated_at_location_closest(origins, deltas, data, point):
-    """ Gets a time sequence of data at specified location.
-    Returns 1D array."""
+    """
+    Gets a time sequence of data at specified location using closest
+    neighbour values.
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type point: (float, float) tuple
+    @param point: (latitude, longitude) of the point where the time sequence
+    must be computed.
+    @rtype: 1D numarray.array
+    @return: Time sequence of data at given point.
+    """
     # data : numarray, T Y X
     # point : ( latitude, longitude )
     # origins : ( Xmin, Ymin, Tmin )
@@ -278,9 +358,23 @@ def get_simulated_at_location_closest(origins, deltas, data, point):
 
 
 def get_simulated_at_locations_closest(origins, deltas, data, point_list):
-    """ Gets a a list of time sequences of data at specified
-    locations using closest point.
-    Returns list of 1D arrays.
+    """
+    Gets a list of time sequences of data at specified
+    locations using closest neighbours.
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type point_list: sequence of (float, float) tuples
+    @param point_list: Sequence of (latitude, longitude) of the points where the time
+    sequences must be computed.
+    @rtype: sequence of 1D numarray.array
+    @return: Sequence of time sequences of data at given points.
     """
     ret = numarray.array([])
     for i in point_list:
@@ -290,9 +384,23 @@ def get_simulated_at_locations_closest(origins, deltas, data, point_list):
 
 
 def get_simulated_at_station(origins, deltas, data, station):
-    """ Gets a time sequence of data at specified station
+    """
+    Gets a time sequence of data at specified station
     using bilinear interpolation.
-    Returns 1D array."""
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type station: Station
+    @param station: station where the time sequence must be computed.
+    @rtype: 1D numarray.array
+    @return: Time sequence of data at given point.
+    """
     # data: numarray, T Y X
     # point: (latitude, longitude)
     # origins: (t_min, y_min, x_min)
@@ -303,9 +411,23 @@ def get_simulated_at_station(origins, deltas, data, station):
 
 
 def get_simulated_at_stations(origins, deltas, data, stations):
-    """ Gets a a list of time sequences of data at specified
-    stations locations using bilinear interpolation.
-    Returns list of 1D arrays.
+    """
+    Gets a list of time sequences of data at specified
+    stations using bilinear interpolation.
+
+    @type origin: (*, float, float) tuple
+    @param origin: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type delta: (*, float, float) tuple
+    @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numarray.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type stations: sequence of (float, float) tuples
+    @param stations: Sequence of Station giving the stations where the time
+    sequences must be computed.
+    @rtype: sequence of 1D numarray.array
+    @return: Sequence of time sequences of data at given points.
     """
     ret = []
     for i in stations:
@@ -314,8 +436,18 @@ def get_simulated_at_stations(origins, deltas, data, stations):
 
 
 def get_station(station_list, station_name):
-    """ Gets a Station object given its name and a list of stations.
-    Returns Station."""
+    """
+    Gets a Station object given its name and a list of stations.
+
+    @type station_list: sequence of Station
+    @param station_list: Sequence of stations in which to search
+    the given station name.
+    @type station_name: string
+    @param station_name: Name of the station to search for in the list.
+    @rtype: Station
+    @return: The Station object corresponding to the station name in the given list
+    of stations.
+    """
     for i in station_list:
         if i.name == station_name:
             ret = i
@@ -324,10 +456,18 @@ def get_station(station_list, station_name):
 
 
 def filter_stations(filter_func, station_list):
-    """ Filters a station list in place according to the given filter.
+    """
+    Filters a station list in place according to the given filter.
     To have a filter not acting in place, use the filter python
     builtin.
-    Returns Station list.
+
+    @type filter_func: Python function
+    @param filter_func: The function used to filter the station list. This function must
+    take a Station object as argument, and must return a boolean.
+    @type station_list: sequence of Station
+    @param station_list: sequence of stations to filter.
+    @rtype: sequence of Station
+    @return: Sequence of stations filtered in place.
     """
     for i in range(len(station_list) - 1, -1, -1):
         if not filter_func(station_list[i]):
@@ -336,19 +476,40 @@ def filter_stations(filter_func, station_list):
 
 
 def map_stations(bool_func, station_list):
-    """ Returns a boolean list containing the return values of the
+    """
+    Returns a boolean list containing the return values of the
     given function applied on every station of the list.
     This just calls the map builtin function.
-    Returns boolean list.
+
+    @type bool_func: Python function
+    @param bool_func: The function mapped to every station of the station_list.
+    @type station_list: sequence of Station
+    @param station_list: sequence of stations to apply bool_func to.
+    @rtype: Boolean sequence
+    @return: A boolean sequence, results of bool_func applied to every
+    stations of the list.
     """
     return map(bool_func, station_list)
 
 
 def filter_stations_observations(filter_func, station_list, observations_list):
-    """ Filters a station list and corresponding observations list in
+    """
+    Filters a station list and corresponding observations list in
     place according to the given filter which takes a station and an
     observation array in argument.
-    Returns Station list and observation list (Array)."""
+
+    @type filter_func: Python function
+    @param filter_func: The function used to filter the station sequence
+    and observation sequence . This function must
+    take a Station object and the corresponding observations sequence as argument,
+    and must return a boolean.
+    @type station_list: sequence of Station
+    @param station_list: sequence of stations to filter.
+    @type observations_list: sequence of 1D numarray.array
+    @param observations_list: sequence of observations to filter.
+    @rtype: Station sequence, 1D numarray.array sequence
+    @return: Stations sequence and observations sequence, filtered in place.
+    """
     for i in range(len(station_list) - 1, -1, -1):
         if not filter_func(station_list[i], observations_list[i]):
             station_list.pop(i)
@@ -357,10 +518,23 @@ def filter_stations_observations(filter_func, station_list, observations_list):
 
 
 def map_stations_observations(map_func, station_list, observations_list):
-    """ Returns a list containing the return values of the
+    """
+    Returns a sequence containing the return values of the
     given function applied on every station and observation of the
-    lists.
-    Returns list.
+    sequences.
+
+    @type map_func: Python function
+    @param map_func: The function used to map the station sequence
+    and observation sequence. This function must
+    take a Station object and the corresponding observations array as argument,
+    and must return a boolean.
+    @type station_list: sequence of Station
+    @param station_list: sequence of stations to map.
+    @type observations_list: sequence of 1D numarray.array
+    @param observations_list: sequence of observations to filter.
+    @rtype: Boolean sequence
+    @return: A boolean sequence, results of map_func applied to every
+    stations and observations of the sequences.
     """
     ret = numarray.array([])
     for i in range(len(station_list)):

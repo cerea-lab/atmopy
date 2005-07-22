@@ -28,7 +28,27 @@ from pylab import *
 def segplot(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y, breaking the plot at any point where x[i] -
-    x[i-1] > maxdelta. kwargs are passed on to plot
+    x[i-1] > maxdelta. kwargs are passed on to plot.
+
+    @type x: sequence of float or int
+    @param x: Data to plot in absciss.
+    @type y: sequence of float or int
+    @param y: Data to plot in ordinates
+    @type fmt: string
+    @param ftm: Line style and color, combined in a single format string, as in
+'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @type maxdelta: float or int
+    @param maxdelta: Maximum delta between two consecutive x values for
+    which a line should be drawn.
+    @type kwargs: keyword argument list
+    @param **kwargs: The **kwargs can be used to set line properties
+    (any property that has a set_* method).  You can use this to set
+    a line label (for auto legends), linewidth, anitialising, marker
+    face color, etc. See Matplotlib 'plot' command documentation for
+    more details.
+
+    @rtype: matplotlib.lines
+    @return: The list of plotted lines.
     """
     x = asarray(x)
     y = asarray(y)
@@ -51,6 +71,26 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y with dates, breaking the plot at any point where
     x[i] - x[i-1] > maxdelta. kwargs are passed on to plot
+
+    @type x: sequence of dates represented as float days
+    @param x: Dates to plot in absciss.
+    @type y: sequence of float or int
+    @param y: y values at those dates.
+    @type fmt: string
+    @param ftm: Line style and color, combined in a single format string, as in
+'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @type maxdelta: float or int
+    @param maxdelta: Maximum delta between two consecutive x values for
+    which a line should be drawn.
+    @type kwargs: keyword argument list
+    @param **kwargs: The **kwargs can be used to set line properties
+    (any property that has a set_* method).  You can use this to set
+    a line label (for auto legends), linewidth, anitialising, marker
+    face color, etc. See Matplotlib 'plot' command documentation for
+    more details.
+
+    @rtype: matplotlib.lines
+    @return: The list of plotted lines.
     """
     x = asarray(x)
     y = asarray(y)
@@ -72,6 +112,10 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
 def set_style1(lines):
     """
     Sets parameters for specified lines, style #1.
+    Style is red, continuous line, 1.5 width, antialiased.
+
+    @type lines: matplotlib.lines
+    @param lines: Lines to set this predefined style to.
     """
     set(lines, \
         antialiased = True, \
@@ -91,6 +135,10 @@ def set_style1(lines):
 def set_style2(lines):
     """
     Sets parameters for specified lines, style #2.
+    Style is blue, discontinuous line, 1.0 width, antialiased.
+
+    @type lines: matplotlib.lines
+    @param lines: Lines to set this predefined style to.
     """
     set(lines, \
         antialiased = True, \
@@ -119,7 +167,14 @@ def set_style_fromconfig(config, section, lines):
     grid (True/False)
     date_format (date format, ie %d/%m/%y)
     labels_rotation (integer)
-    For more details, see matplotlib reference page.
+    For more details about style options, see matplotlib reference page.
+
+    @type config: ConfigStream
+    @param: The configstream containing the style definition.
+    @type section: string
+    @param section: Name of the section in ConfigStream in which the style is defined.
+    @type lines: matplotlib.lines
+    @param lines: Lines to apply the loaded style to.
     """
     antialiased_arg = config.GetElement("antialiased", section)
     color_arg = config.GetElement("color", section)
