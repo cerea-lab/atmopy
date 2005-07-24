@@ -576,6 +576,65 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     return dates[istart:(iend-1)], data[istart:(iend-1)]
 
 
+def remove_incomplete_days(dates, data):
+    """
+    Removes dates and data from the first and/or last days of the period if
+    there is missing data in these days. There is missing data in a day if
+    there is not as many timesteps as possible. The timestep is assumed to be
+    constant and is computed with the number of hours between the first two
+    timesteps.
+
+    @type dates: list of datetime
+    @param dates: The dates associated with data.
+    @type data: array
+    @param data: Array of data.
+
+    @rtype: (list of datetime, array)
+    @return: The dates and data with the first and/or last days removed.
+    """
+    if len(dates) < 2:
+        return dates, data
+
+    # Time step.
+    delta = dates[1] - dates[0]
+
+    # If the time step is greater than one day, there cannot be missing data.
+    if delta.days != 0:
+        return dates, data
+
+    # Timestep in hours.
+    delta = delta.seconds / 3600
+    # Number of steps per day.
+    steps = int(24. / float(delta))
+
+    # Number of steps in the first day.
+    i = 1
+    while i < len(dates) and dates[i].date() == dates[0].date():
+        i += 1
+    steps_first = i
+    # In case there is only one day...
+    if steps_first == len(dates):
+        if steps_first != steps:
+            return [], numarray.array([])
+        return dates, data
+    # First valid output-step.
+    ind_first = 0
+    if steps_first != steps:
+        ind_first = steps_first
+
+    # Number of steps in the last day.
+    i = len(dates) - 2
+    while i >= 0 and dates[i].date() == dates[-1].date():
+        i -= 1
+    steps_last = len(dates) - i - 1
+    # Last valid output-step.
+    ind_last = len(dates)
+    if steps_last != steps:
+        ind_last = -steps_last
+
+    return dates[ind_first:ind_last], data[ind_first:ind_last]
+    
+
 def midnight(date):
     """
     Move to midnight in the current day. Midnight is assumed to be
