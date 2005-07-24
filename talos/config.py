@@ -86,6 +86,7 @@ class Config:
             self.content = new_content[:]
         for x in self.content:
             self.SetAttribute(x)
+        self.SetMetaAttributes()
 
     def SetAttribute(self, x):
         """
@@ -112,5 +113,27 @@ class Config:
                 setattr(self, x[2], val)
             else:
                 setattr(self, x[0], val)
+        except:
+            pass
+
+    def SetMetaAttributes(self):
+        """
+        Adds meta-attributes based on the primary attributes. The
+        meta-attributes are: origin = (t_min, y_min, x_min); Delta = (Delta_t,
+        Delta_y, Delta_x); shape = (Nt, Ny, Nx).
+
+        @note: A meta-attribute is not created in case one of its primary
+        attribute is missing. But no exception is raised.
+        """
+        try:
+            self.origin = (self.t_min, self.y_min, self.x_min)
+        except:
+            pass
+        try:
+            self.Delta = (self.Delta_t, self.Delta_y, self.Delta_x)
+        except:
+            pass
+        try:
+            self.shape = (self.Nt, self.Ny, self.Nx)
         except:
             pass
