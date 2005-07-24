@@ -120,7 +120,7 @@ def load_binary_first_level(filename, shape, type = 'f4'):
         newshape.insert(1, zsize)
         # Use temp array to be sure that memory is freed
         temp = load_binary(filename, newshape, type)
-        res = temp[:,1,:,:]
+        res = temp[:,0,:,:]
         del temp
     return res
 
