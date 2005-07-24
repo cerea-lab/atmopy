@@ -24,6 +24,9 @@
 
 import numarray
 import datetime
+import sys, os
+sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+import observation
 
 
 def get_filesize(filename):
@@ -139,3 +142,40 @@ def save_binary(arrayToSave, filename, type = 'f4'):
     @param type: Format of data to save the array in file.
     """
     numarray.array(arrayToSave, type = type).tofile(filename)
+
+def filter_config(config, data):
+    """
+    Filters data based on the cells and the days to be discarded according to
+    a given configuration.
+
+    @type config: Config
+    @param config: The configuration associated with 'data'.
+    @type data: numarray.array
+    @param data: The data array to be filtered.
+
+    @rtype: (list of datetime, numarray.array)
+    @return: The dates and the output data. The output data array does not
+    contain:
+       0. the first and/or last days if they are missing data, except if
+       'config.discarded_days' is negative;
+       1. days to be removed at the beginning (if the first day is incomplete,
+       it is removed, but not counted as a discarded day)
+       'config.discarded_days'.
+       2. the cells to be removed in the domain edges according to
+       'config.discarded_cells'.
+    """
+    dates = observation.get_simulation_dates(config.t_min, config.Delta_t,
+                                             config.Nt)
+    if config.discarded_days >= 0:
+        dates, data = observation.remove_incomplete_days(dates, data)
+        dates = dates[config.discarded_days:]
+        data = data[config.discarded_days:]
+    if config.discarded_cells <= 0:
+        return dates, data
+    if len(data.shape) == 4:   # Z included.
+        return dates, \
+               data[:, :, config.discarded_cells:-config.discarded_cells,
+                    config.discarded_cells:-config.discarded_cells]
+    else:   # Only X and Y.
+        return dates, data[:, config.discarded_cells:-config.discarded_cells,
+                           config.discarded_cells:-config.discarded_cells]
