@@ -168,8 +168,8 @@ def filter_config(config, data):
                                              config.Nt)
     if config.discarded_days >= 0:
         dates, data = observation.remove_incomplete_days(dates, data)
-        dates = dates[config.discarded_days:]
-        data = data[config.discarded_days:]
+        dates, data \
+               = observation.remove_days(dates, data, config.discarded_days)
     if config.discarded_cells <= 0:
         return dates, data
     if len(data.shape) == 4:   # Z included.
