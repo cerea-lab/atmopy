@@ -633,6 +633,26 @@ def remove_incomplete_days(dates, data):
         ind_last = -steps_last
 
     return dates[ind_first:ind_last], data[ind_first:ind_last]
+
+
+def remove_days(dates, data, days):
+    """
+    Removes data in the first days.
+
+    @type dates: list of datetime
+    @param dates: The dates associated with 'data'.
+    @type data: array
+    @param data: The data to be filtered.
+    @type days: integer
+    @param days: The number of days to be removed at the beginning.
+
+    @rtype: (list of datetime, array)
+    @return: The dates and associated data without the first days.
+    """
+    i = 0
+    while i < len(dates) and (dates[i] - dates[0]).days < days:
+        i += 1
+    return dates[i:], data[i:]
     
 
 def midnight(date):
