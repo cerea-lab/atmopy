@@ -1,0 +1,82 @@
+# Copyright (C) 2005 CEREA
+#     Author: Vivien Mallet
+#
+# CEREA (http://www.enpc.fr/cerea/) is a joint laboratory of
+# ENPC (http://www.enpc.fr/) and EDF R&D (http://www.edf.fr/).
+#
+# This file is part of AtmoPy package.
+# AtmoPy is a tool for data processing and visualization in atmospheric
+# sciences.
+#
+# AtmoPy is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# AtmoPy is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License (file ``license'') for more details.
+#
+# For more information, please see the AtmoPy home page:
+#     http://www.enpc.fr/cerea/atmopy/
+
+
+import datetime
+import sys, os
+sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+import observation
+sys.path.pop(0)
+from numarray import *
+
+
+def collect(dates, stations, obs, sim, period, stations_out):
+    """
+    Collects data (observations and simulated concentrations) over a given
+    period and at a given set of stations.
+
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of list of dates at which the
+    data is defined. Both observations and simulated data (of every ensemble)
+    are assumed to be designed at the same dates.
+    @type stations: list of Station
+    @param stations: The stations at which the concentrations are given.
+    @type obs: list of 1D-array
+    @param obs: The list (indexed by stations) of observed concentrations.
+    @type sim: list of list of 1D-array
+    @param sim: The list (indexed by simulations) of lists (indexed by
+    stations) of simulated concentrations.
+    @type period: 2-tuple of datetime
+    @param period: The period where to select the concentrations (bounds
+    included).
+    @type stations_out: list of Station, or Station
+    @param stations_out: The station(s) at which the concentrations are
+    selected.
+
+    @rtype: (1D-array, 2D-array)
+    @return: The observed concentrations in a 1D-array and the corresponding
+    simulated concentrations in a 2D-array (simulations x concentrations).
+    """
+    if isinstance(stations_out, observation.Station):
+        stations_out = (stations_out, )   # Now it is a sequence.
+    
+    # Output arrays.
+    out_obs = []
+    out_sim = [[] for i in range(len(sim))]
+    
+    for istation in range(len(stations)):
+        if stations[istation] in stations_out:
+            # Searches for the first date in the considered period.
+            i = 0
+            while i < len(dates[istation]) and dates[istation][i] < period[0]:
+                i += 1
+            while i < len(dates[istation]) \
+                      and dates[istation][i] <= period[1]:
+                # Observations.
+                out_obs.append(obs[istation][i])
+                # Simulations.
+                for isim in range(len(sim)):
+                    out_sim[isim].append(sim[isim][istation][i])
+                i += 1
+
+    return array(out_obs), array(out_sim)
