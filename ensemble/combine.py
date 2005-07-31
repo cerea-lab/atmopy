@@ -83,7 +83,7 @@ def collect(dates, stations, obs, sim, period, stations_out):
     return array(out_obs), array(out_sim)
 
 
-def solve_least_squares(obs, sim):
+def w_least_squares(obs, sim):
     """
     Solves a least square problem in order to optimally combine
     simulations. It minimizes (sim^T alpha - obs)^2.
@@ -95,7 +95,7 @@ def solve_least_squares(obs, sim):
     concentrations).
 
     @rtype: 1D-array
-    @return: The coefficients 'alpha' of the linear combination.
+    @return: The coefficients (or weights) 'alpha' of the linear combination.
     """
     return matrixmultiply(scipy.linalg.inv(matrixmultiply(sim,
                                                           transpose(sim))),
