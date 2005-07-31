@@ -28,6 +28,7 @@ sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import observation
 sys.path.pop(0)
 from numarray import *
+import scipy.linalg
 
 
 def collect(dates, stations, obs, sim, period, stations_out):
@@ -80,3 +81,22 @@ def collect(dates, stations, obs, sim, period, stations_out):
                 i += 1
 
     return array(out_obs), array(out_sim)
+
+
+def solve_least_squares(obs, sim):
+    """
+    Solves a least square problem in order to optimally combine
+    simulations. It minimizes (sim^T alpha - obs)^2.
+
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+
+    @rtype: 1D-array
+    @return: The coefficients 'alpha' of the linear combination.
+    """
+    return matrixmultiply(scipy.linalg.inv(matrixmultiply(sim,
+                                                          transpose(sim))),
+                          matrixmultiply(sim, obs))
