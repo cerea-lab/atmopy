@@ -100,3 +100,66 @@ def w_least_squares(obs, sim):
     return matrixmultiply(scipy.linalg.inv(matrixmultiply(sim,
                                                           transpose(sim))),
                           matrixmultiply(sim, obs))
+
+
+def m_least_squares(obs, sim):
+    """
+    Returns the optimal model in the least-square sense. It minimizes (sim^T
+    alpha - obs)^2 and returns 'sim^T alpha'.
+
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+    
+    @rtype: 1D-array
+    @return: The linear combination 'sim^T alpha'.
+    """
+    return matrixmultiply(transpose(sim), w_least_squares(obs, sim))
+
+
+def w_unbiased_least_squares(obs, sim):
+    """
+    Solves a least square problem in order to optimally combine
+    simulations with the constraint to be unbiased. It minimizes ((sim^T -
+    <sim^T>) alpha + <obs> - obs)^2.
+
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+
+    @rtype: 1D-array
+    @return: The coefficients (or weights) 'alpha' of the linear unbiased
+    combination.
+
+    @note: This is also the superensemble coefficients.
+    """
+    obs = obs - obs.mean()
+    sim = array([x - x.mean() for x in sim])
+    return w_least_squares(obs, sim)
+
+
+def m_unbiased_least_squares(obs, sim):
+    """
+    Returns the optimal model in the least-square sense with the constraint to
+    be unbiased. It minimizes ((sim^T - <sim^T>) alpha + <obs> - obs)^2.
+
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+
+    @rtype: 1D-array
+    @return: The linear combination '(sim^T - <sim^T>) alpha + <obs>'.
+
+    @note: This is also the superensemble combination.
+    """
+    obs_mean = obs.mean()
+    obs = obs - obs_mean
+    sim = array([x - x.mean() for x in sim])
+    return matrixmultiply(transpose(sim), w_least_squares(obs, sim)) \
+           + obs_mean
