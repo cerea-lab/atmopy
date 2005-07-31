@@ -29,6 +29,7 @@ import observation
 sys.path.pop(0)
 from numarray import *
 import scipy.linalg
+import scipy.stats.stats
 
 
 def collect(dates, stations, sim, obs, period, stations_out):
@@ -163,3 +164,31 @@ def m_unbiased_least_squares(sim, obs):
     sim = array([x - x.mean() for x in sim])
     return matrixmultiply(transpose(sim), w_least_squares(sim, obs)) \
            + obs_mean
+
+
+def m_mean(sim):
+    """
+    Returns the mean of an ensemble.
+
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+
+    @rtype: 1D-array
+    @return: The mean of the simulations.
+    """
+    return scipy.stats.stats.mean(sim, 0)
+
+
+def m_median(sim):
+    """
+    Returns the median of an ensemble.
+
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+
+    @rtype: 1D-array
+    @return: The median of the simulations.
+    """
+    return scipy.stats.stats.median(sim, 0)
