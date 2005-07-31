@@ -43,9 +43,10 @@ def collect(dates, stations, sim, obs, period, stations_out):
     are assumed to be designed at the same dates.
     @type stations: list of Station
     @param stations: The stations at which the concentrations are given.
-    @type sim: list of list of 1D-array
+    @type sim: list of list of 1D-array, or list of 1D-array.
     @param sim: The list (indexed by simulations) of lists (indexed by
-    stations) of simulated concentrations.
+    stations) of simulated concentrations, or the list (indexed by stations)
+    of simulated concentrations.
     @type obs: list of 1D-array
     @param obs: The list (indexed by stations) of observed concentrations.
     @type period: 2-tuple of datetime, or datetime
@@ -64,6 +65,8 @@ def collect(dates, stations, sim, obs, period, stations_out):
         period = (period, period)
     if isinstance(stations_out, observation.Station):
         stations_out = (stations_out, )   # Now it is a sequence.
+    if isinstance(sim[0], NumArray):
+        sim = (sim, )
     
     # Output arrays.
     out_obs = []
@@ -180,7 +183,7 @@ def m_mean(sim):
     @rtype: 1D-array
     @return: The mean of the simulations.
     """
-    return scipy.stats.stats.mean(sim, 0)
+    return array(scipy.stats.stats.mean(sim, 0))
 
 
 def m_median(sim):
@@ -194,4 +197,4 @@ def m_median(sim):
     @rtype: 1D-array
     @return: The median of the simulations.
     """
-    return scipy.stats.stats.median(sim, 0)
+    return array(scipy.stats.stats.median(sim, 0))
