@@ -48,9 +48,9 @@ def collect(dates, stations, sim, obs, period, stations_out):
     stations) of simulated concentrations.
     @type obs: list of 1D-array
     @param obs: The list (indexed by stations) of observed concentrations.
-    @type period: 2-tuple of datetime
+    @type period: 2-tuple of datetime, or datetime
     @param period: The period where to select the concentrations (bounds
-    included).
+    included). A single date may be provided.
     @type stations_out: list of Station, or Station
     @param stations_out: The station(s) at which the concentrations are
     selected.
@@ -59,6 +59,9 @@ def collect(dates, stations, sim, obs, period, stations_out):
     @return: The observed concentrations in a 1D-array and the corresponding
     simulated concentrations in a 2D-array (simulations x concentrations).
     """
+    if isinstance(period, datetime.datetime) \
+           or isinstance(period, datetime.date):
+        period = (period, period)
     if isinstance(stations_out, observation.Station):
         stations_out = (stations_out, )   # Now it is a sequence.
     
