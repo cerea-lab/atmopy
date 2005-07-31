@@ -99,29 +99,33 @@ def remove_file(files):
             os.remove(file)
 
 
-def apply_module_functions(module, args):
+def apply_module_functions(module, args, functions = ("all", )):
     """
-    Applies all functions (with the right number of arguments) from a given
-    module to the arguments of 'args'.
+    Applies functions (with the right number of arguments) from a given module
+    to the arguments of 'args'.
 
     @type module: module
     @param module: The module in which the functions are found.
     @type args: list
     @param args: The arguments to call the functions with.
+    @type function: list of string
+    @param function: The list of functions to be applied. It 'functions'
+    contains 'all', then all functions are applied (only once).
 
     @rtype: (list of string, list)
-    @return: The list of the applied functions and the list of the results.
+    @return: The list of applied functions and the list of results.
     """
     Nargs = len(args)
-    functions = []
-    results = []
     import inspect, types
-    for f in [x for x in dir(module) \
-              if inspect.isfunction(getattr(module, x))]:
+    if "all" in functions:
+        functions = [x for x in dir(module)
+                     if inspect.isfunction(getattr(module, x))]
+    out_functions, results = [], []
+    for f in functions:
         if len(inspect.getargspec(getattr(module, f))[0]) == Nargs:
-            functions.append(f)
+            out_functions.append(f)
             results.append(getattr(module, f)(*args))
-    return functions, results
+    return out_functions, results
 
 
 class PrintInPlace:
