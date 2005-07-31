@@ -109,7 +109,7 @@ def apply_module_functions(module, args, functions = ("all", )):
     @type args: list
     @param args: The arguments to call the functions with.
     @type function: list of string
-    @param function: The list of functions to be applied. It 'functions'
+    @param function: The list of functions to be applied. If 'functions'
     contains 'all', then all functions are applied (only once).
 
     @rtype: (list of string, list)
@@ -126,6 +126,33 @@ def apply_module_functions(module, args, functions = ("all", )):
             out_functions.append(f)
             results.append(getattr(module, f)(*args))
     return out_functions, results
+
+
+def get_module_functions(module, Nargs, functions = ("all", )):
+    """
+    Lists the functions, with 'Nargs' arguments, from a given module.
+
+    @type module: module
+    @param module: The module in which the functions are found.
+    @type args: integer
+    @param args: The number of arguments.
+    @type function: list of string
+    @param function: The list of functions to be possibly listed. If
+    'functions' contains 'all', then all functions are listed (only once).
+
+    @rtype: (list of string, list)
+    @return: The list of functions that could be called with 'Nargs'
+    arguments.
+    """
+    import inspect, types
+    if "all" in functions:
+        functions = [x for x in dir(module)
+                     if inspect.isfunction(getattr(module, x))]
+    out_functions = []
+    for f in functions:
+        if len(inspect.getargspec(getattr(module, f))[0]) == Nargs:
+            out_functions.append(f)
+    return out_functions
 
 
 class PrintInPlace:
