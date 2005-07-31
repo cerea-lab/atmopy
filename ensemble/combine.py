@@ -31,7 +31,7 @@ from numarray import *
 import scipy.linalg
 
 
-def collect(dates, stations, obs, sim, period, stations_out):
+def collect(dates, stations, sim, obs, period, stations_out):
     """
     Collects data (observations and simulated concentrations) over a given
     period and at a given set of stations.
@@ -42,11 +42,11 @@ def collect(dates, stations, obs, sim, period, stations_out):
     are assumed to be designed at the same dates.
     @type stations: list of Station
     @param stations: The stations at which the concentrations are given.
-    @type obs: list of 1D-array
-    @param obs: The list (indexed by stations) of observed concentrations.
     @type sim: list of list of 1D-array
     @param sim: The list (indexed by simulations) of lists (indexed by
     stations) of simulated concentrations.
+    @type obs: list of 1D-array
+    @param obs: The list (indexed by stations) of observed concentrations.
     @type period: 2-tuple of datetime
     @param period: The period where to select the concentrations (bounds
     included).
@@ -80,19 +80,19 @@ def collect(dates, stations, obs, sim, period, stations_out):
                     out_sim[isim].append(sim[isim][istation][i])
                 i += 1
 
-    return array(out_obs), array(out_sim)
+    return array(out_sim), array(out_obs)
 
 
-def w_least_squares(obs, sim):
+def w_least_squares(sim, obs):
     """
     Solves a least square problem in order to optimally combine
     simulations. It minimizes (sim^T alpha - obs)^2.
 
-    @type obs: 1D-array
-    @param obs: Observations (or any other target).
     @type sim: 2D-array
     @param sim: The simulated concentrations are a 2D-array, (simulation x
     concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
 
     @rtype: 1D-array
     @return: The coefficients (or weights) 'alpha' of the linear combination.
@@ -102,34 +102,34 @@ def w_least_squares(obs, sim):
                           matrixmultiply(sim, obs))
 
 
-def m_least_squares(obs, sim):
+def m_least_squares(sim, obs):
     """
     Returns the optimal model in the least-square sense. It minimizes (sim^T
     alpha - obs)^2 and returns 'sim^T alpha'.
 
-    @type obs: 1D-array
-    @param obs: Observations (or any other target).
     @type sim: 2D-array
     @param sim: The simulated concentrations are a 2D-array, (simulation x
     concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
     
     @rtype: 1D-array
     @return: The linear combination 'sim^T alpha'.
     """
-    return matrixmultiply(transpose(sim), w_least_squares(obs, sim))
+    return matrixmultiply(transpose(sim), w_least_squares(sim, obs))
 
 
-def w_unbiased_least_squares(obs, sim):
+def w_unbiased_least_squares(sim, obs):
     """
     Solves a least square problem in order to optimally combine
     simulations with the constraint to be unbiased. It minimizes ((sim^T -
     <sim^T>) alpha + <obs> - obs)^2.
 
-    @type obs: 1D-array
-    @param obs: Observations (or any other target).
     @type sim: 2D-array
     @param sim: The simulated concentrations are a 2D-array, (simulation x
     concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
 
     @rtype: 1D-array
     @return: The coefficients (or weights) 'alpha' of the linear unbiased
@@ -139,19 +139,19 @@ def w_unbiased_least_squares(obs, sim):
     """
     obs = obs - obs.mean()
     sim = array([x - x.mean() for x in sim])
-    return w_least_squares(obs, sim)
+    return w_least_squares(sim, obs)
 
 
-def m_unbiased_least_squares(obs, sim):
+def m_unbiased_least_squares(sim, obs):
     """
     Returns the optimal model in the least-square sense with the constraint to
     be unbiased. It minimizes ((sim^T - <sim^T>) alpha + <obs> - obs)^2.
 
-    @type obs: 1D-array
-    @param obs: Observations (or any other target).
     @type sim: 2D-array
     @param sim: The simulated concentrations are a 2D-array, (simulation x
     concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
 
     @rtype: 1D-array
     @return: The linear combination '(sim^T - <sim^T>) alpha + <obs>'.
@@ -161,5 +161,5 @@ def m_unbiased_least_squares(obs, sim):
     obs_mean = obs.mean()
     obs = obs - obs_mean
     sim = array([x - x.mean() for x in sim])
-    return matrixmultiply(transpose(sim), w_least_squares(obs, sim)) \
+    return matrixmultiply(transpose(sim), w_least_squares(sim, obs)) \
            + obs_mean
