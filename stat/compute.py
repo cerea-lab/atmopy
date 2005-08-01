@@ -113,7 +113,7 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
 
 def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
-                      period = None, stations_out = None):
+                      period = None, stations_out = None, ratio = 0.):
     """
     Computes a set of statistical measures for one simulation or for a set of
     simulations, and for all time step.
@@ -141,10 +141,15 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
+    @type ratio: float
+    @param ratio: Minimum ratio of the number of available observations (per
+    step) and the number of stations. A step at which the actual ratio is
+    below this minimum is discarded.
 
-    @rtype: dict of array
+    @rtype: (list of datetime, dict of array)
     @return: The statistical measures are a key of the output dictionary. Each
-    value is a (simulation x step)-array.
+    value is a (simulation x step)-array. The dates associated with the steps
+    with enough measurements are returned in a list.
     """
 
     ### Initializations.
@@ -163,6 +168,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
         period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))
 
     Nsim = len(sim)
+    Nstations = len(sim[0])
 
     # Functions to be applied.
     functions = talos.get_module_functions(measure, 2, measures)
@@ -176,6 +182,8 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
         range_delta = datetime.timedelta(0, 3600)
         Nsteps = (end_date - start_date).seconds / 3600 + 1
     else:
+        start_date = observation.midnight(start_date)
+        end_date = observation.midnight(end_date)
         range_delta = datetime.timedelta(1)
         Nsteps = (end_date - start_date).days + 1
     range_dates = [start_date + x * range_delta for x in range(Nsteps)]
@@ -183,8 +191,13 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     stat_step = dict(zip(functions,
                          [[[] for i in range(Nsim)] for f in functions]))
 
+    output_dates = []
     for date in range_dates:
         s, o = ensemble.collect(sim, obs, dates, stations, date, stations_out)
+        # Enough observations?
+        if float(len(o)) / float(Nstations) < ratio:
+            continue
+        output_dates.append(date)
         for i in range(Nsim):
             for f, r in zip(functions,
                             talos.apply_module_functions(measure, (s[i], o),
@@ -195,7 +208,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     for k in stat_step.keys():
         stat_step[k] = array(stat_step[k])
 
-    return stat_step
+    return output_dates, stat_step
 
 
 def compute_stat_station(sim, obs, measures, dates = None, stations = None,
