@@ -98,7 +98,7 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
     stat_all = dict(zip(functions, [[] for f in functions]))
 
-    s, o = ensemble.collect(dates, stations, sim, obs, period, stations_out)
+    s, o = ensemble.collect(sim, obs, dates, stations, period, stations_out)
     for i in range(Nsim):
         for f, r in zip(functions,
                         talos.apply_module_functions(measure, (s[i], o),
@@ -156,25 +156,11 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
         raise Exception, "Concentrations must be hourly concentrations" \
               + " or peaks."
     
-    if isinstance(dates, datetime.datetime) \
-           or isinstance(dates, datetime.date):
-        dates = (dates, )
     if isinstance(period, datetime.datetime) \
            or isinstance(period, datetime.date):
         period = (period, period)
     elif period == None:
-        period = [min([x[0] for x in dates]), max([x[-1] for x in dates])]
-        if obs_type == "peak":
-            # In order to include the peak: period[1].hour == 0 otherwise.
-            period[1] += datetime.timedelta(0, 23 * 3600)
-
-    if isinstance(stations, observation.Station):
-        stations = (stations, )
-    elif stations == None:
-        stations = range(len(obs))
-        stations_out = None
-    if stations_out == None:
-        stations_out = stations
+        period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))
 
     Nsim = len(sim)
 
@@ -183,38 +169,22 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
 
     ### Statistics.
 
-    # First step and step length.
+    # List of all steps.
+    start_date = period[0]
+    end_date = period[1]
     if obs_type == "hourly":
         range_delta = datetime.timedelta(0, 3600)
-        start_date = period[0]
-    else:
-        range_delta = datetime.timedelta(1)
-        if period[0].hour <= 11:   # Fine: peaks are found after 11.
-            start_date = period[0]
-        else:   # Starts the following day.
-            start_date = period[0] + datetime.timedelta(1)
-        observation.midnight(start_date)
-
-    # Last step and number of steps.
-    if obs_type == "hourly":
-        end_date = period[1]
         Nsteps = (end_date - start_date).seconds / 3600 + 1
     else:
-        if period[1].hour >= 17:   # Fine: peaks are found before 17.
-            end_date = period[1]
-        else:   # Starts the previous day.
-            end_date = period[1] - datetime.timedelta(1)
-        observation.midnight(end_date)
+        range_delta = datetime.timedelta(1)
         Nsteps = (end_date - start_date).days + 1
-
-    # List of all steps.
     range_dates = [start_date + x * range_delta for x in range(Nsteps)]
 
     stat_step = dict(zip(functions,
                          [[[] for i in range(Nsim)] for f in functions]))
 
     for date in range_dates:
-        s, o = ensemble.collect(dates, stations, sim, obs, date, stations_out)
+        s, o = ensemble.collect(sim, obs, dates, stations, date, stations_out)
         for i in range(Nsim):
             for f, r in zip(functions,
                             talos.apply_module_functions(measure, (s[i], o),
@@ -267,18 +237,6 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     if isinstance(sim[0], NumArray):
         sim = (sim, )
 
-    if isinstance(dates, datetime.datetime) \
-           or isinstance(dates, datetime.date):
-        dates = (dates, )
-    elif dates == None:
-        dates = [range(len(x)) for x in obs]
-        period = None
-    if isinstance(period, datetime.datetime) \
-           or isinstance(period, datetime.date):
-        period = (period, period)
-    elif period == None:
-        period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))
-
     if isinstance(stations, observation.Station):
         stations = (stations, )
     elif stations == None:
@@ -292,14 +250,14 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     # Functions to be applied.
     functions = talos.get_module_functions(measure, 2, measures)
 
-    ### Per station.
+    ### Statistics.
 
     stat_station = dict(zip(functions,
                             [[[] for i in range(Nsim)] for f in functions]))
 
     for station in stations_out:
         s, o = \
-           ensemble.collect(dates, stations, sim, obs, period, station)
+           ensemble.collect(sim, obs, dates, stations, period, station)
         for i in range(Nsim):
             for f, r in zip(functions,
                             talos.apply_module_functions(measure, (s[i], o),
