@@ -32,23 +32,24 @@ import scipy.linalg
 import scipy.stats.stats
 
 
-def collect(dates, stations, sim, obs, period, stations_out):
+def collect(sim, obs, dates = None, stations = None, period = None,
+            stations_out = None):
     """
     Collects data (observations and simulated concentrations) over a given
     period and at a given set of stations.
 
-    @type dates: list of list of datetime
-    @param dates: The list (indexed by stations) of list of dates at which the
-    data is defined. Both observations and simulated data (of every ensemble)
-    are assumed to be designed at the same dates.
-    @type stations: list of Station
-    @param stations: The stations at which the concentrations are given.
     @type sim: list of list of 1D-array, or list of 1D-array.
     @param sim: The list (indexed by simulations) of lists (indexed by
     stations) of simulated concentrations, or the list (indexed by stations)
     of simulated concentrations.
     @type obs: list of 1D-array
     @param obs: The list (indexed by stations) of observed concentrations.
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of list of dates at which the
+    data is defined. Both observations and simulated data (of every ensemble)
+    are assumed to be designed at the same dates.
+    @type stations: list of Station
+    @param stations: The stations at which the concentrations are given.
     @type period: 2-tuple of datetime, or datetime
     @param period: The period where to select the concentrations (bounds
     included). A single date may be provided.
@@ -60,16 +61,34 @@ def collect(dates, stations, sim, obs, period, stations_out):
     @return: The observed concentrations in a 1D-array and the corresponding
     simulated concentrations in a 2D-array (simulations x concentrations).
     """
-    if isinstance(period, datetime.datetime) \
-           or isinstance(period, datetime.date):
-        period = (period, period)
-    if isinstance(stations_out, observation.Station) \
-           or isinstance(stations_out, str) \
-           or isinstance(stations_out, int):
-        stations_out = (stations_out, )   # Now it is a sequence.
+    # Initializations.
     if isinstance(sim[0], NumArray):
         sim = (sim, )
-    
+
+    if dates == None:
+        dates = [range(len(x)) for x in obs]
+        period = None
+    elif isinstance(dates, datetime.datetime) \
+             or isinstance(dates, datetime.date):
+        dates = (dates, )
+    if period == None:
+        period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))
+    elif isinstance(period, datetime.datetime) \
+             or isinstance(period, datetime.date):
+        period = (period, period)
+
+    if stations == None:
+        stations = range(len(obs))
+        stations_out = None
+    elif isinstance(stations, observation.Station):
+        stations = (stations, )
+    if stations_out == None:
+        stations_out = stations
+    elif isinstance(stations_out, observation.Station) \
+           or isinstance(stations_out, str) \
+           or isinstance(stations_out, int):
+        stations_out = (stations_out, )
+
     # Output arrays.
     out_obs = []
     out_sim = [[] for i in range(len(sim))]
