@@ -63,7 +63,9 @@ def collect(dates, stations, sim, obs, period, stations_out):
     if isinstance(period, datetime.datetime) \
            or isinstance(period, datetime.date):
         period = (period, period)
-    if isinstance(stations_out, observation.Station):
+    if isinstance(stations_out, observation.Station) \
+           or isinstance(stations_out, str) \
+           or isinstance(stations_out, int):
         stations_out = (stations_out, )   # Now it is a sequence.
     if isinstance(sim[0], NumArray):
         sim = (sim, )
