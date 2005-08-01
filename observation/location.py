@@ -157,6 +157,7 @@ class Station:
         self.country = values[4]
         self.type = values[5]
         self.name = values[7]
+        self.real_name = self.name
         self.network = values[8]
         
     def FromFile(self, filename, station_name, type):
