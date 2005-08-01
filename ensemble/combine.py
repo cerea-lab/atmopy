@@ -219,3 +219,62 @@ def m_median(sim):
     @return: The median of the simulations.
     """
     return array(scipy.stats.stats.median(sim, 0))
+
+
+def combine_step(dates, sim, coeff_dates, coeff_step):
+    """
+    Combines the simulated concentrations based on coefficients provided for
+    each date. The same coefficients are applied to all stations.
+
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of the list of dates at which
+    the concentrations are defined.
+    @type sim: list of list of 1D-array, or list of 1D-array.
+    @param sim: The list (indexed by simulations) of lists (indexed by
+    stations) of simulated concentrations, or the list (indexed by stations)
+    of simulated concentrations.
+    @type coeff_dates: list of datetime
+    @param coeff_dates: The dates at which the coefficients in 'coeff_step'
+    are defined.
+    @type coeff_step: list of array
+    @param coeff_step: The coefficients of the linear combination. They are
+    stored in a list (indexed by dates) of 1D-arrays of coefficients. The
+    first combination is associated with the earliest date of 'dates' and the
+    last combination is associated with the latest date of 'dates'.
+
+    @rtype: list of array
+    @return: The ensemble based on the linear combination. It is returned in a
+    list (indexed by stations) of 1D-arrays (that contain the time series).
+    """
+    # Initializations.
+    if isinstance(sim[0], NumArray):
+        sim = (sim, )
+
+    if isinstance(dates[0], datetime.datetime) \
+           or isinstance(dates[0], datetime.date):
+        dates = (dates, )
+
+    Nsim = len(sim)
+    Nstations = len(sim[0])
+    Ndates = len(coeff_dates)
+
+    output_sim = [[] for i in range(Nstations)]
+
+    # Combining.
+    for istation in range(Nstations):
+        icoeff = 0
+        for idate in range(len(dates[istation])):
+            # Corresponding index in 'coeff_dates' and 'coeff_step'.
+            while icoeff < Ndates \
+                      and coeff_dates[icoeff] != dates[istation][idate]:
+                icoeff += 1
+            if icoeff == Ndates:
+                raise Exception, "Unable to find coefficients for date " \
+                      + str(dates[istation][idate]) + "."
+            # Concentrations of the ensemble.
+            data = array([sim[i][istation][idate] for i in range(Nsim)])
+            # Combination.
+            output_sim[istation].append((coeff_step[icoeff] * data).sum())
+        output_sim[istation] = array(output_sim[istation])
+
+    return output_sim
