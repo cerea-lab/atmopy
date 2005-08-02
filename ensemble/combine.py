@@ -68,8 +68,8 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     if dates == None:
         dates = [range(len(x)) for x in obs]
         period = None
-    elif isinstance(dates, datetime.datetime) \
-             or isinstance(dates, datetime.date):
+    elif isinstance(dates[0], datetime.datetime) \
+             or isinstance(dates[0], datetime.date):
         dates = (dates, )
     if period == None:
         period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))

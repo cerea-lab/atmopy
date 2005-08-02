@@ -69,8 +69,8 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
     if isinstance(sim[0], NumArray):
         sim = (sim, )
 
-    if isinstance(dates, datetime.datetime) \
-           or isinstance(dates, datetime.date):
+    if isinstance(dates[0], datetime.datetime) \
+           or isinstance(dates[0], datetime.date):
         dates = (dates, )
     elif dates == None:
         dates = [range(len(x)) for x in obs]
