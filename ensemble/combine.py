@@ -278,3 +278,88 @@ def combine_step(dates, sim, coeff_dates, coeff_step):
         output_sim[istation] = array(output_sim[istation])
 
     return output_sim
+
+
+def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
+    """
+    Combines the simulated concentrations based on coefficients provided for
+    each date. The same coefficients are applied to all stations so that the
+    overall field is unbiased. At each step, the formula is: output_s =
+    <obs>_s + sum_i coeff_step_i (sim_{s, i} - <sim_i>_s), where s stands for
+    station and i is the simulation index.
+
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of the list of dates at which
+    the concentrations are defined.
+    @type sim: list of list of 1D-array, or list of 1D-array.
+    @param sim: The list (indexed by simulations) of lists (indexed by
+    stations) of simulated concentrations, or the list (indexed by stations)
+    of simulated concentrations.
+    @type obs: list of 1D-array
+    @param obs: The list (indexed by stations) of observed concentrations.
+    @type coeff_dates: list of datetime
+    @param coeff_dates: The dates at which the coefficients in 'coeff_step'
+    are defined.
+    @type coeff_step: list of array
+    @param coeff_step: The coefficients of the linear combination. They are
+    stored in a list (indexed by dates) of 1D-arrays of coefficients. The
+    first combination is associated with the earliest date of 'dates' and the
+    last combination is associated with the latest date of 'dates'.
+
+    @rtype: list of array
+    @return: The ensemble based on the linear combination. It is returned in a
+    list (indexed by stations) of 1D-arrays (that contain the time series).
+    """
+    # Initializations.
+    if isinstance(sim[0], NumArray):
+        sim = (sim, )
+
+    if isinstance(dates[0], datetime.datetime) \
+           or isinstance(dates[0], datetime.date):
+        dates = (dates, )
+
+    Nsim = len(sim)
+    Nstations = len(sim[0])
+    Ndates = len(coeff_dates)
+
+    # Initializes the ensemble.
+    output_sim = [[] for i in range(Nstations)]
+
+    # Time indices for all stations.
+    date_index = [0 for i in range(Nstations)]
+
+    # Combining.
+    for idate in range(len(coeff_dates)):
+        # New indices.
+        for i in range(Nstations):
+            while date_index[i] < len(dates[i]) \
+                      and dates[i][date_index[i]] < coeff_dates[idate]:
+                date_index[i] += 1
+        # Computing the means for the current step.
+        obs_mean = []
+        sim_mean = [[] for j in range(Nstations)]
+        for i in range(Nstations):
+            if date_index[i] < len(dates[i]) \
+                   and dates[i][date_index[i]] == coeff_dates[idate]:
+                obs_mean.append(obs[i][date_index[i]])
+                for j in range(Nsim):
+                    sim_mean[j].append(sim[j][i][date_index[i]])
+        if len(obs_mean) == 0:   # Empty step.
+            continue
+        obs_mean = array(obs_mean).mean()
+        for j in range(Nsim):
+            sim_mean[j] = array(sim_mean[j]).mean()
+        # Computes the ensemble value.
+        for i in range(Nstations):
+            if date_index[i] < len(dates[i]) \
+                   and dates[i][date_index[i]] == coeff_dates[idate]:
+                ens = obs_mean
+                for j in range(Nsim):
+                    ens += coeff_step[idate][j] * (sim[j][i][date_index[i]]
+                                                   - sim_mean[j])
+                output_sim[i].append(ens)
+
+    for istation in range(Nstations):
+        output_sim[istation] = array(output_sim[istation])
+
+    return output_sim
