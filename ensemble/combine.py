@@ -80,7 +80,9 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     if stations == None:
         stations = range(len(obs))
         stations_out = None
-    elif isinstance(stations, observation.Station):
+    elif isinstance(stations, observation.Station) \
+             or isinstance(stations, str) \
+             or isinstance(stations, int):
         stations = (stations, )
     if stations_out == None:
         stations_out = stations
