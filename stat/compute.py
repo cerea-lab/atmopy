@@ -107,7 +107,10 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
     # To arrays.
     for k in stat_all.keys():
-        stat_all[k] = array(stat_all[k])
+        if Nsim == 1:
+            stat_all[k] = stat_all[k][0]
+        else:
+            stat_all[k] = array(stat_all[k])
 
     return stat_all
 
@@ -206,7 +209,10 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
 
     # To arrays.
     for k in stat_step.keys():
-        stat_step[k] = array(stat_step[k])
+        if Nsim == 1:
+            stat_step[k] = array(stat_step[k][0])
+        else:
+            stat_step[k] = array(stat_step[k])
 
     return output_dates, stat_step
 
@@ -279,6 +285,9 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
 
     # To arrays.
     for k in stat_station.keys():
-        stat_station[k] = array(stat_station[k])
+        if Nsim == 1:
+            stat_station[k] = array(stat_station[k][0])
+        else:
+            stat_station[k] = array(stat_station[k])
 
     return stat_station
