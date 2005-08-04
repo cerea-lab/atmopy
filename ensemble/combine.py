@@ -339,7 +339,7 @@ def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
                 date_index[i] += 1
         # Computing the means for the current step.
         obs_mean = []
-        sim_mean = [[] for j in range(Nstations)]
+        sim_mean = [[] for j in range(Nsim)]
         for i in range(Nstations):
             if date_index[i] < len(dates[i]) \
                    and dates[i][date_index[i]] == coeff_dates[idate]:
