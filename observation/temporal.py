@@ -187,7 +187,7 @@ def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
         tmp_dates = []
         tmp_sim = []
         tmp_obs = []
-        while j < len(dates[i]) and dates[i][j].hour < hour_range[1]:
+        while j < len(dates[i]) and dates[i][j].hour <= hour_range[1]:
             tmp_dates.append(dates[i][j])
             tmp_sim.append(sim[i][j])
             tmp_obs.append(obs[i][j])
