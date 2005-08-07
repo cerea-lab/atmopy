@@ -191,14 +191,17 @@ class PrintInPlace:
         printed on screen.
         """
         self.length = 0
-    def Clear(self):
+    def Clear(self, elt = ''):
         """
         Reinits the instance: no character is removed next time something is
         printed on screen, and the characters that were supposed to be
-        overwritten are cleared.
+        overwritten are cleared. A last string may be printed.
+
+        @type elt: string
+        @param elt: The last string to be printed.
         """
         sys.stdout.write(chr(8) * self.length + ' ' * self.length \
-                         + chr(8) * self.length)
+                         + chr(8) * self.length + str(elt))
         sys.stdout.flush()
         self.length = 0
 
