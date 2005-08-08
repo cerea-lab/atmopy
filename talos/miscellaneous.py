@@ -134,8 +134,8 @@ def get_module_functions(module, Nargs, functions = ("all", )):
 
     @type module: module
     @param module: The module in which the functions are found.
-    @type args: integer
-    @param args: The number of arguments.
+    @type args: integer, or list of integer
+    @param args: The possible number(s) of arguments.
     @type function: list of string
     @param function: The list of functions to be possibly listed. If
     'functions' contains 'all', then all functions are listed (only once).
@@ -145,12 +145,14 @@ def get_module_functions(module, Nargs, functions = ("all", )):
     arguments.
     """
     import inspect, types
+    if isinstance(Nargs, int):
+        Nargs = (Nargs, )
     if "all" in functions:
         functions = [x for x in dir(module)
                      if inspect.isfunction(getattr(module, x))]
     out_functions = []
     for f in functions:
-        if len(inspect.getargspec(getattr(module, f))[0]) == Nargs:
+        if len(inspect.getargspec(getattr(module, f))[0]) in Nargs:
             out_functions.append(f)
     return out_functions
 
