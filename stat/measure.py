@@ -88,7 +88,7 @@ def mage(data1, data2):
 ##   \textrm{MANGE} = \frac{1}{n}
 ##   \sum_{i=1}^{n} \frac{|x_i - y_i|}{y_i}
 ## \end{displaymath}
-def mange(data1, data2):
+def mange(data1, data2, cutoff = 0.):
     """
     Computes Mean Absolute Normalized Gross Error (MANGE) between
     data1 and data2 1D arrays.
@@ -100,12 +100,18 @@ def mange(data1, data2):
     @type data2: numarray.array
     @param data2: 1D array to compute error.
 
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
     @rtype: float
     @return: Mean Absolute Normalized Gross Error (MANGE) between data1
     and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
     return (abs(data1 - data2) / data2).mean()
 
 
@@ -193,7 +199,7 @@ def determination(data1, data2):
 ## \begin{displaymath}
 ##   \textrm{MNBE} = \frac{1}{n} \sum_{i=1}^{n} \frac{x_i - y_i}{y_i}
 ## \end{displaymath}
-def mnbe(data1, data2):
+def mnbe(data1, data2, cutoff = 0.):
     """ Computes Mean Normalized Bias Error (MNBE) between
     data1 and data2 1D arrays.
 
@@ -203,11 +209,17 @@ def mnbe(data1, data2):
     @type data2: numarray.array
     @param data2: 1D array to compute MNBE.
 
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
     @rtype: float
     @return: Mean Normalized Bias Error between data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
     return ((data1 - data2) / data2).mean()
 
 
@@ -218,7 +230,7 @@ def mnbe(data1, data2):
 ##   \textrm{MFBE} = \frac{2}{n} \sum_{i=1}^{n} \frac{x_i - y_i}{x_i +
 ##     y_i}
 ## \end{displaymath}
-def mfbe(data1, data2):
+def mfbe(data1, data2, cutoff = 0.):
     """ Computes Mean Fractionalized Bias Error (MFBE) between
     data1 and data2 1D arrays.
 
@@ -228,11 +240,17 @@ def mfbe(data1, data2):
     @type data2: numarray.array
     @param data2: 1D array to compute MFBE.
 
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
     @rtype: float
     @return: Mean Fractionalized Bias Error between data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
     return 2 * ((data1 - data2) / (data1 + data2)).mean()
 
 
@@ -243,7 +261,7 @@ def mfbe(data1, data2):
 ##   \textrm{FE} = \frac{2}{n} \sum_{i=1}^{n} \arrowvert
 ##   \frac{x_i - y_i}{x_i + y_i} \arrowvert
 ## \end{displaymath}
-def fge(data1, data2):
+def fge(data1, data2, cutoff = 0.):
     """ Computes Fractional Gross Error (FE) between
     data1 and data2 1D arrays.
 
@@ -253,11 +271,17 @@ def fge(data1, data2):
     @type data2: numarray.array
     @param data2: 1D array to compute FE.
 
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
     @rtype: float
     @return: Fractional Gross Error between data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
     return 2 * (abs((data1 - data2) / (data1 + data2))).mean()
 
 
@@ -268,7 +292,7 @@ def fge(data1, data2):
 ##   \textrm{BF} =
 ##   \frac{1}{n} \sum_{i=1}^{n} \frac{x_i}{y_i}
 ## \end{displaymath}
-def bf(data1, data2):
+def bf(data1, data2, cutoff = 0.):
     """ Computes Bias Factor (BF) of data1 and data2.
 
     @type data1: numarray.array
@@ -277,11 +301,17 @@ def bf(data1, data2):
     @type data2: numarray.array
     @param data2: 1D array to compute BF.
 
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
     @rtype: float
     @return: Bias Factor of data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
     return (data1/data2).mean()
 
 
