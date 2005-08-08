@@ -31,7 +31,7 @@ sys.path.pop(0)
 
 
 def compute_stat(sim, obs, measures, dates = None, stations = None, period =
-                 None, stations_out = None):
+                 None, stations_out = None, cutoff = None):
     """
     Computes a set of statistical measures for one simulation or for a set of
     simulations.
@@ -58,6 +58,10 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
+    @type cutoff: float, or None
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'obs' and corresponding 'sim' values. Nothing is filtered if
+    'cutoff' is set to None.
 
     @rtype: dict of array
     @return: The statistical measures are a key of the output dictionary. Each
@@ -65,6 +69,8 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
     """
 
     ### Initializations.
+
+    import inspect
 
     if isinstance(sim[0], NumArray):
         sim = (sim, )
@@ -92,7 +98,10 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
     Nsim = len(sim)
 
     # Functions to be applied.
-    functions = talos.get_module_functions(measure, 2, measures)
+    if cutoff == None:
+        functions = talos.get_module_functions(measure, (1, 2), measures)
+    else:
+        functions = talos.get_module_functions(measure, (1, 2, 3), measures)
 
     ### Statistics.
 
@@ -100,10 +109,14 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
     s, o = ensemble.collect(sim, obs, dates, stations, period, stations_out)
     for i in range(Nsim):
-        for f, r in zip(functions,
-                        talos.apply_module_functions(measure, (s[i], o),
-                                                     measures)[1]):
-            stat_all[f].append(r)
+        for f in functions:
+            Nargs = len(inspect.getargspec(getattr(measure, f))[0])
+            if Nargs == 1:
+                stat_all[f].append(getattr(measure, f)(o))
+            elif Nargs == 2:
+                stat_all[f].append(getattr(measure, f)(s[i], o))
+            else:   # Nargs == 3
+                stat_all[f].append(getattr(measure, f)(s[i], o, cutoff))
 
     # To arrays.
     for k in stat_all.keys():
@@ -116,7 +129,8 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
 
 def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
-                      period = None, stations_out = None, ratio = 0.):
+                      period = None, stations_out = None, ratio = 0.,
+                      cutoff = None):
     """
     Computes a set of statistical measures for one simulation or for a set of
     simulations, and for all time step.
@@ -148,6 +162,10 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     @param ratio: Minimum ratio of the number of available observations (per
     step) and the number of stations. A step at which the actual ratio is
     below this minimum is discarded.
+    @type cutoff: float, or None
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'obs' and corresponding 'sim' values. Nothing is filtered if
+    'cutoff' is set to None.
 
     @rtype: (list of datetime, dict of array)
     @return: The statistical measures are a key of the output dictionary. Each
@@ -156,6 +174,8 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     """
 
     ### Initializations.
+
+    import inspect
 
     if isinstance(sim[0], NumArray):
         sim = (sim, )
@@ -174,7 +194,10 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     Nstations = len(sim[0])
 
     # Functions to be applied.
-    functions = talos.get_module_functions(measure, 2, measures)
+    if cutoff == None:
+        functions = talos.get_module_functions(measure, (1, 2), measures)
+    else:
+        functions = talos.get_module_functions(measure, (1, 2, 3), measures)
 
     ### Statistics.
 
@@ -202,10 +225,15 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
             continue
         output_dates.append(date)
         for i in range(Nsim):
-            for f, r in zip(functions,
-                            talos.apply_module_functions(measure, (s[i], o),
-                                                         measures)[1]):
-                stat_step[f][i].append(r)
+            for f in functions:
+                Nargs = len(inspect.getargspec(getattr(measure, f))[0])
+                if Nargs == 1:
+                    stat_step[f][i].append(getattr(measure, f)(o))
+                elif Nargs == 2:
+                    stat_step[f][i].append(getattr(measure, f)(s[i], o))
+                else:   # Nargs == 3
+                    stat_step[f][i].append(getattr(measure, f)(s[i], o,
+                                                               cutoff))
 
     # To arrays.
     for k in stat_step.keys():
@@ -218,7 +246,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
 
 
 def compute_stat_station(sim, obs, measures, dates = None, stations = None,
-                         period = None, stations_out = None):
+                         period = None, stations_out = None, cutoff = None):
     """
     Computes a set of statistical measures for one simulation or for a set of
     simulations, at given stations.
@@ -245,6 +273,10 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
+    @type cutoff: float, or None
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'obs' and corresponding 'sim' values. Nothing is filtered if
+    'cutoff' is set to None.
 
     @rtype: dict of array
     @return: The statistical measures are a key of the output dictionary. Each
@@ -252,6 +284,8 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     """
 
     ### Initializations.
+
+    import inspect
 
     if isinstance(sim[0], NumArray):
         sim = (sim, )
@@ -267,7 +301,10 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     Nsim = len(sim)
 
     # Functions to be applied.
-    functions = talos.get_module_functions(measure, 2, measures)
+    if cutoff == None:
+        functions = talos.get_module_functions(measure, (1, 2), measures)
+    else:
+        functions = talos.get_module_functions(measure, (1, 2, 3), measures)
 
     ### Statistics.
 
@@ -278,10 +315,15 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
         s, o = \
            ensemble.collect(sim, obs, dates, stations, period, station)
         for i in range(Nsim):
-            for f, r in zip(functions,
-                            talos.apply_module_functions(measure, (s[i], o),
-                                                         measures)[1]):
-                stat_station[f][i].append(r)
+            for f in functions:
+                Nargs = len(inspect.getargspec(getattr(measure, f))[0])
+                if Nargs == 1:
+                    stat_station[f][i].append(getattr(measure, f)(o))
+                elif Nargs == 2:
+                    stat_station[f][i].append(getattr(measure, f)(s[i], o))
+                else:   # Nargs == 3
+                    stat_station[f][i].append(getattr(measure, f)(s[i], o,
+                                                                  cutoff))
 
     # To arrays.
     for k in stat_station.keys():
