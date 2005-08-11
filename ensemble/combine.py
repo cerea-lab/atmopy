@@ -372,7 +372,7 @@ def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
     return output_sim
 
 
-def combine_station_step(dates, sim, coeff_dates, coeff_station_step):
+def combine_station_step(dates, sim, coeff_dates, coeff):
     """
     Combines the simulated concentrations based on coefficients provided for
     each date and for each station.
@@ -387,12 +387,12 @@ def combine_station_step(dates, sim, coeff_dates, coeff_station_step):
     @type coeff_dates: list of list of datetime
     @param coeff_dates: The dates at which the coefficients in
     'coeff_station_step' are defined.
-    @type coeff_step: list of list of array
-    @param coeff_step: The coefficients of the linear combination. They are
-    stored in a list (indexed by stations) of list (indexed by dates) of
-    1D-arrays of coefficients. The first combination is associated with the
-    earliest date of 'dates' and the last combination is associated with the
-    latest date of 'dates'.
+    @type coeff: list of list of array
+    @param coeff: The coefficients of the linear combination. They are stored
+    in a list (indexed by stations) of list (indexed by dates) of 1D-arrays of
+    coefficients. The first combination is associated with the earliest date
+    of 'dates' and the last combination is associated with the latest date of
+    'dates'.
 
     @rtype: list of array
     @return: The ensemble based on the linear combination. It is returned in a
@@ -427,7 +427,7 @@ def combine_station_step(dates, sim, coeff_dates, coeff_station_step):
             # Concentrations of the ensemble.
             data = array([sim[i][istation][idate] for i in range(Nsim)])
             # Combination.
-            output_sim[istation].append((coeff_step[istation][icoeff]
+            output_sim[istation].append((coeff[istation][icoeff]
                                          * data).sum())
         output_sim[istation] = array(output_sim[istation])
 
