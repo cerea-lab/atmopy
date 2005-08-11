@@ -50,9 +50,10 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     are assumed to be designed at the same dates.
     @type stations: list of Station
     @param stations: The stations at which the concentrations are given.
-    @type period: 2-tuple of datetime, or datetime
+    @type period: 2-tuple of datetime, or datetime, or list of datetime
     @param period: The period where to select the concentrations (bounds
-    included). A single date may be provided.
+    included). A single date may be provided. If a list is provided, the
+    period is defined by the first and the last dates in the list.
     @type stations_out: list of Station, or Station
     @param stations_out: The station(s) at which the concentrations are
     selected.
@@ -78,6 +79,8 @@ def collect(sim, obs, dates = None, stations = None, period = None,
         period = (period, period)
     elif len(period) == 1:
         period = (period[0], period[0])
+    elif len(period) > 2:
+        period = (period[0], period[-1])
 
     if stations == None:
         stations = range(len(obs))
