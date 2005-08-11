@@ -576,6 +576,47 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     return dates[istart:(iend-1)], data[istart:(iend-1)]
 
 
+def mask_for_series(dates, delta, Ndates):
+    """
+    Removes the dates if there are not enough preceding contiguous dates.
+
+    @Type Dates: list of datetime
+    @param dates: Input dates.
+    @type delta: timedelta
+    @param delta: The minimum time-delta between two dates.
+    @type Ndates: integer
+    @param Ndates: The number of contiguous dates that must be available
+    before a given date so that the latter should be kept. Two dates are
+    contiguous if the time delta between them is less than (or equal to)
+    'delta'.
+
+    @rtype: array
+    @return: An array of Boolean filled with True for all dates to be kept.
+    """
+
+    mask = numarray.ones(len(dates), "Bool")
+
+    if len(dates) == 0:
+        return mask
+
+    # Number of preceding contiguous dates.
+    count = 0
+    # Previous date.
+    prev_date = dates[0]
+    if Ndates > 0:   # The first date is then removed.
+        mask[0] = False
+    for idate in range(1, len(dates)):
+        if dates[idate] - prev_date <= delta:
+            count += 1
+        else:
+            count = 0
+        if count < Ndates:
+            mask[idate] = False
+        prev_date = dates[idate]
+
+    return mask
+    
+
 def remove_incomplete_days(dates, data):
     """
     Removes dates and data from the first and/or last days of the period if
