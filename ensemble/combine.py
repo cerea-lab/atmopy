@@ -118,6 +118,93 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     return array(out_sim), array(out_obs)
 
 
+def collect_dates(sim, obs, dates = None, stations = None, period = None,
+                  stations_out = None):
+    """
+    Collects data (observations and simulated concentrations) over a given
+    period (defined by a list of dates) and at a given set of stations.
+
+    @type sim: list of list of 1D-array, or list of 1D-array.
+    @param sim: The list (indexed by simulations) of lists (indexed by
+    stations) of simulated concentrations, or the list (indexed by stations)
+    of simulated concentrations.
+    @type obs: list of 1D-array
+    @param obs: The list (indexed by stations) of observed concentrations.
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of list of dates at which the
+    data is defined. Both observations and simulated data (of every ensemble)
+    are assumed to be designed at the same dates.
+    @type stations: list of Station
+    @param stations: The stations at which the concentrations are given.
+    @type period: 2-tuple of datetime, or datetime, or list of datetime
+    @param period: The period where to select the concentrations (bounds
+    included). A single date may be provided.
+    @type stations_out: list of Station, or Station
+    @param stations_out: The station(s) at which the concentrations are
+    selected.
+
+    @rtype: (1D-array, 2D-array)
+    @return: The observed concentrations in a 1D-array and the corresponding
+    simulated concentrations in a 2D-array (simulations x concentrations).
+    """
+    # Initializations.
+    if isinstance(sim[0], NumArray):
+        sim = (sim, )
+
+    if dates == None:
+        dates = [range(len(x)) for x in obs]
+        period = None
+    elif isinstance(dates[0], datetime.datetime) \
+             or isinstance(dates[0], datetime.date):
+        dates = (dates, )
+    if period == None:
+        period = (min([x[0] for x in dates]), max([x[-1] for x in dates]))
+    elif isinstance(period, datetime.datetime) \
+             or isinstance(period, datetime.date):
+        period = (period, period)
+    elif len(period) == 1:
+        period = (period[0], period[0])
+
+    if stations == None:
+        stations = range(len(obs))
+        stations_out = None
+    elif isinstance(stations, observation.Station) \
+             or isinstance(stations, str) \
+             or isinstance(stations, int):
+        stations = (stations, )
+    if stations_out == None:
+        stations_out = stations
+    elif isinstance(stations_out, observation.Station) \
+           or isinstance(stations_out, str) \
+           or isinstance(stations_out, int):
+        stations_out = (stations_out, )
+
+    # Output arrays.
+    out_obs = []
+    out_sim = [[] for i in range(len(sim))]
+    
+    for istation in range(len(stations)):
+        if stations[istation] in stations_out:
+            j = 0
+            i = 0
+            while j < len(period):
+                while i < len(dates[istation]) \
+                          and dates[istation][i] < period[j]:
+                    i += 1
+                if i == len(dates[istation]):
+                    break
+                if dates[istation][i] == period[j]:
+                    # Observations.
+                    out_obs.append(obs[istation][i])
+                    # Simulations.
+                    for isim in range(len(sim)):
+                        out_sim[isim].append(sim[isim][istation][i])
+                    i += 1
+                j += 1
+
+    return array(out_sim), array(out_obs)
+
+
 def w_least_squares(sim, obs):
     """
     Solves a least square problem in order to optimally combine
