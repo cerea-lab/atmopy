@@ -249,7 +249,7 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
             continue
         tmp_dates = []
         tmp_conc = []
-        while j < len(dates[i]) and dates[i][j].hour < hour_range[1]:
+        while j < len(dates[i]) and dates[i][j].hour <= hour_range[1]:
             tmp_dates.append(dates[i][j])
             tmp_conc.append(conc[i][j])
             j += 1
