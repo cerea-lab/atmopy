@@ -81,18 +81,18 @@ def mage(data1, data2):
     return (abs(data1 - data2)).mean()
 
 
-## Mean Absolute Normalized Gross Error (MANGE)
+## Mean Normalized Gross Error (MNGE)
 ## MNGE, MNE in [1], MANGE in [2]
 ##
 ## \begin{displaymath}
-##   \textrm{MANGE} = \frac{1}{n}
+##   \textrm{MNGE} = \frac{1}{n}
 ##   \sum_{i=1}^{n} \frac{|x_i - y_i|}{y_i}
 ## \end{displaymath}
-def mange(data1, data2, cutoff = 0.):
+def mnge(data1, data2, cutoff = 0.):
     """
-    Computes Mean Absolute Normalized Gross Error (MANGE) between
-    data1 and data2 1D arrays.
-    MNGE = 1 / n * NME
+    Computes Mean Normalized Gross Error (MNGE) between data1 and data2 1D
+    arrays.
+    ( MNGE = 1 / n * NME )
     
     @type data1: numarray.array
     @param data1: 1D array to compute error.
@@ -105,8 +105,7 @@ def mange(data1, data2, cutoff = 0.):
     filters 'data2' and corresponding 'data1' values.
 
     @rtype: float
-    @return: Mean Absolute Normalized Gross Error (MANGE) between data1
-    and data2.
+    @return: Mean Normalized Gross Error (MNGE) between data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
