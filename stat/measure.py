@@ -314,14 +314,14 @@ def bf(data1, data2, cutoff = 0.):
     return (data1/data2).mean()
 
 
-## Peak Estimation Accuracy
+## Unpaired Peak Accuracy (or Peak Estimation Accuracy)
 ## 
 ## \begin{displaymath}
 ##   \textrm{UPA} =
 ##   \frac{x_{max} - y_{max}}{y_{max}}
 ## \end{displaymath}
-def pea(data1, data2):
-    """ Computes Peak Estimation Accuracy between data1 and data2.
+def upa(data1, data2):
+    """ Computes Unpaired Peak Accuracy between data1 and data2.
     This can be paired or unpaired peak prediction accuracy
     depending on simulated data used (interpolated or not..)
 
@@ -332,7 +332,7 @@ def pea(data1, data2):
     @param data2: 1D array to compute Peak Estimation Accuracy.
 
     @rtype: float
-    @return: Peak Estimation Accuracy of data1 and data2.
+    @return: Unpaired Peak Accuracy of data1 and data2.
     """
     max2 = data2.max()
     return (data1.max() - max2) / max2
