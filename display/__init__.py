@@ -27,4 +27,5 @@ Display is a module from AtmoPy package that is in charge of visualization.
 """
 
 
-from matplotlib import *
+from matplotlib_ext import *
+from basemap_ext import *
