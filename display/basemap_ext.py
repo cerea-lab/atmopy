@@ -34,12 +34,14 @@ import talos
 sys.path.pop(0)
 
 
-def getm(config):
+def getm(config, cbar = True):
     """
     Generates a map with Basemap.
 
     @type config: Config or string
     @param config: The configuration or the configuration file.
+    @type cbar: Boolean
+    @param cbar: True is there is a colormap, false otherwise.
 
     @rtype: Basemap
     @return: The map.
@@ -55,9 +57,13 @@ def getm(config):
                 config.Delta_y * float(config.Ny), resolution = 'l')
     xsize = rcParams['figure.figsize'][0]
     fig = figure(figsize = (xsize, m.aspect * xsize))
-    ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
-    axes(ax)
-    axes([0.875, 0.1, 0.05, 0.75])
+    if cbar:
+        ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
+        axes(ax)
+        axes([0.875, 0.1, 0.05, 0.75])
+    else:
+        ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+        axes(ax)
     return m
 
 
@@ -77,12 +83,14 @@ def getd(config):
                     shape = [config.Nt, config.Nz, config.Ny, config.Nx])
 
 
-def getdm(config):
+def getdm(config, cbar = True):
     """
     Reads data from a binary file and generates the corresponding map.
 
     @type config: Config or string
     @param config: The configuration or the configuration file.
+    @type cbar: Boolean
+    @param cbar: True is there is a colormap, false otherwise.
 
     @rtype: (numarray.array, Basemap)
     @return: The data and the map.
