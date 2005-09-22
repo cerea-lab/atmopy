@@ -196,3 +196,33 @@ def set_style_fromconfig(config, section, lines):
     labels = axes().get_xticklabels()
     set(labels, rotation=labels_rotation)
     draw()
+
+
+def dstep(config, date):
+    """
+    Returns the time index of a given date in a data array defined by a
+    configuration file.
+
+    @type config: Config or string
+    @param config: The configuration or the configuration file.
+    @type date: string or datetime.datetime
+
+    @rtype: int
+    @return: The time index corresponding to 'date' in the data array defined
+    in 'config'.
+    """
+    if isinstance(config, str):
+        config = talos.Config(config)
+    if isinstance(date, (float, int)):
+        date = str(int(date))
+    if isinstance(date, str):
+        date = config.stream.StringToDateTime(date)
+
+    delta = date - config.t_min
+
+    if date >= config.t_min:
+        return int((delta.days * 24 * 3600 + delta.seconds
+                    + config.Delta_t * 1800) / (config.Delta_t * 3600))
+    else:
+        return int((delta.days * 24 * 3600 + delta.seconds
+                    - config.Delta_t * 1800) / (config.Delta_t * 3600))
