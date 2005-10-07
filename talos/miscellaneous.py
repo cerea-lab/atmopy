@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-import sys
+import sys, fileinput
 
 
 def is_num(str):
@@ -77,6 +77,25 @@ def to_num(str):
         return float(str)
     else:
         raise Exception, "\"" + str + "\" is not a number."
+
+
+def replace_string(string_in, string_out, files):
+    """
+    Replaces a string 'string_in' with 'string_out' in one or more files.
+
+    @type string_in: string
+    @param string_in: string to be replaced.
+    @type string_out: string
+    @param string_out: new string.
+    @type files: string or list of strings
+    @param files: files in which 'string_in' is replaced.
+    """
+    if isinstance(files, str):
+        files = [files]
+    elif not isinstance(files, list):
+        raise ValueError
+    for line in fileinput.input(files, 1):
+        print line.replace(string_in, string_out),
 
 
 def remove_file(files):
