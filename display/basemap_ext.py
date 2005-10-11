@@ -67,19 +67,24 @@ def getm(config, cbar = True):
     return m
 
 
-def getd(config):
+def getd(config, filename = ""):
     """
     Reads data from a binary file.
 
     @type config: Config or string
     @param config: The configuration or the configuration file.
+    @type filename: string
+    @param filename: The file to be loaded. If filename is empty, then the
+    file from 'config' is loaded.
 
     @rtype: numarray.array
     @return: The data.
     """
     if isinstance(config, str):
         config = talos.Config(config)
-    return fromfile(config.input_file, type = 'f',
+    if filename == "":
+        filename = config.input_file
+    return fromfile(filename, type = 'f',
                     shape = [config.Nt, config.Nz, config.Ny, config.Nx])
 
 
