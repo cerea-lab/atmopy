@@ -127,8 +127,8 @@ def apply_module_functions(module, args, functions = ("all", )):
     @param module: The module in which the functions are found.
     @type args: list
     @param args: The arguments to call the functions with.
-    @type function: list of string
-    @param function: The list of functions to be applied. If 'functions'
+    @type functions: list of string
+    @param functions: The list of functions to be applied. If 'functions'
     contains 'all', then all functions are applied (only once).
 
     @rtype: (list of string, list)
@@ -153,10 +153,10 @@ def get_module_functions(module, Nargs, functions = ("all", )):
 
     @type module: module
     @param module: The module in which the functions are found.
-    @type args: integer, or list of integer
-    @param args: The possible number(s) of arguments.
-    @type function: list of string
-    @param function: The list of functions to be possibly listed. If
+    @type Nargs: integer, or list of integer
+    @param Nargs: The possible number(s) of arguments.
+    @type functions: list of string
+    @param functions: The list of functions to be possibly listed. If
     'functions' contains 'all', then all functions are listed (only once).
 
     @rtype: (list of string, list)

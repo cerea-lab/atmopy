@@ -75,8 +75,8 @@ def cdf(data):
     """
     Returns the cumulative density function.
 
-    @type Nbins: integer
-    @param Nbins: The number of bins.
+    @type data: numarray.array
+    @param data: Data whose cumulative density function is sought.
 
     @rtype: (1D numarray.array, 1D numarray.array)
     @return: The data values and the cumulative densities associated with
