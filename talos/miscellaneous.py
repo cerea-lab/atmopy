@@ -94,6 +94,8 @@ def replace_string(string_in, string_out, files):
         files = [files]
     elif not isinstance(files, list):
         raise ValueError
+    if len(files) == 0:
+        return
     for line in fileinput.input(files, 1):
         print line.replace(string_in, string_out),
 
