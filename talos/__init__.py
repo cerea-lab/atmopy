@@ -25,7 +25,7 @@
 """
 Talos is a module from AtmoPy package that manages configuration files. It is
 based on the C++ library (also called) Talos (part of Polyphemus:
-http://www.enpc.fr/cera/polyphemus/).
+http://www.enpc.fr/cerea/polyphemus/).
 """
 
 
