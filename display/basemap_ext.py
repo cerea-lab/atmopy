@@ -89,7 +89,7 @@ def getd(config, filename = ""):
                     shape = [config.Nt, config.Nz, config.Ny, config.Nx])
 
 
-def getdm(config, cbar = True):
+def getmd(config, cbar = True):
     """
     Reads data from a binary file and generates the corresponding map.
 
@@ -98,10 +98,10 @@ def getdm(config, cbar = True):
     @type cbar: Boolean
     @param cbar: True is there is a colormap, false otherwise.
 
-    @rtype: (numarray.array, Basemap)
-    @return: The data and the map.
+    @rtype: (Basemap, numarray.array)
+    @return: The map and the data.
     """
-    return (getd(config), getm(config))
+    return (getm(config), getd(config))
 
 
 def disp(map, data):
