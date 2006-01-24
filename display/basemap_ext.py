@@ -55,8 +55,9 @@ def getm(config, cbar = True):
                 config.Delta_x * float(config.Nx),
                 urcrnrlat = config.y_min + config.Delta_y / 2. +
                 config.Delta_y * float(config.Ny), resolution = 'l')
+    fig_num = get_current_fig_manager().num
     xsize = rcParams['figure.figsize'][0]
-    fig = figure(figsize = (xsize, m.aspect * xsize))
+    fig = figure(num = fig_num)
     if cbar:
         ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
         axes(ax)
@@ -115,7 +116,8 @@ def disp(map, data):
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
         xsize = rcParams['figure.figsize'][0]
-        fig = figure(figsize = (xsize, map.aspect * xsize))
+        fig_num = get_current_fig_manager().num
+        fig = figure(num = fig_num)
         ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
         axes(ax)
         axes([0.875, 0.1, 0.05, 0.75])
