@@ -137,3 +137,51 @@ class Config:
             self.shape = (self.Nt, self.Ny, self.Nx)
         except:
             pass
+
+
+def write_configuration_file(config, filename):
+    """
+    Writes a configuration file.
+
+    @type config: list of list.
+    @param config: The configuration is a list of fields which are described
+    by a list with two or three element:
+       0. The field name (string);
+       1. The section (string, optional);
+       2. The value of the field (any type that can be converted to a string).
+    @type filename: string
+    @param filename: configuration-file name.
+    """
+    # First sorts all fields per section.
+    sorted_config = {"": []}
+    for field in config:
+        # Determines the delimiter: semi-colon for strings, equal sign
+        # for other types.
+        output = field[-1]
+        if isinstance(output, str):
+            output = ": " + output
+        else:
+            output = " = " + str(output)
+        output = field[0] + output
+        # If no section is specified.
+        if len(field) == 2:
+            sorted_config[""] = output
+        else:
+            if sorted_config.has_key(field[1]):
+                sorted_config[field[1]].append(output)
+            else:
+                sorted_config[field[1]] = [output]
+
+    f = open(filename, 'w')
+
+    # Writes fields outside of sections.
+    for field in sorted_config.pop(""):
+        f.write(field + "\n")
+
+    # Writes sections.
+    for section in sorted_config:
+        f.write("\n\n" + section + "\n\n")
+        for field in sorted_config[section]:
+            f.write(field + "\n")
+
+    f.close()
