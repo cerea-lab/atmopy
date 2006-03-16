@@ -263,8 +263,9 @@ class ConfigStream:
         @rtype: datetime
         @return: The value of the field in the configuration file.
 
-        @note: The field value should be in format YYYYMMDD, YYYYMMDDHH,
-        YYYYMMDDHHMM or YYYYMMDDHHMMSS.
+        @note: The field value should be in format YYYY, YYYYMM, YYYYMMDD,
+        YYYYMMDDHH, YYYYMMDDHHMM or YYYYMMDDHHMMSS. Delimiters (any character
+        except numbers) can be added around the month, the day, etc.
         """
         if section == "":
             ret_str = self.GetOutput(element)
@@ -277,15 +278,26 @@ class ConfigStream:
         Converts a string into a datetime object.
 
         @type str: string
-        @param str: String to be converted. It must be in format YYYYMMDD,
-        YYYYMMDDHH, YYYYMMDDHHMM or YYYYMMDDHHMMSS.
+        @param str: String to be converted. It must be in format YYYY, YYYYMM,
+        YYYYMMDD, YYYYMMDDHH, YYYYMMDDHHMM or YYYYMMDDHHMMSS. Delimiters (any
+        character except numbers) can be added around the month, the day, etc.
 
         @rtype: datetime
         @return: The datetime object corresponding to 'str'.
         """
+        # First filters useless characters.
+        str = [x for x in str if miscellaneous.is_num(x)]
+        str = reduce(lambda x, y: x + y, str)
+        
         year = int(str[0:4])
-        month = int(str[4:6])
-        day = int(str[6:8])
+        if len(str) > 5:
+            month = int(str[4:6])
+        else:
+            month = 1
+        if len(str) > 7:
+            day = int(str[6:8])
+        else:
+            day = 1
         if len(str) > 9:
             hour = int(str[8:10])
         else:
