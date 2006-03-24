@@ -67,6 +67,47 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
     return lines
 
 
+def segplot_logx(x, y, fmt, maxdelta, **kwargs):
+    """
+    Plots log(x) versus y, breaking the plot at any point where x[i] -
+    x[i-1] > maxdelta. kwargs are passed on to plot.
+
+    @type x: sequence of float or int
+    @param x: Data to plot in abscissa.
+    @type y: sequence of float or int
+    @param y: Data to plot in ordinates
+    @type fmt: string
+    @param fmt: Line style and color, combined in a single format string, as in
+    'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @type maxdelta: float or int
+    @param maxdelta: Maximum delta between two consecutive x values for
+    which a line should be drawn.
+    @type kwargs: keyword argument list
+    @param kwargs: The **kwargs can be used to set line properties
+    (any property that has a set_* method).  You can use this to set
+    a line label (for auto legends), linewidth, anitialising, marker
+    face color, etc. See Matplotlib 'plot' command documentation for
+    more details.
+
+    @rtype: matplotlib.lines
+    @return: The list of plotted lines.
+    """
+    x = asarray(x)
+    y = asarray(y)
+    d = diff(x)
+    lines = []
+    ind = nonzero(greater(d, maxdelta))
+    ind = ind+1
+    if not len(ind):
+        lines.extend( semilogx(x,y,fmt,**kwargs) ) 
+    else:
+        allind = [0]
+        allind.extend(ind)
+        allind.append(len(x))
+        for i1,i2 in zip(allind[:-1], allind[1:]):
+            lines.extend( semilogx(x[i1:i2], y[i1:i2], fmt, **kwargs) )
+    return lines
+
 def segplot_date(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y with dates, breaking the plot at any point where
