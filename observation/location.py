@@ -59,6 +59,32 @@ class Station:
         except:
             return self.name
 
+    def FromAirparifString(self, str):
+        """
+        Sets station attributes from a string.
+
+        @type str: string
+        @param str: The string in Airparif format that defines the station.
+        The string contains the following fields (separated by comas):
+           0. the station name;
+           1. the longitude (format: DD MM SS);
+           2. the latitude (format: DD MM SS);
+           3. the type.
+        where coordinates are provided with degrees (DD), minutes (MM)
+        and seconds (SS).
+        """
+        l = str.strip().split(",")
+        self.name = l[0]
+        longitude = (l[1]).split(" ")
+        latitude = (l[2]).split(" ")
+        self.type = l[3]
+        self.latitude = float(latitude[0]) + float(latitude[1]) / 60. \
+                        + float(latitude[2]) / 3600.
+        self.longitude = float(longitude[0]) + float(longitude[1]) / 60. \
+                         + float(longitude[2]) / 3600.
+        self.network = "Airparif"
+        self.country = "FR"
+        
     def FromBdqaString(self, str):
         """
         Sets station attributes from a string.
