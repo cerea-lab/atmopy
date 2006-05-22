@@ -29,7 +29,10 @@ http://www.enpc.fr/cerea/atmopy/
 
 
 import display
-import ensemble
+try:
+    import ensemble
+except:
+    pass
 import io
 import observation
 import stat
