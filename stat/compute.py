@@ -26,7 +26,11 @@ from numarray import *
 import datetime
 import os, sys
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
-import talos, observation, ensemble, measure
+import talos, observation, measure
+try:
+    import ensemble
+except:
+    pass
 sys.path.pop(0)
 
 
