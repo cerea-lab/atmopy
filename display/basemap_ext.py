@@ -68,7 +68,7 @@ def getm(config, cbar = True):
     return m
 
 
-def getd(config, filename = ""):
+def getd(config, filename = "", Nt = None, Nz = None, Ny = None, Nx = None):
     """
     Reads data from a binary file.
 
@@ -85,8 +85,27 @@ def getd(config, filename = ""):
         config = talos.Config(config)
     if filename == "":
         filename = config.input_file
-    return fromfile(filename, type = 'f',
-                    shape = [config.Nt, config.Nz, config.Ny, config.Nx])
+
+    import os
+    if Nx is None:
+        Nx = config.Nx
+    if Ny is None:
+        Ny = config.Ny
+    if Nz is None:
+        Nz = config.Nz
+    if Nt is None:
+        Nt = config.Nt
+
+    if Nx == 0:
+        Nx = int(os.stat(filename)[6] / 4) / Ny / Nz / Nt
+    if Ny == 0:
+        Ny = int(os.stat(filename)[6] / 4) / Nx / Nz / Nt
+    if Nz == 0:
+        Nz = int(os.stat(filename)[6] / 4) / Nx / Ny / Nt
+    if Nt == 0:
+        Nt = int(os.stat(filename)[6] / 4) / Nx / Ny / Nz
+        
+    return fromfile(filename, type = 'f', shape = [Nt, Nz, Ny, Nx])
 
 
 def getmd(config, cbar = True):
