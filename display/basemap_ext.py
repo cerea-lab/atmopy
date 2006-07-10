@@ -144,8 +144,15 @@ def disp(map, data):
     # Clears current image.
     gcf().axes[0].clear()
     axes(gcf().axes[0])
-    map.drawcountries()
     map.imshow(data)
+    xt = getp(gca(), "xticks")
+    yt = getp(gca(), "yticks")
+    map.drawcountries()
+    map.drawcoastlines()
+    xt = [x for x in xt if x >= map.llcrnrx and x <= map.urcrnrx]
+    yt = [y for y in yt if y >= map.llcrnry and y <= map.urcrnry]
+    gcf().axes[0].set_xticks(xt)
+    gcf().axes[0].set_yticks(yt)
 
     # Colorbar.
     if len(gcf().axes) > 1:
