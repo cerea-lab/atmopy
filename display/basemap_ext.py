@@ -54,7 +54,8 @@ def getm(config, cbar = True):
                 urcrnrlon = config.x_min + config.Delta_x / 2. +
                 config.Delta_x * float(config.Nx),
                 urcrnrlat = config.y_min + config.Delta_y / 2. +
-                config.Delta_y * float(config.Ny), resolution = 'l')
+                config.Delta_y * float(config.Ny), resolution = 'l',
+                suppress_ticks = False)
     fig_num = get_current_fig_manager().num
     xsize = rcParams['figure.figsize'][0]
     fig = figure(num = fig_num)
@@ -145,14 +146,8 @@ def disp(map, data):
     gcf().axes[0].clear()
     axes(gcf().axes[0])
     map.imshow(data)
-    xt = getp(gca(), "xticks")
-    yt = getp(gca(), "yticks")
     map.drawcountries()
     map.drawcoastlines()
-    xt = [x for x in xt if x >= map.llcrnrx and x <= map.urcrnrx]
-    yt = [y for y in yt if y >= map.llcrnry and y <= map.urcrnry]
-    gcf().axes[0].set_xticks(xt)
-    gcf().axes[0].set_yticks(yt)
 
     # Colorbar.
     if len(gcf().axes) > 1:
