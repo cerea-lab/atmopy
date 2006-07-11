@@ -156,6 +156,45 @@ def disp(map, data):
         colorbar(cax = cax)
     
 
+def dispcf(map, data, V = None):
+    """
+    Displays a 2D array on a given map with filled contours.
+
+    @type map: Basemap
+    @param map: The map on which data is displayed.
+    @type data: 2D numarray.array
+    @param data: Data (2D) to be displayed.
+    @type V: integer, list or 1D numarray.array
+    @param V: The number of levels or the list of thresholds for the contours.
+    """
+    # If the figure is empty, sets new axes.
+    if len(gcf().axes) == 0:
+        xsize = rcParams['figure.figsize'][0]
+        fig_num = get_current_fig_manager().num
+        fig = figure(num = fig_num)
+        ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
+        axes(ax)
+        axes([0.875, 0.1, 0.05, 0.75])
+
+    # Clears current image.
+    gcf().axes[0].clear()
+    axes(gcf().axes[0])
+
+    xrange, yrange = map.makegrid(data.shape[1], data.shape[0])
+    if V is None:
+        map.contourf(xrange, yrange, data)
+    else:
+        map.contourf(xrange, yrange, data, V)
+    map.drawcountries()
+    map.drawcoastlines()
+
+    # Colorbar.
+    if len(gcf().axes) > 1:
+        gcf().axes[1].clear()
+        cax = gcf().axes[1]
+        colorbar(cax = cax)
+    
+
 def cbar():
     """
     Displays a colorbar.
