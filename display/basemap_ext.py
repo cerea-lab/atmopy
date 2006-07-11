@@ -158,7 +158,7 @@ def disp(map, data):
     if len(gcf().axes) > 1:
         gcf().axes[1].clear()
         cax = gcf().axes[1]
-        colorbar(tickfmt='%d', cax = cax)
+        colorbar(cax = cax)
     
 
 def cbar():
@@ -170,4 +170,4 @@ def cbar():
         cax = gcf().axes[1]
     else:
         cax = axes([0.875, 0.1, 0.05, 0.75])
-    colorbar(tickfmt='%d', cax = cax)
+    colorbar(cax = cax)
