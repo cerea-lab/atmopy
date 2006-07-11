@@ -124,7 +124,7 @@ def getmd(config, cbar = True):
     return (getm(config), getd(config))
 
 
-def disp(map, data):
+def disp(map, data, **kwargs):
     """
     Displays a 2D array on a given map.
 
@@ -145,7 +145,7 @@ def disp(map, data):
     # Clears current image.
     gcf().axes[0].clear()
     axes(gcf().axes[0])
-    map.imshow(data)
+    map.imshow(data, **kwargs)
     map.drawcountries()
     map.drawcoastlines()
 
@@ -156,7 +156,7 @@ def disp(map, data):
         colorbar(cax = cax)
     
 
-def dispcf(map, data, V = None):
+def dispcf(map, data, V = None, **kwargs):
     """
     Displays a 2D array on a given map with filled contours.
 
@@ -181,10 +181,12 @@ def dispcf(map, data, V = None):
     axes(gcf().axes[0])
 
     xrange, yrange = map.makegrid(data.shape[1], data.shape[0])
+    if kwargs.has_key("colors"):
+        V = len(kwargs["colors"]) - 1
     if V is None:
-        map.contourf(xrange, yrange, data)
+        map.contourf(xrange, yrange, data, **kwargs)
     else:
-        map.contourf(xrange, yrange, data, V)
+        map.contourf(xrange, yrange, data, V, **kwargs)
     map.drawcountries()
     map.drawcoastlines()
 
