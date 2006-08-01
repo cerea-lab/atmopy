@@ -210,7 +210,8 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     end_date = period[1]
     if obs_type == "hourly":
         range_delta = datetime.timedelta(0, 3600)
-        Nsteps = (end_date - start_date).seconds / 3600 + 1
+        Nsteps = (end_date - start_date).days * 24 \
+                 + (end_date - start_date).seconds / 3600 + 1
     else:
         start_date = observation.midnight(start_date)
         end_date = observation.midnight(end_date)
