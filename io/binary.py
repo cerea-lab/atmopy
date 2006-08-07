@@ -68,7 +68,7 @@ def get_timesteps(filename, recordLength):
     """
     ts = 0
     if (recordLength != 0):
-        ts = get_filesize / recordLength
+        ts = get_filesize(filename) / recordLength
     return ts
 
 
