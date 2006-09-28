@@ -69,7 +69,8 @@ def getm(config, cbar = True):
     return m
 
 
-def getd(config, filename = "", Nt = None, Nz = None, Ny = None, Nx = None):
+def getd(config = None, filename = "",
+         Nt = None, Nz = None, Ny = None, Nx = None):
     """
     Reads data from a binary file.
 
