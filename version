@@ -1,1 +1,4 @@
-1.1a
+AtmoPy 1.2
+
+Depends on:
+ - Talos 0.4
