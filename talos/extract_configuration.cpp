@@ -156,7 +156,7 @@ int main(int argc, char** argv)
   for (i = 0; i < int(sections.size()); i++)
     {
       if (sections[i] != "")
-	configuration.FindFromBeginning(sections[i]);
+	configuration.SetSection(sections[i]);
       if (!keys[i].empty())
 	{
 	  list<string>::iterator j;
