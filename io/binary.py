@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-import numarray
+import numpy
 import datetime
 import sys, os
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
@@ -72,10 +72,10 @@ def get_timesteps(filename, recordLength):
     return ts
 
 
-def load_binary(filename, shape, type = 'f4'):
+def load_binary(filename, shape, type = 'f'):
     """
     Loads a binary file into an array using specified shape.
-    Returns numarray.
+    Returns numpy.
 
     @type filename: string or Python file object.
     @param filename: The name of the file to load.
@@ -84,12 +84,21 @@ def load_binary(filename, shape, type = 'f4'):
     @param shape: The shape of the array to load from file.
 
     @type type: string
-    @param type: Type of data read. Default is 'f4'
+    @param type: Type of data read. Default is 'f'
 
-    @rtype: numarray.array
+    @rtype: numpy.array
     @return: New array filled with binary data from specified file.
     """
-    return numarray.fromfile(filename, type, shape)
+    length = 1
+    for l in shape:
+        length *= l
+    d = numpy.fromfile(filename, type, length)
+    if d.shape[0] != length:
+        raise Exception, "File \"" + filename \
+              + "\" does not contain enough elements."
+    d.shape = shape
+    d = d.astype('f8')
+    return d
 
 
 def load_binary_first_level(filename, shape, type = 'f4'):
@@ -108,7 +117,7 @@ def load_binary_first_level(filename, shape, type = 'f4'):
     @type type: string
     @param type: Type of data read. Default is 'f4'
 
-    @rtype: numarray.array
+    @rtype: numpy.array
     @return: New 3D array os given shape filled with binary data
     from specified file.
     """
@@ -130,9 +139,9 @@ def load_binary_first_level(filename, shape, type = 'f4'):
 
 def save_binary(arrayToSave, filename, type = 'f4'):
     """
-    Saves a numarray in a binary file using specified type.
+    Saves a numpy in a binary file using specified type.
 
-    @type arrayToSave: numarray.array
+    @type arrayToSave: numpy.array
     @param arrayToSave: The array to save.
 
     @type filename: string or python file object
@@ -141,7 +150,7 @@ def save_binary(arrayToSave, filename, type = 'f4'):
     @type type: string
     @param type: Format of data to save the array in file.
     """
-    numarray.array(arrayToSave, type = type).tofile(filename)
+    numpy.array(arrayToSave, dtype = type).tofile(filename)
 
 def filter_config(config, data):
     """
@@ -150,10 +159,10 @@ def filter_config(config, data):
 
     @type config: Config
     @param config: The configuration associated with 'data'.
-    @type data: numarray.array
+    @type data: numpy.array
     @param data: The data array to be filtered.
 
-    @rtype: (list of datetime, numarray.array)
+    @rtype: (list of datetime, numpy.array)
     @return: The dates and the output data. The output data array does not
     contain:
        0. the first and/or last days if they are missing data, except if

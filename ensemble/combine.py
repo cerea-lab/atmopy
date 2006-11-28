@@ -27,10 +27,10 @@ import sys, os
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import observation
 sys.path.pop(0)
-from numarray import *
+from scipy import *
+from numpy import *
 import scipy.linalg
 import scipy.stats.stats
-
 
 def collect(sim, obs, dates = None, stations = None, period = None,
             stations_out = None):
@@ -63,7 +63,7 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     simulated concentrations in a 2D-array (simulations x concentrations).
     """
     # Initializations.
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if dates == None:
@@ -148,7 +148,7 @@ def collect_dates(sim, obs, dates = None, stations = None, period = None,
     simulated concentrations in a 2D-array (simulations x concentrations).
     """
     # Initializations.
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if dates == None:
@@ -219,9 +219,7 @@ def w_least_squares(sim, obs):
     @rtype: 1D-array
     @return: The coefficients (or weights) 'alpha' of the linear combination.
     """
-    return matrixmultiply(scipy.linalg.inv(matrixmultiply(sim,
-                                                          transpose(sim))),
-                          matrixmultiply(sim, obs))
+    return dot(scipy.linalg.inv(dot(sim, transpose(sim))), dot(sim, obs))
 
 
 def m_least_squares(sim, obs):
@@ -238,7 +236,7 @@ def m_least_squares(sim, obs):
     @rtype: 1D-array
     @return: The linear combination 'sim^T alpha'.
     """
-    return matrixmultiply(transpose(sim), w_least_squares(sim, obs))
+    return dot(transpose(sim), w_least_squares(sim, obs))
 
 
 def w_unbiased_least_squares(sim, obs):
@@ -283,8 +281,7 @@ def m_unbiased_least_squares(sim, obs):
     obs_mean = obs.mean()
     obs = obs - obs_mean
     sim = array([x - x.mean() for x in sim])
-    return matrixmultiply(transpose(sim), w_least_squares(sim, obs)) \
-           + obs_mean
+    return dot(transpose(sim), w_least_squares(sim, obs)) + obs_mean
 
 
 def m_mean(sim):
@@ -315,7 +312,7 @@ def m_median(sim):
     return array(scipy.stats.stats.median(sim, 0))
 
 
-def combine_step(dates, sim, coeff_dates, coeff_step):
+def combine_step(dates, sim, coeff_dates, coeff_step, restricted = False):
     """
     Combines the simulated concentrations based on coefficients provided for
     each date. The same coefficients are applied to all stations.
@@ -335,13 +332,18 @@ def combine_step(dates, sim, coeff_dates, coeff_step):
     stored in a list (indexed by dates) of 1D-arrays of coefficients. The
     first combination is associated with the earliest date of 'dates' and the
     last combination is associated with the latest date of 'dates'.
+    @type restricted: Boolean.
+    @param restricted: True if weights are not available for all dates, False
+    otherwise.
 
-    @rtype: list of array
-    @return: The ensemble based on the linear combination. It is returned in a
-    list (indexed by stations) of 1D-arrays (that contain the time series).
+    @rtype: list of array or (list of list of datetime, list of array)
+    @return: In case 'restricted' is set to True, the dates associated to
+    combined concentrations are returned. The ensemble based on the linear
+    combination is returned in a list (indexed by stations) of 1D-arrays (that
+    contain the time series).
     """
     # Initializations.
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if isinstance(dates[0], datetime.datetime) \
@@ -353,6 +355,8 @@ def combine_step(dates, sim, coeff_dates, coeff_step):
     Ndates = len(coeff_dates)
 
     output_sim = [[] for i in range(Nstations)]
+    if restricted:
+        output_date = [[] for i in range(Nstations)]
 
     # Combining.
     for istation in range(Nstations):
@@ -363,15 +367,23 @@ def combine_step(dates, sim, coeff_dates, coeff_step):
                       and coeff_dates[icoeff] != dates[istation][idate]:
                 icoeff += 1
             if icoeff == Ndates:
-                raise Exception, "Unable to find coefficients for date " \
-                      + str(dates[istation][idate]) + "."
-            # Concentrations of the ensemble.
-            data = array([sim[i][istation][idate] for i in range(Nsim)])
-            # Combination.
-            output_sim[istation].append((coeff_step[icoeff] * data).sum())
+                if not restricted:
+                    raise Exception, "Unable to find coefficients for date " \
+                          + str(dates[istation][idate]) + "."
+                icoeff = 0
+            else:
+                # Concentrations of the ensemble.
+                data = array([sim[i][istation][idate] for i in range(Nsim)])
+                # Combination.
+                output_sim[istation].append((coeff_step[icoeff] * data).sum())
+                if restricted:
+                    output_date[istation].append(dates[istation][idate])
         output_sim[istation] = array(output_sim[istation])
 
-    return output_sim
+    if restricted:
+        return output_date, output_sim
+    else:
+        return output_sim
 
 
 def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
@@ -405,7 +417,7 @@ def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
     list (indexed by stations) of 1D-arrays (that contain the time series).
     """
     # Initializations.
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if isinstance(dates[0], datetime.datetime) \
@@ -486,7 +498,7 @@ def combine_station_step(dates, sim, coeff_dates, coeff):
     list (indexed by stations) of 1D-arrays (that contain the time series).
     """
     # Initializations.
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if isinstance(dates[0], datetime.datetime) \
@@ -517,5 +529,66 @@ def combine_station_step(dates, sim, coeff_dates, coeff):
             output_sim[istation].append((coeff[istation][icoeff]
                                          * data).sum())
         output_sim[istation] = array(output_sim[istation])
+
+    return output_sim
+
+
+def remove_bias_step(dates, sim, bias_dates, bias_step):
+    """
+    Removes the bias at all dates. The same bias correction is applied to all
+    stations.
+
+    @type dates: list of list of datetime
+    @param dates: The list (indexed by stations) of the list of dates at which
+    the concentrations are defined.
+    @type sim: list of list of 1D-array, or list of 1D-array.
+    @param sim: The list (indexed by simulations) of lists (indexed by
+    stations) of simulated concentrations, or the list (indexed by stations)
+    of simulated concentrations.
+    @type bias_dates: list of datetime
+    @param bias_dates: The dates at which the coefficients in 'bias_step' are
+    defined.
+    @type bias_step: list of array
+    @param bias_step: The biases to be removed. They are stored in a list
+    (indexed by dates) of 1D-arrays of coefficients. The first combination is
+    associated with the earliest date of 'dates' and the last combination is
+    associated with the latest date of 'dates'.
+
+    @rtype: list of array
+    
+    @return: The simulations debiased. It is returned in a list of list of
+    1D-arrays, with the same shape as 'sim'.
+    """
+    # Initializations.
+    if isinstance(sim[0], ndarray):
+        sim = (sim, )
+
+    if isinstance(dates[0], datetime.datetime) \
+           or isinstance(dates[0], datetime.date):
+        dates = (dates, )
+
+    Nsim = len(sim)
+    Nstations = len(sim[0])
+    Ndates = len(bias_dates)
+
+    output_sim = [[[] for i in range(Nstations)] for j in range(Nsim)]
+
+    for istation in range(Nstations):
+        ibias = 0
+        for idate in range(len(dates[istation])):
+            # Corresponding index in 'bias_dates' and 'bias_step'.
+            while ibias < Ndates \
+                      and bias_dates[ibias] != dates[istation][idate]:
+                ibias += 1
+            if ibias == Ndates:
+                raise Exception, "Unable to find coefficients for date " \
+                      + str(dates[istation][idate]) + "."
+            for isim in range(Nsim):
+                value = sim[isim][istation][idate] - bias_step[ibias]
+                output_sim[isim][istation].append(value)
+
+    for isim in range(Nsim):
+        for istation in range(Nstations):
+            output_sim[isim][istation] = array(output_sim[isim][istation])
 
     return output_sim

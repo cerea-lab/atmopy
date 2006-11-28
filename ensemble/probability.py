@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-from numarray import *
+from numpy import *
 import scipy.stats.stats
 
 
@@ -32,18 +32,18 @@ def pdf(data, Nbins = 200, val = None):
     of data (minimum to maximum) is split into bins of constant length and a
     probability is computed for each bin.
 
-    @type data: numarray.array
+    @type data: numpy.array
     @param data: Data whose probability density function is sought.
     @type Nbins: integer
     @param Nbins: The number of bins.
-    @type val: numarray.array
+    @type val: numpy.array
     @param val: Values at which the probability density function should be
     evaluated. Contiguous values are assumed to be at a fixed distance d, and
     output densities are representative of the interval ]val[i] - d/2, val[i]
     + d/2]. If 'val' is None, the bins are automatically adapted. If 'val' is
     not None, 'Nbins' is discarded.
 
-    @rtype: 1D numarray.array, 1D numarray.array
+    @rtype: 1D numpy.array, 1D numpy.array
     @return: The middle values of the bins and the array of probabilities
     associated with each bin. The mean of this array multiplied by the data
     range (maximum minus minimum) is equal to one.
@@ -75,10 +75,10 @@ def cdf(data):
     """
     Returns the cumulative density function.
 
-    @type data: numarray.array
+    @type data: numpy.array
     @param data: Data whose cumulative density function is sought.
 
-    @rtype: (1D numarray.array, 1D numarray.array)
+    @rtype: (1D numpy.array, 1D numpy.array)
     @return: The data values and the cumulative densities associated with
     them.
     """

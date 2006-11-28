@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-from numarray import *
+from numpy import *
 import datetime
 import os, sys
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
@@ -76,7 +76,7 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
 
     import inspect
 
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if dates == None:
@@ -181,7 +181,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
 
     import inspect
 
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if obs_type != "hourly" and obs_type != "peak":
@@ -292,7 +292,7 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
 
     import inspect
 
-    if isinstance(sim[0], NumArray):
+    if isinstance(sim[0], ndarray):
         sim = (sim, )
 
     if isinstance(stations, observation.Station):

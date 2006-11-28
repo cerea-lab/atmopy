@@ -28,7 +28,7 @@ data.
 """
 
 
-import numarray
+import numpy
 import datetime
 import math
 

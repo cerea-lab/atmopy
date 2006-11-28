@@ -29,7 +29,7 @@ def remove_lowest(dates, data1, data2, mini):
 
     @type dates: sequence of datetime.datetime
     @param dates: Dates corresponding to the data.
-    @type data1: 1D numarray.array
+    @type data1: 1D numpy.array
     @param data1: Data from which values lower than mini must be
     removed (observations most of the time).
     @type data2: Data where values corresponding to removed value in
@@ -37,8 +37,8 @@ def remove_lowest(dates, data1, data2, mini):
     @type mini: float
     @param mini: Minimum value. Dates, elements of data1 and data2
     corresponding to values lower than mini in data1 are removed.
-    @rtype: sequence of datetime.datetime, 1D numarray.array,
-    1D numarray.array
+    @rtype: sequence of datetime.datetime, 1D numpy.array,
+    1D numpy.array
     @return: sequence of dates, data1 array and data2 array.
     Elements corresponding to values lower than mini in data1
     are not returned.
@@ -47,8 +47,8 @@ def remove_lowest(dates, data1, data2, mini):
     for i in range(len(condition)-1, -1, -1):
         if condition[i] == 0:
             dates.pop(i)
-    return dates, data1[numarray.where(condition)], \
-           data2[numarray.where(condition)]
+    return dates, data1[numpy.where(condition)], \
+           data2[numpy.where(condition)]
 
 
 def remove_highest(dates, data1, data2, maxi):
@@ -58,7 +58,7 @@ def remove_highest(dates, data1, data2, maxi):
 
     @type dates: sequence of datetime.datetime
     @param dates: Dates corresponding to the data.
-    @type data1: 1D numarray.array
+    @type data1: 1D numpy.array
     @param data1: Data from which values higher than mini must be
     removed (observations most of the time).
     @type data2: Data where values corresponding to removed value in
@@ -66,8 +66,8 @@ def remove_highest(dates, data1, data2, maxi):
     @type maxi: float
     @param maxi: Maximum value. Dates, elements of data1 and data2
     corresponding to values higher than maxi in data1 are removed.
-    @rtype: sequence of datetime.datetime, 1D numarray.array,
-    1D numarray.array
+    @rtype: sequence of datetime.datetime, 1D numpy.array,
+    1D numpy.array
     @return: sequence of dates, data1 array and data2 array.
     Elements corresponding to values higher than maxi in data1
     are not returned.
@@ -76,5 +76,5 @@ def remove_highest(dates, data1, data2, maxi):
     for i in range(len(condition)-1, -1, -1):
         if condition[i] == 0:
             dates.pop(i)
-    return dates, data1[numarray.where(condition)], \
-           data2[numarray.where(condition)]
+    return dates, data1[numpy.where(condition)], \
+           data2[numpy.where(condition)]

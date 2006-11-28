@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-import numarray
+import numpy
 import datetime
 
 
@@ -107,17 +107,17 @@ def split_into_days(dates, data):
 
     @type dates: sequence of datetime.datetime
     @param dates: Sequence of dates corresponding to the given data.
-    @type data: 1D numarray.array
+    @type data: 1D numpy.array
     @param data: Array of data to split into arrays for days.
-    @rtype: sequence of dates sequences, sequence of numarray.array
+    @rtype: sequence of dates sequences, sequence of numpy.array
     @return: A list of dates sequences, splitted by days, and the
-    corresponding sequence of numarray.array.
+    corresponding sequence of numpy.array.
     """
     if len(data) != len(dates):
         raise ValueError, "Data and dates are not of the same length."
 
     if len(data) == 0:
-        return [numarray.array([])], [[]]
+        return [numpy.array([])], [[]]
     
     output_data = [[data[0]]]
     output_dates = [[dates[0]]]
@@ -132,7 +132,7 @@ def split_into_days(dates, data):
             output_dates.append([dates[i]])
             day = dates[i].date()
 
-    return output_dates, map(lambda x: numarray.array(x), output_data)
+    return output_dates, map(lambda x: numpy.array(x), output_data)
 
 
 def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
@@ -143,9 +143,9 @@ def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
 
     @type dates: list of datetime
     @param dates: The dates at which the concentrations are provided.
-    @type sim: numarray.array
+    @type sim: numpy.array
     @param sim: The simulated concentrations.
-    @type obs: numarray.array
+    @type obs: numpy.array
     @param obs: Observations.
     @type hour_range: list or tuple with two elements
     @param hour_range: Range of hours over which the peak is to be sought. If
@@ -162,8 +162,8 @@ def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
     @param paired: True if observations and simulated peaks are assumed to be
     paired (i.e., occuring at the same hour), False otherwise.
 
-    @rtype: (list of datetime, numarray.array, list of datetime,
-    numarray.array) or (list of datetime, numarray.array, numarray.array)
+    @rtype: (list of datetime, numpy.array, list of datetime,
+    numpy.array) or (list of datetime, numpy.array, numpy.array)
     @return: The new dates for computed concentrations, the computed peaks,
     the corresponding measured peaks preceded by their own dates.
     """
@@ -194,21 +194,21 @@ def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
             j += 1
         if len(tmp_dates) < nb_range_min:
             continue
-        j = numarray.array(tmp_obs).argmax()
+        j = numpy.array(tmp_obs).argmax()
         output_dates.append(tmp_dates[j])
         output_obs.append(tmp_obs[j])
         if paired:
             output_sim.append(tmp_sim[j])
         else:
-            j = numarray.array(tmp_sim).argmax()
+            j = numpy.array(tmp_sim).argmax()
             output_dates_sim.append(tmp_dates[j])
             output_sim.append(tmp_sim[j])
     if paired:
-        return output_dates, numarray.array(output_sim), \
-               numarray.array(output_obs)
+        return output_dates, numpy.array(output_sim), \
+               numpy.array(output_obs)
     else:
-        return output_dates_sim, numarray.array(output_sim), \
-               output_dates, numarray.array(output_obs)
+        return output_dates_sim, numpy.array(output_sim), \
+               output_dates, numpy.array(output_obs)
 
 
 def get_daily_peaks(dates, conc, hour_range = [0, 23], \
@@ -218,7 +218,7 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
 
     @type dates: list of datetime
     @param dates: The dates at which the concentrations are provided.
-    @type conc: numarray.array
+    @type conc: numpy.array
     @param conc: The simulated concentrations.
     @type hour_range: list or tuple with two elements
     @param hour_range: Range of hours over which the peak is to be sought. If
@@ -232,7 +232,7 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
     @param nb_min: The minimum number of available observations in the day so
     that the daily peak should be included.
 
-    @rtype: (list of datetime, numarray.array)
+    @rtype: (list of datetime, numpy.array)
     @return: The concentration peaks preceded by their dates.
     """
     nb_range_min = min(nb_range_min, len(hour_range))
@@ -255,10 +255,10 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
             j += 1
         if len(tmp_dates) < nb_range_min:
             continue
-        j = numarray.array(tmp_conc).argmax()
+        j = numpy.array(tmp_conc).argmax()
         output_dates.append(tmp_dates[j])
         output_conc.append(tmp_conc[j])
-    return output_dates, numarray.array(output_conc)
+    return output_dates, numpy.array(output_conc)
 
 
 def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
@@ -268,13 +268,13 @@ def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
 
     @type sim_dates: sequence of datetime.datetime
     @param sim_dates: Dates for simulation data.
-    @type simulated: 1D numarray.array
+    @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array
     @type obs_dates: sequence of datetime.datetime
     @param obs_dates: Dates for observation data. 
-    @type obs: 1D numarray.array
+    @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
-    @rtype: numarray.array, numarray.array
+    @rtype: numpy.array, numpy.array
     @return: Array masks for simulated and observation data. In each array,
     null values indicates that the corresponding data value has no common date
     in the other array, whereas a 1 value indicates the opposite.
@@ -290,8 +290,8 @@ def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
     map(lambda x: float(x.toordinal()) + float(x.hour) / 24., obs_dates_float)
 
     # Selection.
-    sim_condition = numarray.zeros(len(simulated))
-    obs_condition = numarray.zeros(len(obs))
+    sim_condition = numpy.zeros(len(simulated))
+    obs_condition = numpy.zeros(len(obs))
 
     # Selects the common days.
     j = 0
@@ -315,22 +315,22 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
 
     @type sim_dates: sequence of datetime.datetime
     @param sim_dates: Dates for simulation data.
-    @type simulated: 1D numarray.array
+    @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array
     @type obs_dates: sequence of datetime.datetime
     @param obs_dates: Dates for observation data. 
-    @type obs: 1D numarray.array
+    @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
-    @type mask_sim: 1D numarray.array
+    @type mask_sim: 1D numpy.array
     @param mask_sim: Mask array for simulation data corresponding to dates common
     to simulation and observation. This array can be obtain thanks to
     mask_for_common_days.
-    @type mask_obs: 1D numarray.array
+    @type mask_obs: 1D numpy.array
     @param mask_obs: Mask array for observation data corresponding to dates common
     to simulation and observation. This array can be obtain thanks to
     mask_for_common_days.
 
-    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @rtype: sequence of datetime.datetime, numpy.array, numpy.array
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
     """
@@ -343,8 +343,8 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
     for i in mask_sim:
         common_dates.append(sim_dates[i])
 
-    return common_dates, simulated[numarray.where(mask_sim)], \
-           obs[numarray.where(mask_obs)]
+    return common_dates, simulated[numpy.where(mask_sim)], \
+           obs[numpy.where(mask_obs)]
 
 
 def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
@@ -355,13 +355,13 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
 
     @type sim_dates: sequence of datetime.datetime
     @param sim_dates: Dates for simulation data.
-    @type simulated: 1D numarray.array
+    @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
     @param obs_dates: Dates for observation data. 
-    @type obs: 1D numarray.array
+    @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
-    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @rtype: sequence of datetime.datetime, numpy.array, numpy.array
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
     """
@@ -371,8 +371,8 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
         raise ValueError, "Incompatible dimensions!"
 
     dates = list(sim_dates)
-    sim_condition = numarray.zeros(len(simulated))
-    obs_condition = numarray.zeros(len(obs))
+    sim_condition = numpy.zeros(len(simulated))
+    obs_condition = numpy.zeros(len(obs))
     
     for i in range(len(dates)):
        try:
@@ -386,8 +386,8 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
         if sim_condition[i] == 0:
             dates.pop(i)
 
-    return dates, simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)]
+    return dates, simulated[numpy.where(sim_condition)], \
+           obs[numpy.where(obs_condition)]
 
 
 def masks_for_common_dates(dates0, dates1):
@@ -400,7 +400,7 @@ def masks_for_common_dates(dates0, dates1):
     @type dates1: list of datetime
     @param dates1: The second list of dates.
 
-    @rtype: (numarray.array(type=Bool), numarray.array(type=Bool))
+    @rtype: (numpy.array(type=Bool), numpy.array(type=Bool))
     @return: The masks are returned for both lists in Boolean arrays. There
     are common dates wherever a Boolean is True.
     """
@@ -408,8 +408,8 @@ def masks_for_common_dates(dates0, dates1):
     N1 = len(dates1)
 
     # Masks: lists of Booleans.
-    mask0 = numarray.zeros(N0, "Bool")
-    mask1 = numarray.zeros(N1, "Bool")
+    mask0 = numpy.zeros(N0, "Bool")
+    mask1 = numpy.zeros(N1, "Bool")
 
     i0 = 0
     i1 = 0
@@ -436,13 +436,13 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
 
     @type sim_dates: sequence of datetime.datetime
     @param sim_dates: Dates for simulation data.
-    @type simulated: 1D numarray.array
+    @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
     @param obs_dates: Dates for observation data. 
-    @type obs: 1D numarray.array
+    @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
-    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @rtype: sequence of datetime.datetime, numpy.array, numpy.array
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
     """
@@ -458,8 +458,8 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
     map(lambda x: x.date().isoformat(), obs_dates_iso)
 
     # Selection.
-    sim_condition = numarray.zeros(len(simulated))
-    obs_condition = numarray.zeros(len(obs))
+    sim_condition = numpy.zeros(len(simulated))
+    obs_condition = numpy.zeros(len(obs))
 
    # Gets the start date index for observations.
     obs_start = 0
@@ -482,8 +482,8 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
         else:
             old_ind = ind - 1
 
-    return common_dates, simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)]
+    return common_dates, simulated[numpy.where(sim_condition)], \
+           obs[numpy.where(obs_condition)]
 
 
 def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
@@ -494,13 +494,13 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
 
     @type sim_dates: sequence of datetime.datetime
     @param sim_dates: Dates for simulation data.
-    @type simulated: 1D numarray.array
+    @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
     @param obs_dates: Dates for observation data. 
-    @type obs: 1D numarray.array
+    @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
-    @rtype: sequence of datetime.datetime, numarray.array, numarray.array
+    @rtype: sequence of datetime.datetime, numpy.array, numpy.array
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
     """
@@ -516,8 +516,8 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     map(lambda x: x.date().isoformat(), obs_dates_iso)
 
     # Selection.
-    sim_condition = numarray.zeros(len(simulated))
-    obs_condition = numarray.zeros(len(obs))
+    sim_condition = numpy.zeros(len(simulated))
+    obs_condition = numpy.zeros(len(obs))
     
     # Selects the common days.
     for i in range(len(sim_dates_iso)):
@@ -534,8 +534,8 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
         if sim_condition[i] == 0:
             common_dates.pop(i)
 
-    return common_dates, simulated[numarray.where(sim_condition)], \
-           obs[numarray.where(obs_condition)]
+    return common_dates, simulated[numpy.where(sim_condition)], \
+           obs[numpy.where(obs_condition)]
 
 
 def restrict_to_period(dates, data, period_date, end_date = None):
@@ -558,7 +558,7 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     @rtype: (list of datetime, array)
     @return: The dates and data over the selected period.
     """
-    condition = numarray.zeros(len(dates))
+    condition = numpy.zeros(len(dates))
     if isinstance(period_date, Period):
         start_date = period_date.start
         end_date = period_date.end
@@ -570,7 +570,7 @@ def restrict_to_period(dates, data, period_date, end_date = None):
     istart = 0
     while istart < len(dates) and dates[istart] < start_date: istart += 1
     if istart == len(dates):
-        return [], numarray.array([])
+        return [], numpy.array([])
     iend = istart + 1
     while iend < len(dates) and dates[iend] <= end_date: iend += 1
     return dates[istart:iend], data[istart:iend]
@@ -594,7 +594,7 @@ def mask_for_series(dates, delta, Ndates):
     @return: An array of Boolean filled with True for all dates to be kept.
     """
 
-    mask = numarray.ones(len(dates), "Bool")
+    mask = numpy.ones(len(dates), "Bool")
 
     if len(dates) == 0:
         return mask
@@ -656,7 +656,7 @@ def remove_incomplete_days(dates, data):
     # In case there is only one day...
     if steps_first == len(dates):
         if steps_first != steps:
-            return [], numarray.array([])
+            return [], numpy.array([])
         return dates, data
     # First valid output-step.
     ind_first = 0
@@ -757,12 +757,12 @@ def remove_missing(dates, data, rm_value = -999):
 
     @type dates: list of datetime
     @param dates: The dates at which data is provided.
-    @type data: 1D numarray.array
+    @type data: 1D numpy.array
     @param data: The data array to be filtered.
     @type rm_value: float or list of floats
     @param rm_value: The value(s) to be removed from 'data'.
 
-    @rtype: (list of datetime, 2D numarray.array)
+    @rtype: (list of datetime, 2D numpy.array)
     @return: The data array and its dates without the specified values.
     """
     if isinstance(rm_value, (list, tuple)):

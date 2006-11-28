@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-import numarray
+import numpy
 import datetime
 import os, sys
 sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
@@ -101,7 +101,7 @@ def load_file_observations(name, directory):
     @type directory: string
     @param directory: location of the specified file.
 
-    @rtype: datetime.datetime sequence, 1D numarray.array
+    @rtype: datetime.datetime sequence, 1D numpy.array
     @return: Sequence of datetime and corresponding observation values in 1D array.
     """
 
@@ -125,7 +125,7 @@ def load_file_observations(name, directory):
         f.close()
     except IOError:
         pass
-    return dates, numarray.array(observations, 'Float32')
+    return dates, numpy.array(observations, 'Float32')
 
 
 def load_observations(stations, directory):
@@ -138,7 +138,7 @@ def load_observations(stations, directory):
     @type directory: string
     @param directory: location of the observation files.
 
-    @rtype: list of datetime.datetime lists, list of numarray.array.
+    @rtype: list of datetime.datetime lists, list of numpy.array.
     @return: A list of dates list (one list of dates per Station), and a
     list of observations arrays (one array per Station).
     """

@@ -22,7 +22,7 @@
 #     http://www.enpc.fr/cerea/atmopy/
 
 
-from numarray import *
+from numpy import *
 
 
 def spatial_distribution(data, function):
@@ -30,12 +30,12 @@ def spatial_distribution(data, function):
     Applies a function to a time series in every cell. It therefore returns
     the spatial distribution of an indicator.
 
-    @type data: numarray.array
+    @type data: numpy.array
     @param data: Data to be processed. Time is assumed to be the first
     dimension. There must be 1, 2 or 3 extra-dimensions.
     @type function: string or function
     @param function: The function to be applied to the time series. If
-    'function' is a string, it is assumed to be a numarray.array method.
+    'function' is a string, it is assumed to be a numpy.array method.
     """
     m = zeros(data.shape[1:], 'f')
     if data.rank == 2:
@@ -73,12 +73,12 @@ def time_evolution(data, function):
     """
     Computes the time evolution of a given indicator on spatial fields.
 
-    @type data: numarray.array
+    @type data: numpy.array
     @param data: Data to be processed. Time is assumed to be the first
     dimension.
     @type function: string or function
     @param function: The function to be applied to the fields. If 'function'
-    is a string, it is assumed to be a numarray.array method.
+    is a string, it is assumed to be a numpy.array method.
     """
     if isinstance(function, str):
         return array([getattr(x, function)() for x in data])

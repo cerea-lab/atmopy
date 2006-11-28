@@ -23,7 +23,6 @@
 
 
 import math
-import numarray
 
 
 ### Sources for formulas :
@@ -42,10 +41,10 @@ def mbe(data1, data2):
     """
     Computes Mean Bias Error between data1 and data2.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute bias from.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute bias from.
 
     @rtype: float
@@ -67,10 +66,10 @@ def mage(data1, data2):
     Computes Mean Absolute Gross Error (MAGE) between data1 and
     data2.
     
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute error.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute error.
 
     @rtype: float
@@ -94,10 +93,10 @@ def mnge(data1, data2, cutoff = 0.):
     arrays.
     ( MNGE = 1 / n * NME )
     
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute error.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute error.
 
     @type cutoff: float
@@ -123,10 +122,10 @@ def mnge(data1, data2, cutoff = 0.):
 def rmse(data1, data2):
     """ Computes Root Mean Square Error (RMSE) between data1 and data2.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute error.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute error.
 
     @rtype: float
@@ -150,10 +149,10 @@ def rmse(data1, data2):
 ## \end{displaymath}
 def correlation(data1, data2):
     """ Computes the correlation between data1 and data2.
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute correlation.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute correlation.
 
     @rtype: float
@@ -179,10 +178,10 @@ def determination(data1, data2):
     """ Computes the coefficient of determination between data1 and
     data2. This is the correlation coefficient squared.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute coefficient of determination.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute coefficient of determination.
 
     @rtype: float
@@ -202,10 +201,10 @@ def mnbe(data1, data2, cutoff = 0.):
     """ Computes Mean Normalized Bias Error (MNBE) between
     data1 and data2 1D arrays.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute MNBE.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute MNBE.
 
     @type cutoff: float
@@ -233,10 +232,10 @@ def mfbe(data1, data2, cutoff = 0.):
     """ Computes Mean Fractionalized Bias Error (MFBE) between
     data1 and data2 1D arrays.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute MFBE.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute MFBE.
 
     @type cutoff: float
@@ -264,10 +263,10 @@ def fge(data1, data2, cutoff = 0.):
     """ Computes Fractional Gross Error (FE) between
     data1 and data2 1D arrays.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute FE.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute FE.
 
     @type cutoff: float
@@ -294,10 +293,10 @@ def fge(data1, data2, cutoff = 0.):
 def bf(data1, data2, cutoff = 0.):
     """ Computes Bias Factor (BF) of data1 and data2.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute BF.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute BF.
 
     @type cutoff: float
@@ -325,10 +324,10 @@ def upa(data1, data2):
     This can be paired or unpaired peak prediction accuracy
     depending on simulated data used (interpolated or not..)
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute Peak Estimation Accuracy.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute Peak Estimation Accuracy.
 
     @rtype: float
@@ -348,10 +347,10 @@ def upa(data1, data2):
 def nmb(data1, data2):
     """ Computes Normalized Mean Bias (NMB) between data1 and data2.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute NMB.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute NMB.
 
     @rtype: float
@@ -372,10 +371,10 @@ def nmb(data1, data2):
 def nme(data1, data2):
     """ Computes Normalized Mean Error (NME) between data1 and data2.
 
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute NME.
 
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute NME.
 
     @rtype: float

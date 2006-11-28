@@ -295,12 +295,12 @@ def get_simulated_at_location(origin, delta, data, point):
     @type delta: (*, float, float) tuple
     @param delta: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point: (float, float) tuple
     @param point: (latitude, longitude) of the point where the time sequence
     must be computed.
-    @rtype: 1D numarray.array
+    @rtype: 1D numpy.array
     @return: Time sequence of data at given point.
     """
     # Gets index of bottom right data point of specified point
@@ -308,14 +308,14 @@ def get_simulated_at_location(origin, delta, data, point):
     index_x = int((point[1] - origin[2]) / delta[2])
 
     # Interpolation impossible.
-    if index_x >= data.getshape()[2] or index_y >= data.getshape()[1] \
+    if index_x >= data.shape[2] or index_y >= data.shape[1] \
            or index_x < 0 or index_y < 0:
-        return numarray.array([])
+        return numpy.array([])
 
     # Interpolation coefficients.
     coeff_y = (point[0] - origin[1] - delta[1] * index_y) / delta[1]
     coeff_x = (point[1] - origin[2] - delta[2] * index_x) / delta[2]
-    
+
     return (1.0 - coeff_y) * (1.0 - coeff_x) * data[:, index_y, index_x] \
            + coeff_y * coeff_x * data[:, index_y + 1, index_x + 1] \
            + coeff_y * (1.0 - coeff_x) * data[:, index_y + 1, index_x]  \
@@ -333,12 +333,12 @@ def get_simulated_at_locations(origins, deltas, data, point_list):
     @type deltas: (*, float, float) tuple
     @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point_list: sequence of (float, float) tuples
     @param point_list: Sequence of (latitude, longitude) of the points where the time
     sequences must be computed.
-    @rtype: sequence of 1D numarray.array
+    @rtype: sequence of 1D numpy.array
     @return: Sequence of time sequences of data at given points.
     """
     ret = []
@@ -358,15 +358,15 @@ def get_simulated_at_location_closest(origins, deltas, data, point):
     @type deltas: (*, float, float) tuple
     @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point: (float, float) tuple
     @param point: (latitude, longitude) of the point where the time sequence
     must be computed.
-    @rtype: 1D numarray.array
+    @rtype: 1D numpy.array
     @return: Time sequence of data at given point.
     """
-    # data : numarray, T Y X
+    # data : numpy, T Y X
     # point : ( latitude, longitude )
     # origins : ( Xmin, Ymin, Tmin )
     # deltas : ( DeltaX, DeltaY, DeltaT )
@@ -376,10 +376,10 @@ def get_simulated_at_location_closest(origins, deltas, data, point):
     index_x = int(round((point[1] - origin[2]) / delta[2]))
 
     # point is on right border
-    if index_x == data.getshape()[2]:
+    if index_x == data.shape[2]:
         index_x = index_x - 1
     # point is on top border
-    if index_y == data.getshape()[1]:
+    if index_y == data.shape[1]:
         index_y = index_y - 1
     return data[:,index_y, index_x]
 
@@ -395,15 +395,15 @@ def get_simulated_at_locations_closest(origins, deltas, data, point_list):
     @type deltas: (*, float, float) tuple
     @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point_list: sequence of (float, float) tuples
     @param point_list: Sequence of (latitude, longitude) of the points where the time
     sequences must be computed.
-    @rtype: sequence of 1D numarray.array
+    @rtype: sequence of 1D numpy.array
     @return: Sequence of time sequences of data at given points.
     """
-    ret = numarray.array([])
+    ret = numpy.array([])
     for i in point_list:
         ret.append(get_simulated_at_location_closest(origins, deltas, \
                                                      data, i))
@@ -421,14 +421,14 @@ def get_simulated_at_station(origins, deltas, data, station):
     @type deltas: (*, float, float) tuple
     @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type station: Station
     @param station: station where the time sequence must be computed.
-    @rtype: 1D numarray.array
+    @rtype: 1D numpy.array
     @return: Time sequence of data at given point.
     """
-    # data: numarray, T Y X
+    # data: numpy, T Y X
     # point: (latitude, longitude)
     # origins: (t_min, y_min, x_min)
     # deltas: (delta_t, delta_y, delta_x)
@@ -448,12 +448,12 @@ def get_simulated_at_stations(origins, deltas, data, stations):
     @type deltas: (*, float, float) tuple
     @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
     delta_x and delta_y are used in this function.
-    @type data: 3D numarray.array
+    @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type stations: sequence of (float, float) tuples
     @param stations: Sequence of Station giving the stations where the time
     sequences must be computed.
-    @rtype: sequence of 1D numarray.array
+    @rtype: sequence of 1D numpy.array
     @return: Sequence of time sequences of data at given points.
     """
     ret = []
@@ -532,9 +532,9 @@ def filter_stations_observations(filter_func, station_list, observations_list):
     and must return a boolean.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to filter.
-    @type observations_list: sequence of 1D numarray.array
+    @type observations_list: sequence of 1D numpy.array
     @param observations_list: sequence of observations to filter.
-    @rtype: Station sequence, 1D numarray.array sequence
+    @rtype: Station sequence, 1D numpy.array sequence
     @return: Stations sequence and observations sequence, filtered in place.
     """
     for i in range(len(station_list) - 1, -1, -1):
@@ -557,13 +557,13 @@ def map_stations_observations(map_func, station_list, observations_list):
     and must return a boolean.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to map.
-    @type observations_list: sequence of 1D numarray.array
+    @type observations_list: sequence of 1D numpy.array
     @param observations_list: sequence of observations to filter.
     @rtype: Boolean sequence
     @return: A boolean sequence, results of map_func applied to every
     stations and observations of the sequences.
     """
-    ret = numarray.array([])
+    ret = numpy.array([])
     for i in range(len(station_list)):
         ret.append(map_func(station_list[i], observations_list[i]))
     return ret

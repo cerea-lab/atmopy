@@ -23,13 +23,14 @@
 
 
 from pylab import *
-from numarray import *
+from numpy import *
 try:
     from matplotlib.toolkits.basemap import Basemap
 except:
     pass
 import sys, os
-sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+sys.path.insert(0,
+                os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import talos
 sys.path.pop(0)
 
@@ -69,8 +70,8 @@ def getm(config, cbar = True):
     return m
 
 
-def getd(config = None, filename = "",
-         Nt = None, Nz = None, Ny = None, Nx = None):
+def getd(config = None, filename = "", Nt = None,
+         Nz = None, Ny = None, Nx = None):
     """
     Reads data from a binary file.
 
@@ -80,7 +81,7 @@ def getd(config = None, filename = "",
     @param filename: The file to be loaded. If filename is empty, then the
     file from 'config' is loaded.
 
-    @rtype: numarray.array
+    @rtype: numpy.array
     @return: The data.
     """
     if isinstance(config, str):
@@ -107,7 +108,12 @@ def getd(config = None, filename = "",
     if Nt == 0:
         Nt = int(os.stat(filename)[6] / 4) / Nx / Ny / Nz
         
-    return fromfile(filename, type = 'f', shape = [Nt, Nz, Ny, Nx])
+    length = 1
+    for l in [Nt, Nz, Ny, Nx]:
+        length *= l
+    d = fromfile(filename, 'f', length)
+    d.shape = (Nt, Nz, Ny, Nx)
+    return d.astype('f8')
 
 
 def getmd(config, cbar = True):
@@ -119,7 +125,7 @@ def getmd(config, cbar = True):
     @type cbar: Boolean
     @param cbar: True is there is a colormap, false otherwise.
 
-    @rtype: (Basemap, numarray.array)
+    @rtype: (Basemap, numpy.array)
     @return: The map and the data.
     """
     return (getm(config), getd(config))
@@ -131,7 +137,7 @@ def disp(map, data, **kwargs):
 
     @type map: Basemap
     @param map: The map on which data is displayed.
-    @type data: 2D numarray.array
+    @type data: 2D numpy.array
     @param data: Data (2D) to be displayed.
     """
     # If the figure is empty, sets new axes.
@@ -163,9 +169,9 @@ def dispcf(map, data, V = None, **kwargs):
 
     @type map: Basemap
     @param map: The map on which data is displayed.
-    @type data: 2D numarray.array
+    @type data: 2D numpy.array
     @param data: Data (2D) to be displayed.
-    @type V: integer, list or 1D numarray.array
+    @type V: integer, list or 1D numpy.array
     @param V: The number of levels or the list of thresholds for the contours.
     """
     # If the figure is empty, sets new axes.
