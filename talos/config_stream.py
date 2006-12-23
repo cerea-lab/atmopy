@@ -25,6 +25,7 @@
 import commands
 import datetime
 import miscellaneous
+import os
 
 
 class ConfigStream:
@@ -36,7 +37,11 @@ class ConfigStream:
         import os.path
         self.filename = file
         self.extract = os.path.dirname(os.path.abspath(__file__)) \
-                       + "/extract_configuration "
+                       + "/extract_configuration"
+        if os.name == "nt":
+            self.extract += ".exe "
+        else:
+            self.extract += " "
 
     def GetOutput(self, command):
         """ Calls external program extract_configuration (which must
@@ -50,13 +55,28 @@ class ConfigStream:
         @return: extract_configuration Output and error messages, or
         launch an exception if an error occured.
         """
-        (s, o) = commands.getstatusoutput(self.extract + self.filename \
-                                          + " " + command)
-        if s == 0:
-            return o
+        if os.name == "nt":
+            import popen2
+            o, w, e = popen2.popen3(self.extract + self.filename
+                                    + " " + command)
+            errors = e.readlines()
+            output = o.readlines()
+            e.close()
+            o.close()
+            w.close()
+            if len(errors) == 0:
+                return "".join(output)[:-1]
+            else:
+                raise Exception, "Unable to launch: \"extract_configuration "\
+                          + self.filename + " " + command + "\""            
         else:
-            raise Exception, "Unable to launch: \"extract_configuration " \
-                      + self.filename + " " + command + "\""
+            (s, o) = commands.getstatusoutput(self.extract + self.filename \
+                                              + " " + command)
+            if s == 0:
+                return o
+            else:
+                raise Exception, "Unable to launch: \"extract_configuration "\
+                          + self.filename + " " + command + "\""
 
     def ListSections(self):
         """
