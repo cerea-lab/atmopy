@@ -37,21 +37,21 @@ def spatial_distribution(data, function):
     @param function: The function to be applied to the time series. If
     'function' is a string, it is assumed to be a numpy.array method.
     """
-    m = zeros(data.shape[1:], 'f')
-    if data.rank == 2:
+    m = zeros(data.shape[1:], dtype = 'd')
+    if data.ndim == 2:
         for i in range(data.shape[1]):
             if isinstance(function, str):
                 m[i] = getattr(data[:, i], function)()
             else:
                 m[i] = function(data[:, i])
-    elif data.rank == 3:
+    elif data.ndim == 3:
         for i in range(data.shape[1]):
             for j in range(data.shape[2]):
                 if isinstance(function, str):
                     m[i, j] = getattr(data[:, i, j], function)()
                 else:
                     m[i, j] = function(data[:, i, j])
-    elif data.rank == 4:
+    elif data.ndim == 4:
         for i in range(data.shape[1]):
             for j in range(data.shape[2]):
                 for k in range(data.shape[3]):
@@ -59,12 +59,22 @@ def spatial_distribution(data, function):
                         m[i, j, k] = getattr(data[:, i, j, k], function)()
                     else:
                         m[i, j, k] = function(data[:, i, j, k])
-    elif data.rank > 4:
-        raise ValueError, "Too many dimensions (" + str(data.rank) \
-              + "). There should be 2, 3 or 4 dimensions."
+    elif data.ndim == 5:
+        for i in range(data.shape[1]):
+            for j in range(data.shape[2]):
+                for k in range(data.shape[3]):
+                    for l in range(data.shape[4]):
+                        if isinstance(function, str):
+                            m[i, j, k, l] = getattr(data[:, i, j, k, l],
+                                                    function)()
+                        else:
+                            m[i, j, k, l] = function(data[:, i, j, k, l])
+    elif data.ndim > 5:
+        raise ValueError, "Too many dimensions (" + str(data.ndim) \
+              + "). There should be 2, 3, 4 or 5 dimensions."
     else:
-        raise ValueError, "Too few dimensions (" + str(data.rank) \
-              + "). There should be 2, 3 or 4 dimensions."
+        raise ValueError, "Too few dimensions (" + str(data.ndim) \
+              + "). There should be 2, 3, 4 or 5 dimensions."
 
     return m
 
