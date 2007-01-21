@@ -52,7 +52,7 @@ def pdf(data, Nbins = 200, val = None):
 
     if val is not None:
         delta = float(val[1] - val[0])
-        bins = arange(len(val) + 1, typecode = 'f') * delta \
+        bins = arange(len(val) + 1, dtype = 'd') * delta \
                + val[0] - 0.5 * delta
         res = searchsorted(data, bins)
         return val, (res[1:] - res[:-1]) / (delta * float(len(data)))
@@ -60,7 +60,7 @@ def pdf(data, Nbins = 200, val = None):
     # Bins.
     Nbins = float(Nbins)
     delta = (data[-1] - data[0]) / Nbins
-    bins = arange(Nbins + 1., typecode = 'f') * delta + data[0]
+    bins = arange(Nbins + 1., dtype = 'd') * delta + data[0]
     bins[0] = data[0] - delta   # So that all elements are counted.
     bins[-1] = data[-1] + delta   # So that all elements are counted.
     
@@ -83,4 +83,4 @@ def cdf(data):
     them.
     """
     data = sort(ravel(data))
-    return data, (arange(len(data), typecode = 'f') + 1.) / float(len(data))
+    return data, (arange(len(data), dtype = 'd') + 1.) / float(len(data))
