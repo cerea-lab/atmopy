@@ -372,8 +372,8 @@ def get_simulated_at_location_closest(origins, deltas, data, point):
     # deltas : ( DeltaX, DeltaY, DeltaT )
 
     # Closest point :
-    index_y = int(round((point[0] - origin[1]) / delta[1]))
-    index_x = int(round((point[1] - origin[2]) / delta[2]))
+    index_y = int(round((point[0] - origins[1]) / deltas[1]))
+    index_x = int(round((point[1] - origins[2]) / deltas[2]))
 
     # point is on right border
     if index_x == data.shape[2]:
@@ -435,6 +435,29 @@ def get_simulated_at_station(origins, deltas, data, station):
     return get_simulated_at_location(origins, deltas, \
                                      data, (station.latitude, \
                                             station.longitude))
+
+
+def get_simulated_at_station_closest(origins, deltas, data, station):
+    """
+    Gets a time sequence of data at specified station using the closest data,
+    that is, without interpolation.
+
+    @type origins: (*, float, float) tuple
+    @param origins: Grid origin, ie (t_min, y_min, x_min).
+    Only y_min and x_min are used in this function.
+    @type deltas: (*, float, float) tuple
+    @param deltas: Grid deltas, ie (delta_t, delta_y, delta_x). Only
+    delta_x and delta_y are used in this function.
+    @type data: 3D numpy.array
+    @param data: 3D array of data to interpolate with T, Y, X dimensions.
+    @type station: Station
+    @param station: station where the time sequence must be computed.
+    @rtype: 1D numpy.array
+    @return: Time sequence of data at given point.
+    """
+    return get_simulated_at_location_closest(origins, deltas, \
+                                             data, (station.latitude, \
+                                                    station.longitude))
 
 
 def get_simulated_at_stations(origins, deltas, data, stations):
