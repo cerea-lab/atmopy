@@ -53,9 +53,9 @@ def getm(config, cbar = True):
                 llcrnrlon = config.x_min - config.Delta_x / 2.,
                 llcrnrlat = config.y_min - config.Delta_y / 2.,
                 urcrnrlon = config.x_min + config.Delta_x / 2. +
-                config.Delta_x * float(config.Nx),
+                config.Delta_x * float(config.Nx - 1),
                 urcrnrlat = config.y_min + config.Delta_y / 2. +
-                config.Delta_y * float(config.Ny), resolution = 'l',
+                config.Delta_y * float(config.Ny - 1), resolution = 'l',
                 suppress_ticks = False)
     fig_num = get_current_fig_manager().num
     xsize = rcParams['figure.figsize'][0]
