@@ -271,7 +271,7 @@ def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
     @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array
     @type obs_dates: sequence of datetime.datetime
-    @param obs_dates: Dates for observation data. 
+    @param obs_dates: Dates for observation data.
     @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
     @rtype: numpy.array, numpy.array
@@ -318,18 +318,17 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
     @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array
     @type obs_dates: sequence of datetime.datetime
-    @param obs_dates: Dates for observation data. 
+    @param obs_dates: Dates for observation data.
     @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
     @type mask_sim: 1D numpy.array
-    @param mask_sim: Mask array for simulation data corresponding to dates common
-    to simulation and observation. This array can be obtain thanks to
+    @param mask_sim: Mask array for simulation data corresponding to dates
+    common to simulation and observation. This array can be obtain thanks to
     mask_for_common_days.
     @type mask_obs: 1D numpy.array
-    @param mask_obs: Mask array for observation data corresponding to dates common
-    to simulation and observation. This array can be obtain thanks to
+    @param mask_obs: Mask array for observation data corresponding to dates
+    common to simulation and observation. This array can be obtain thanks to
     mask_for_common_days.
-
     @rtype: sequence of datetime.datetime, numpy.array, numpy.array
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
@@ -358,7 +357,7 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
     @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
-    @param obs_dates: Dates for observation data. 
+    @param obs_dates: Dates for observation data.
     @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
     @rtype: sequence of datetime.datetime, numpy.array, numpy.array
@@ -439,7 +438,7 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
     @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
-    @param obs_dates: Dates for observation data. 
+    @param obs_dates: Dates for observation data.
     @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
     @rtype: sequence of datetime.datetime, numpy.array, numpy.array
@@ -497,7 +496,7 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     @type simulated: 1D numpy.array
     @param simulated: Simulation data, 1D array.
     @type obs_dates: sequence of datetime.datetime
-    @param obs_dates: Dates for observation data. 
+    @param obs_dates: Dates for observation data.
     @type obs: 1D numpy.array
     @param obs: Observation data, 1D array.
     @rtype: sequence of datetime.datetime, numpy.array, numpy.array
@@ -569,7 +568,7 @@ def restrict_to_period(dates, data, period_date, end_date = None):
         start_date = period_date
     istart = 0
     while istart < len(dates) and dates[istart] < start_date: istart += 1
-    if istart == len(dates):
+    if istart == len(dates) or dates[istart] > end_date :
         return [], numpy.array([])
     iend = istart + 1
     while iend < len(dates) and dates[iend] <= end_date: iend += 1
