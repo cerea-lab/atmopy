@@ -81,6 +81,7 @@ int main(int argc, char** argv)
   string option(""), value, line;
   vector<list<string> > keys;
   vector<string> sections;
+  vector<string> extract_section;
 
   // With no option: lists all sections.
   if (argc == 2)
@@ -88,7 +89,11 @@ int main(int argc, char** argv)
       configuration.Rewind();
       while (configuration.GetLine(line))
 	if (line[0] == '[')
-	  cout << "[" << split(line, "[]")[0] << "]" << endl;
+	  {
+	    extract_section = split(line, "[]");
+	    if (!extract_section.empty())
+	      cout << "[" << split(line, "[]")[0] << "]" << endl;
+	  }
     }
 
   int i = 2;
@@ -123,7 +128,11 @@ int main(int argc, char** argv)
 	  configuration.Rewind();
 	  while (configuration.GetLine(line))
 	    if (line[0] == '[')
-	      cout << "[" << split(line, "[]")[0] << "]" << endl;
+	      {
+		extract_section = split(line, "[]");
+		if (!extract_section.empty())
+		  cout << "[" << split(line, "[]")[0] << "]" << endl;
+	      }
 	  option = "";
 	  --i;
 	}
