@@ -35,7 +35,8 @@ import talos
 sys.path.pop(0)
 
 
-def getm(config, cbar = True):
+def getm(config = None, y_min = None, x_min = None,
+         Delta_y = None, Delta_x = None, Ny = None, Nx = None, cbar = True):
     """
     Generates a map with Basemap.
 
@@ -49,14 +50,26 @@ def getm(config, cbar = True):
     """
     if isinstance(config, str):
         config = talos.Config(config)
+
+    if x_min is None:
+        x_min = config.x_min
+    if y_min is None:
+        y_min = config.y_min
+    if Delta_x is None:
+        Delta_x = config.Delta_x
+    if Delta_y is None:
+        Delta_y = config.Delta_y
+    if Nx is None:
+        Nx = config.Nx
+    if Ny is None:
+        Ny = config.Ny
+
     m = Basemap(projection = 'cyl',
-                llcrnrlon = config.x_min - config.Delta_x / 2.,
-                llcrnrlat = config.y_min - config.Delta_y / 2.,
-                urcrnrlon = config.x_min + config.Delta_x / 2. +
-                config.Delta_x * float(config.Nx - 1),
-                urcrnrlat = config.y_min + config.Delta_y / 2. +
-                config.Delta_y * float(config.Ny - 1), resolution = 'l',
-                suppress_ticks = False)
+                llcrnrlon = x_min - Delta_x / 2.,
+                llcrnrlat = y_min - Delta_y / 2.,
+                urcrnrlon = x_min + Delta_x / 2. + Delta_x * float(Nx - 1),
+                urcrnrlat = y_min + Delta_y / 2. + Delta_y * float(Ny - 1),
+                resolution = 'l', suppress_ticks = False)
     fig_num = get_current_fig_manager().num
     xsize = rcParams['figure.figsize'][0]
     fig = figure(num = fig_num)
