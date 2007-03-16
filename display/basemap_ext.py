@@ -19,7 +19,7 @@
 # GNU General Public License (file ``license'') for more details.
 #
 # For more information, please see the AtmoPy home page:
-#     http://www.enpc.fr/cerea/atmopy/
+#     http://www.enpc.fr/cerea/polyphemus/atmopy.html
 
 
 from pylab import *
@@ -93,6 +93,18 @@ def getd(config = None, filename = "", Nt = None,
     @type filename: string
     @param filename: The file to be loaded. If filename is empty, then the
     file from 'config' is loaded.
+    @type Nt: integer.
+    @param Nt: The number of time steps in the file to be loaded. If it is not
+    given, it is read in 'config'.
+    @type Nz: integer.
+    @param Nz: The number of levels in the file to be loaded. If it is not
+    given, it is read in 'config'.
+    @type Ny: integer.
+    @param Ny: The number of space steps along y in the file to be loaded. If
+    it is not given, it is read in 'config'. 
+    @type Nx: integer.
+    @param Nx: The number of space steps along xin the file to be loaded. If
+    it is not given, it is read in 'config'.
 
     @rtype: numpy.array
     @return: The data.

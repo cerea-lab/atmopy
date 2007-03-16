@@ -19,7 +19,7 @@
 # GNU General Public License (file ``license'') for more details.
 #
 # For more information, please see the AtmoPy home page:
-#     http://www.enpc.fr/cerea/atmopy/
+#     http://www.enpc.fr/cerea/polyphemus/atmopy.html
 
 
 from pylab import *
