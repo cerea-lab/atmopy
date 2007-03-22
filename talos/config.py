@@ -58,19 +58,19 @@ class Config:
         """
         self.filename = filename
         self.stream = config_stream.ConfigStream(self.filename)
-        self.content = [("t_min", "[input]", "DateTime"), \
-                        ("x_min", "[input]", "Float"), \
-                        ("y_min", "[input]", "Float"), \
-                        ("Delta_t", "[input]", "Float"), \
-                        ("Delta_x", "[input]", "Float"), \
-                        ("Delta_y", "[input]", "Float"), \
-                        ("Nt", "[input]", "Int"), ("Nx", "[input]", "Int"), \
-                        ("Ny", "[input]", "Int"), ("Nz", "[input]", "Int"), \
-                        ("file", "[input]", "input_file", "String"), \
-                        ("species", "[input]", "String"), \
-                        ("obs_dir", "[input]", "String"), \
-                        ("station_file", "[input]", "String"), \
-                        ("station_file_type", "[input]", "String"), \
+        self.content = [("t_min", "", "DateTime"), \
+                        ("x_min", "", "Float"), \
+                        ("y_min", "", "Float"), \
+                        ("Delta_t", "", "Float"), \
+                        ("Delta_x", "", "Float"), \
+                        ("Delta_y", "", "Float"), \
+                        ("Nt", "", "Int"), ("Nx", "", "Int"), \
+                        ("Ny", "", "Int"), ("Nz", "", "Int"), \
+                        ("file", "", "input_file", "String"), \
+                        ("species", "", "String"), \
+                        ("obs_dir", "", "String"), \
+                        ("station_file", "", "String"), \
+                        ("station_file_type", "", "String"), \
                         ("type", "[output]", "String"), \
                         ("terminal", "[output]", "String"), \
                         ("t_range", "[output]", "DateTimeList"), \
