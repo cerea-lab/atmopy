@@ -101,7 +101,7 @@ def getd(config = None, filename = "", Nt = None,
     given, it is read in 'config'.
     @type Ny: integer.
     @param Ny: The number of space steps along y in the file to be loaded. If
-    it is not given, it is read in 'config'. 
+    it is not given, it is read in 'config'.
     @type Nx: integer.
     @param Nx: The number of space steps along xin the file to be loaded. If
     it is not given, it is read in 'config'.
@@ -165,6 +165,10 @@ def disp(map, data, **kwargs):
     @type data: 2D numpy.array
     @param data: Data (2D) to be displayed.
     """
+    if data.ndim != 2:
+        raise Exception, "Function \"disp\" proceeds with 2D data," \
+              + " but input data has " + str(data.ndim) + " dimension(s)."
+
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
         xsize = rcParams['figure.figsize'][0]
@@ -199,6 +203,10 @@ def dispcf(map, data, V = None, **kwargs):
     @type V: integer, list or 1D numpy.array
     @param V: The number of levels or the list of thresholds for the contours.
     """
+    if data.ndim != 2:
+        raise Exception, "Function \"dispcf\" proceeds with 2D data," \
+              + " but input data has " + str(data.ndim) + " dimension(s)."
+    
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
         xsize = rcParams['figure.figsize'][0]
