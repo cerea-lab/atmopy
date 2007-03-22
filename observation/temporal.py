@@ -579,7 +579,7 @@ def mask_for_series(dates, delta, Ndates):
     """
     Removes the dates if there are not enough preceding contiguous dates.
 
-    @Type Dates: list of datetime
+    @type dates: list of datetime
     @param dates: Input dates.
     @type delta: timedelta
     @param delta: The minimum time-delta between two dates.
