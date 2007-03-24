@@ -37,3 +37,40 @@ import io
 import observation
 import stat
 import talos
+
+
+def atmopy_test():
+    """
+    Tests AtmoPy installation. If no error occurs while this function is
+    executed, AtmoPy is properly installed.
+    """
+    import numpy
+    import tempfile, os
+
+    # Configuration file.
+    o, name = tempfile.mkstemp()
+    o = open(name, "w")
+    o.write("x_min = -10.5 Delta_x = 0.5 Nx = 67\n"
+            + "y_min = 35. Delta_y = 0.5 Ny = 48\n")
+    o.close()
+
+    # Generates data.
+    def f(x_, y_):
+        return (1. - x / 2. + x**5 + y**3) * numpy.exp(- x**2 - y**2)
+    x = numpy.arange(67., dtype = 'f') * .1 - 3.
+    y = numpy.arange(48., dtype = 'f') * .1 - 2.5
+    x, y = numpy.meshgrid(x, y)
+    d = f(x, y)
+    d = numpy.array([d for i in range(3)], dtype = 'f') + 1.
+    # Saves data in a binary file.
+    o, name_data = tempfile.mkstemp()
+    d.tofile(name_data)
+    
+    # Tests Talos and display capabilities.
+    m = display.getm(name)
+    d = display.getd(name, name_data, Nt = 0, Nz = 1)
+    display.dispcf(m, stat.spatial_distribution(d, "mean")[0], V = 25)
+
+    # Removes temporary files.
+    os.remove(name)
+    os.remove(name_data)
