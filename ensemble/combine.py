@@ -223,7 +223,7 @@ def w_least_squares(sim, obs):
     return dot(scipy.linalg.inv(dot(sim, transpose(sim))), dot(sim, obs))
 
 
-def w_least_squares_simplex(self, sim, obs):
+def w_least_squares_simplex(sim, obs):
     """
     Computes the optimal combination weights in the least-square sense, with
     weights in the simplex of probability distributions.
