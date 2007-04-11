@@ -24,7 +24,8 @@
 
 import datetime
 import sys, os
-sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+sys.path.insert(0,
+                os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import observation
 sys.path.pop(0)
 from scipy import *
@@ -220,6 +221,38 @@ def w_least_squares(sim, obs):
     @return: The coefficients (or weights) 'alpha' of the linear combination.
     """
     return dot(scipy.linalg.inv(dot(sim, transpose(sim))), dot(sim, obs))
+
+
+def w_least_squares_simplex(self, sim, obs):
+    """
+    Computes the optimal combination weights in the least-square sense, with
+    weights in the simplex of probability distributions.
+
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+
+    @rtype: 1D-array
+    @return: The coefficients (or weights) 'alpha' of the linear combination.
+    """
+    def cost(w):
+        s = dot(transpose(w), sim) / w.sum()
+        return dot(transpose(s - obs), s - obs)
+    def cost_gradient(w):
+        w_sum = w.sum()
+        s = dot(transpose(w), sim) / w_sum
+        return dot(sim - s, s - obs) / w_sum
+    res, f, d = \
+         scipy.optimize.fmin_l_bfgs_b(cost,
+                                      ones(sim.shape[0], dtype = 'd'),
+                                      fprime = cost_gradient,
+                                      bounds = [(0., 1.) for i in
+                                                range(sim.shape[0])],
+                                      approx_grad = False)
+    res = array(res)
+    return res / res.sum()
 
 
 def m_least_squares(sim, obs):
