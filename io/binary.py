@@ -97,11 +97,11 @@ def load_binary(filename, shape, type = 'f'):
         raise Exception, "File \"" + filename \
               + "\" does not contain enough elements."
     d.shape = shape
-    d = d.astype('f8')
+    d = d.astype('d')
     return d
 
 
-def load_binary_first_level(filename, shape, type = 'f4'):
+def load_binary_first_level(filename, shape, type = 'f'):
     """
     Loads a binary file into an array using specified 3D shape for
     X, Y and T dimensions (a time sequence of planes).
@@ -115,7 +115,7 @@ def load_binary_first_level(filename, shape, type = 'f4'):
     @param shape: The 3D shape of the array to load from file.
 
     @type type: string
-    @param type: Type of data read. Default is 'f4'
+    @param type: Type of data read. Default is 'f'
 
     @rtype: numpy.array
     @return: New 3D array os given shape filled with binary data
@@ -137,7 +137,7 @@ def load_binary_first_level(filename, shape, type = 'f4'):
     return res
 
 
-def save_binary(arrayToSave, filename, type = 'f4'):
+def save_binary(arrayToSave, filename, type = 'f'):
     """
     Saves a numpy in a binary file using specified type.
 
