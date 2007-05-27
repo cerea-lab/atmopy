@@ -31,7 +31,8 @@ class Config:
     configuration file.
     """
 
-    def __init__(self, filename, additional_content = [], new_content = []):
+    def __init__(self, filename, additional_content = [], new_content = [],
+                 show_error = False):
         """
         Config constructor. It reads a set of attributes in a configuration
         file.
@@ -55,6 +56,9 @@ class Config:
         @type new_content: list of tuples of strings
         @param new_content: Description of all attributes. It overwrites the
         default attributes.
+        @type show_error: Boolean
+        @param show_error: True if an exception may be launched when an error
+        occurs, False otherwise.
         """
         self.filename = filename
         self.stream = config_stream.ConfigStream(self.filename)
@@ -84,6 +88,7 @@ class Config:
         self.content.extend(additional_content)
         if len(new_content) != 0:
             self.content = new_content[:]
+        self.show_error = show_error
         for x in self.content:
             self.SetAttribute(x)
         self.SetMetaAttributes()
@@ -107,14 +112,22 @@ class Config:
            where 'Num' means 'Int' or 'Float', and 'Section' means that a whole
            section is read and returned in a list made of the section lines.
         """
-        try:
+        if not self.show_error:
+            try:
+                val = self.stream.GetElement(x[0], section = x[1],
+                                             type = x[-1])
+                if len(x) == 4:
+                    setattr(self, x[2], val)
+                else:
+                    setattr(self, x[0], val)
+            except:
+                pass
+        else:
             val = self.stream.GetElement(x[0], section = x[1], type = x[-1])
             if len(x) == 4:
                 setattr(self, x[2], val)
             else:
                 setattr(self, x[0], val)
-        except:
-            pass
 
     def SetMetaAttributes(self):
         """
