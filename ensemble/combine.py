@@ -504,7 +504,7 @@ def combine_step_unbiased(dates, sim, obs, coeff_dates, coeff_step):
     return output_sim
 
 
-def combine_station_step(dates, sim, coeff_dates, coeff):
+def combine_station_step(dates, sim, coeff_dates, coeff, restricted = False):
     """
     Combines the simulated concentrations based on coefficients provided for
     each date and for each station.
@@ -525,11 +525,17 @@ def combine_station_step(dates, sim, coeff_dates, coeff):
     coefficients. The first combination is associated with the earliest date
     of 'dates' and the last combination is associated with the latest date of
     'dates'.
+    @type restricted: Boolean.
+    @param restricted: True if weights are not available for all dates, False
+    otherwise.
 
-    @rtype: list of array
-    @return: The ensemble based on the linear combination. It is returned in a
-    list (indexed by stations) of 1D-arrays (that contain the time series).
+    @rtype: list of array or (list of list of datetime, list of array)
+    @return: In case 'restricted' is set to True, the dates associated to
+    combined concentrations and existing observations are returned. The
+    ensemble based on the linear combination is returned in a list (indexed by
+    stations) of 1D-arrays (that contain the time series).
     """
+
     # Initializations.
     if isinstance(sim[0], ndarray):
         sim = (sim, )
@@ -542,28 +548,30 @@ def combine_station_step(dates, sim, coeff_dates, coeff):
     Nstations = len(sim[0])
 
     output_sim = [[] for i in range(Nstations)]
+    if restricted:
+        output_date = [[] for i in range(Nstations)]
 
-    # Combining.
     for istation in range(Nstations):
-        icoeff = 0
-        Ndates = len(coeff_dates[istation])
-        for idate in range(len(dates[istation])):
-            # Corresponding index in 'coeff_dates' and 'coeff_step'.
-            while icoeff < Ndates \
-                      and coeff_dates[istation][icoeff] \
-                      != dates[istation][idate]:
-                icoeff += 1
-            if icoeff == Ndates:
-                raise Exception, "Unable to find coefficients for date " \
-                      + str(dates[istation][idate]) + "."
-            # Concentrations of the ensemble.
+        matching_dates = [x for x in dates[istation]
+                          if x in coeff_dates[istation]]
+        if not matching_dates == coeff_dates and not restricted:
+            raise Exception, "Unable to match all dates, please activate" \
+                  + " 'restricted' option."
+        for good_date in matching_dates:
+            idate = dates[istation].index(good_date)
+            icoeff = coeff_dates[istation].index(good_date)
             data = array([sim[i][istation][idate] for i in range(Nsim)])
-            # Combination.
             output_sim[istation].append((coeff[istation][icoeff]
                                          * data).sum())
+        if restricted:
+            output_date[istation] = array(matching_dates[:])
+
         output_sim[istation] = array(output_sim[istation])
 
-    return output_sim
+    if restricted:
+        return output_date, output_sim
+    else:
+        return output_sim
 
 
 def remove_bias_step(dates, sim, bias_dates, bias_step):
