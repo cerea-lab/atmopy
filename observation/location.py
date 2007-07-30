@@ -59,6 +59,54 @@ class Station:
         except:
             return self.name
 
+    def GetName(self):
+        """
+        Returns the name of the station.
+
+        @rtype: string
+        @return: The name of the station.
+        """
+        return self.name
+
+    def GetLatitude(self):
+        """
+        Returns the latitude of the station.
+
+        @rtype: float
+        @return: The latitude of the station.
+        """
+        return self.latitude
+
+    def GetLongitude(self):
+        """
+        Returns the longitude of the station.
+
+        @rtype: float
+        @return: The longitude of the station.
+        """
+        return self.longitude
+
+    def GetAltitude(self):
+        """
+        Returns the altitude of the station.
+
+        @rtype: float
+        @return: The altitude of the station.
+        """
+        try:
+            return self.altitude
+        except:
+            return 0.
+
+    def GetCountry(self):
+        """
+        Returns the country of the station.
+
+        @rtype: string
+        @return: The country of the station.
+        """
+        return self.country
+        
     def FromAirparifString(self, str):
         """
         Sets station attributes from a string.
@@ -84,7 +132,7 @@ class Station:
                          + float(longitude[2]) / 3600.
         self.network = "Airparif"
         self.country = "FR"
-        
+
     def FromBdqaString(self, str):
         """
         Sets station attributes from a string.
@@ -123,7 +171,7 @@ class Station:
         self.network = "BDQA"
         self.type = l[5]
         self.country = "FR"
-        
+
     def FromEmepString(self, str):
         """
         Sets station attributes from a string.
