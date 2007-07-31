@@ -125,6 +125,34 @@ class Station:
         """
         return self.network
 
+    def FromDefaultString(self, str):
+        """
+        Sets station attributes from a string.
+
+        @type str: string
+        @param str: The string in default format that defines the station.
+        The string contains the following fields (separated by semicolons):
+           0. the station name;
+           1. the station real name;
+           2. the latitude (float);
+           3. the longitude (float);
+           4. altitude (float);
+           5. the country;
+           6. the station type;
+           7. the network.
+        where latitude and longitude are in decimal float number, the altitude
+        is in meters (set to zero if no altitude info.)
+        """
+        l = str.strip().split(";")
+        self.name = l[0].strip()
+        self.real_name = l[1].strip()
+        self.latitude = float(l[2].strip())
+        self.longitude = float(l[3].strip())
+        self.altitude = float(l[4].strip())
+        self.country = l[5].strip()
+        self.type = l[6].strip()
+        self.network = l[7].strip()
+
     def FromAirparifString(self, str):
         """
         Sets station attributes from a string.
