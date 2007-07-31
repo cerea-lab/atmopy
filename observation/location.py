@@ -106,7 +106,25 @@ class Station:
         @return: The country of the station.
         """
         return self.country
-        
+
+    def GetType(self):
+        """
+        Returns the type of the station.
+
+        @rtype: string
+        @return: The type of the station.
+        """
+        return self.type
+
+    def GetNetwork(self):
+        """
+        Returns the network name of the station.
+
+        @rtype: string
+        @return: The network name of the station.
+        """
+        return self.network
+
     def FromAirparifString(self, str):
         """
         Sets station attributes from a string.
