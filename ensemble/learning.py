@@ -1,24 +1,24 @@
-# Copyright (C) 2006-2007 CEREA
-#     Author: Gilles Stoltz, Boris Mauricette, Vivien Mallet
+# Copyright (C) 2006-2007, ENPC - INRIA - EDF R&D
+#     Author(s): Gilles Stoltz, Boris Mauricette, Vivien Mallet
 #
-# CEREA (http://www.enpc.fr/cerea/) is a joint laboratory of
-# ENPC (http://www.enpc.fr/) and EDF R&D (http://www.edf.fr/).
+# This file is part of AtmoPy library, a tool for data processing and
+# visualization in atmospheric sciences.
 #
-# This file is part of Polyphemus, a modeling system for air quality. It
-# provides facilities to deal with ensemble forecast.
+# AtmoPy is developed in the INRIA - ENPC joint project-team CLIME and in
+# the ENPC - EDF R&D joint laboratory CEREA.
 #
-# Polyphemus is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# AtmoPy is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
 #
-# Polyphemus is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License (file "license") for more details.
+# AtmoPy is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-# For more information, please see the AtmoPy home page:
-#     http://www.enpc.fr/cerea/polyphemus/atmopy.html
+# For more information, visit the AtmoPy home page:
+#     http://cerea.enpc.fr/polyphemus/atmopy.html
 
 
 import sys, os
