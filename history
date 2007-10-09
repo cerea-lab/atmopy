@@ -2,6 +2,18 @@ o----------------o
 | ATMOPY HISTORY |
 o----------------o
 
+Version 1.4 (2007-10-09)
+-----------
+
+** Improvements:
+
+- Added access methods 'GetName', 'GetLatitude', 'GetLongitude', 
+  'GetAltitude', 'GetCountry', 'GetType' and 'GetNetwork' for class 'Station'.
+- Added method 'FromDefaultString' for class 'Station'.
+- Added option 'restricted' in 'combine_station_step'.
+- Added an option so that an instance of 'Config' may launch an exception in 
+  case an error occurs.
+
 
 Version 1.3 (2007-04-24)
 -----------
