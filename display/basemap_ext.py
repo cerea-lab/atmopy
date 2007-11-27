@@ -35,14 +35,17 @@ sys.path.pop(0)
 
 
 def getm(config = None, y_min = None, x_min = None,
-         Delta_y = None, Delta_x = None, Ny = None, Nx = None, cbar = True):
+         Delta_y = None, Delta_x = None, Ny = None, Nx = None, cbar = True,
+         open_figure = True, resolution = 'l', area_thresh = 1000):
     """
     Generates a map with Basemap.
 
     @type config: Config or string
     @param config: The configuration or the configuration file.
     @type cbar: Boolean
-    @param cbar: True is there is a colormap, false otherwise.
+    @param cbar: True if there is a colormap, false otherwise.
+    @type open_figure: Boolean
+    @param open_figure: Should a figure be opened?
 
     @rtype: Basemap
     @return: The map.
@@ -68,17 +71,19 @@ def getm(config = None, y_min = None, x_min = None,
                 llcrnrlat = y_min - Delta_y / 2.,
                 urcrnrlon = x_min + Delta_x / 2. + Delta_x * float(Nx - 1),
                 urcrnrlat = y_min + Delta_y / 2. + Delta_y * float(Ny - 1),
-                resolution = 'l', suppress_ticks = False)
-    fig_num = get_current_fig_manager().num
-    xsize = rcParams['figure.figsize'][0]
-    fig = figure(num = fig_num)
-    if cbar:
-        ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
-        axes(ax)
-        axes([0.875, 0.1, 0.05, 0.75])
-    else:
-        ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
-        axes(ax)
+                resolution = resolution, suppress_ticks = False,
+                area_thresh = area_thresh)
+    if open_figure:
+        fig_num = get_current_fig_manager().num
+        xsize = rcParams['figure.figsize'][0]
+        fig = figure(num = fig_num)
+        if cbar:
+            ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
+            axes(ax)
+            axes([0.875, 0.1, 0.05, 0.75])
+        else:
+            ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+            axes(ax)
     return m
 
 
