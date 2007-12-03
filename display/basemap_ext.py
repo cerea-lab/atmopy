@@ -51,8 +51,11 @@ def getm(config = None, y_min = None, x_min = None,
     @return: The map.
     """
     if isinstance(config, str):
-        config = talos.Config(config)
-
+        if os.path.exists(config):
+            config = talos.Config(config)
+        else:
+            raise IOError, "Configuration file \"" + config + "\" not found."
+            
     if x_min is None:
         x_min = config.x_min
     if y_min is None:
