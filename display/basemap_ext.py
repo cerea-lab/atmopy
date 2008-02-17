@@ -186,11 +186,18 @@ def disp(map, data, **kwargs):
         axes([0.875, 0.1, 0.05, 0.75])
 
     # Clears current image.
+    with_states = kwargs.has_key("states") and kwargs["states"]
+    try:
+        kwargs.pop("states")
+    except:
+        pass
     gcf().axes[0].clear()
     axes(gcf().axes[0])
     map.imshow(data, **kwargs)
     map.drawcountries()
     map.drawcoastlines()
+    if with_states:
+        map.drawstates()        
 
     # Colorbar.
     if len(gcf().axes) > 1:
@@ -224,6 +231,11 @@ def dispcf(map, data, V = None, **kwargs):
         axes([0.875, 0.1, 0.05, 0.75])
 
     # Clears current image.
+    with_states = kwargs.has_key("states") and kwargs["states"]
+    try:
+        kwargs.pop("states")
+    except:
+        pass
     gcf().axes[0].clear()
     axes(gcf().axes[0])
 
@@ -236,6 +248,8 @@ def dispcf(map, data, V = None, **kwargs):
         map.contourf(xrange, yrange, data, V, **kwargs)
     map.drawcountries()
     map.drawcoastlines()
+    if with_states:
+        map.drawstates()        
 
     # Colorbar.
     if len(gcf().axes) > 1:
