@@ -41,7 +41,7 @@ def load_stations(filename, type, origins = (0, 0), \
 
     @type type: string
     @param type: The type of the initialization strings in the file. It could be
-    Pioneer or Emep.
+    Default, Pioneer, Emep or Bdqa.
 
     @type origins: (float, float)
     @param origins: (latitude, longitude) as coordinates of the first cell in the mesh.
@@ -78,7 +78,7 @@ def load_station(filename, type, station_name):
     @param filename: Name of the file that describes the stations.
     @type type: string
     @param type: The type of the initialization strings in the file. It could be
-    Pioneer or Emep.
+    Default, Pioneer, Emep or Bdqa.
     @type station_name: string
     @param station_name: Name of the station to load from the file.
 
