@@ -340,6 +340,22 @@ class Station:
                                 origins[1], origins[1] \
                                 + deltas[1] * float(lengths[1] - 1))
 
+    def GetClosestIndex(self, origins, deltas):
+        """
+        Returns the indices of the closest grid center to the station.
+
+        @type origins: (float, float) tuple
+        @param origins: Coordinates of the lower-left grid center,
+        i.e. (y_min, x_min).
+        @type deltas: (float, float) tuple
+        @param deltas: Cell widths, i.e. (delta_y, delta_x).
+        @rtype: list
+        @return: The indices along y and x, i.e. [index_y, index_x].
+        """
+        index_y = int(round((self.latitude - origins[0]) / deltas[0]))
+        index_x = int(round((self.longitude - origins[1]) / deltas[1]))
+        return [index_y, index_x]
+
 
 def is_urban(station):
     """
