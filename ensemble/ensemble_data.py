@@ -21,8 +21,15 @@
 #     http://cerea.enpc.fr/polyphemus/atmopy.html
 
 
+import sys, os
+current_file = os.path.abspath(__file__)
+atmopy_path = os.path.split(os.path.dirname(current_file))[0]
+atmopy_path = os.path.split(os.path.dirname(atmopy_path))[0]
+sys.path.insert(0, atmopy_path)
+from atmopy import talos, io, observation, stat
+sys.path.pop(0)
+
 from numpy import *
-from atmopy import *
 import datetime
 import scipy
 
@@ -65,6 +72,9 @@ class EnsembleData:
         self.prt = talos.PrintInPlace()
         self.stat = {}
         self.stat_step = {}
+        self.stat_station = {}
+        self.Nsim = 0
+        self.sim = []
 
         if configuration_file != None:
             self.LoadConfiguration(configuration_file)
@@ -86,6 +96,8 @@ class EnsembleData:
         if not os.path.isfile(configuration_file):
             raise Exception, "Unable to open configuration file " \
                   + "\"" + configuration_file + "\"."
+
+        self.configuration_file = configuration_file
         
         add_content = [("discarded_cells", "[input]", "Int"),
                        ("discarded_days", "[input]", "Int"),
@@ -286,7 +298,8 @@ class EnsembleData:
         self.prt.Clear()
 
 
-    def AddSimulation(self, sim, date = None, position = None):
+    def AddSimulation(self, sim, date = None, position = None,
+                      duplicate = False):
         """
         Adds a new simulation.
 
@@ -300,6 +313,9 @@ class EnsembleData:
         @type position: None or integer
         @param position: index of the simulation in the ensemble. If
         'position' is None, the simulation is appended.
+        @type duplicate: Boolean
+        @param duplicate: True if the concentrations should be duplicated,
+        False otherwise (copy by reference).
         """
         if date != None:
             if len(date) != len(self.date):
@@ -311,11 +327,16 @@ class EnsembleData:
                     if date[istation][idate] != self.date[istation][idate]:
                         raise Exception, "Inconsistent dates."
 
+        if duplicate:
+            add_sim = [x.copy() for x in sim]
+        else:
+            add_sim = sim
+
         self.Nsim += 1
         if position is None:
-            self.sim.append(sim)
+            self.sim.append(add_sim)
         else:
-            self.sim.insert(position, sim)
+            self.sim.insert(position, add_sim)
 
 
     def RemoveSimulation(self, index = -1):
@@ -356,6 +377,20 @@ class EnsembleData:
                                               self.config.measure,
                                               cutoff = self.config.cutoff,
                                               period = period)[1]
+
+
+    def ComputeStationStatistics(self, period = None):
+        """
+        Computes statistics (simulations against measurements) over all time
+        steps and for every station. It updates attribute "stat_station".
+        """
+        self.stat_station = \
+                          stat.compute_stat_station(self.sim, self.obs,
+                                                    self.config.measure,
+                                                    dates = self.date,
+                                                    cutoff
+                                                    = self.config.cutoff,
+                                                    period = period)
 
 
     def GetAllDates(self):
@@ -399,6 +434,47 @@ class EnsembleData:
         self.obs = obs_out
         self.date = date_out
         self.GetAllDates()
+
+
+    def DuplicateEnsemble(self, ensemble):
+        """
+        Duplicates an EnsembleData instance, except its simulation data. The
+        ensembles will share the same observations, stations, dates and
+        configuration file. They will have their own independent simulation
+        data and statistics.
+
+        @type ensemble: EnsembleData
+        @param ensemble: The ensemble to be duplicated.
+        """
+        self.Nstation = ensemble.Nstation
+        self.station = ensemble.station
+        self.obs = ensemble.obs
+        self.date = ensemble.date
+        self.all_dates = ensemble.all_dates
+        self.configuration_file = ensemble.configuration_file
+        self.config = ensemble.config
+
+
+    def RankArray(self):
+        """
+        Computes the rank array to be used in a rank diagram.
+
+        @rtype: 1D-array
+        @return: The rank array of length Nsim+1.
+        """
+        result = zeros(self.Nsim + 1, 'd')
+        for s in range(self.Nstation):
+            for t in range(len(self.obs[s])):
+                obs = self.obs[s][t]
+                sim = array([x[s][t] for x in self.sim], 'd')
+                sim.sort()
+
+                rank = 0
+                while rank != self.Nsim and obs > sim[rank]:
+                    rank += 1
+                result[rank] += 1.
+
+        return result
 
 
 ####################
