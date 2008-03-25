@@ -563,7 +563,7 @@ def combine_station_step(dates, sim, coeff_dates, coeff, restricted = False):
             output_sim[istation].append((coeff[istation][icoeff]
                                          * data).sum())
         if restricted:
-            output_date[istation] = array(matching_dates[:])
+            output_date[istation] = matching_dates[:]
 
         output_sim[istation] = array(output_sim[istation])
 
