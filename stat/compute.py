@@ -137,10 +137,11 @@ def compute_stat(sim, obs, measures, dates = None, stations = None, period =
     @type stations: list of Station, or Station
     @param stations: The station(s) at which the concentrations are given. If
     it is set to None, all stations will be included.
-    @type period: 2-tuple of datetime, or datetime, or string
+    @type period: 2-tuple of datetime, or datetime, or list of datetime
     @param period: The period where to select the concentrations (bounds
     included). A single date may be provided. If 'period' is set to None, all
-    input dates are included.
+    input dates are included. If a list is provided, the period is defined by
+    the first and the last dates in the list.
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
@@ -237,10 +238,11 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     @type stations: list of Station, or Station
     @param stations: The station(s) at which the concentrations are given. If
     it is set to None, all stations will be included.
-    @type period: 2-tuple of datetime, or datetime, or string
+    @type period: 2-tuple of datetime, or datetime, or list of datetime
     @param period: The period where to select the concentrations (bounds
     included). A single date may be provided. If 'period' is set to None, all
-    input dates are included.
+    input dates are included. If a list is provided, the period is defined by
+    the first and the last dates in the list.
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
@@ -353,10 +355,11 @@ def compute_stat_station(sim, obs, measures, dates = None, stations = None,
     @type stations: list of Station, or Station
     @param stations: The station(s) at which the concentrations are given. If
     it is set to None, all stations will be included.
-    @type period: 2-tuple of datetime, or datetime, or string
+    @type period: 2-tuple of datetime, or datetime, or list of datetime
     @param period: The period where to select the concentrations (bounds
     included). A single date may be provided. If 'period' is set to None, all
-    input dates are included.
+    input dates are included. If a list is provided, the period is defined by
+    the first and the last dates in the list.
     @type stations_out: list of Station, or Station, or string
     @param stations_out: The station(s) at which the concentrations are
     selected. If 'stations_out' is set to None, all input dates are included.
