@@ -289,7 +289,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
 
     # List of all steps.
     start_date = period[0]
-    end_date = period[1]
+    end_date = period[-1]
     if obs_type == "hourly":
         range_delta = datetime.timedelta(0, 3600)
         Nsteps = (end_date - start_date).days * 24 \
