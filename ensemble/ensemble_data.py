@@ -487,14 +487,14 @@ def merge(date, data, date_update, data_update):
     Merges two data sets assumed to be defined for the same stations, but not
     for the same dates.
 
-    @type dates: list of list of datetime
-    @param dates: The list (indexed by stations) of the list of dates at which
+    @type date: list of list of datetime
+    @param date: The list (indexed by stations) of the list of dates at which
     the values in 'data' are defined.
     @type data: list of 1D-array.
     @param data: The list (indexed by stations) of data assumed to be the base
     of the output data.
-    @type dates_update: list of list of datetime
-    @param dates_update: The list (indexed by stations) of the list of dates
+    @type date_update: list of list of datetime
+    @param date_update: The list (indexed by stations) of the list of dates
     at which the values in 'data_update' are defined.
     @type data_update: list of 1D-array.
     @param data_update: The list (indexed by stations) of data that should be

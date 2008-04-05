@@ -977,7 +977,7 @@ class Polynomial(EnsembleMethod):
 
         @type power: float
         @param power: Power of the potential. It must be strictly greater than
-        1.
+        one.
         """
         self.power = power
         EnsembleMethod.__init__(self, ens, configuration_file =
@@ -1047,7 +1047,7 @@ class PolynomialGradient(Polynomial):
 
         @type power: float
         @param power: Power of the potential. It must be strictly greater than
-        1.
+        one.
         """
         self.power = power
         EnsembleMethod.__init__(self, ens, configuration_file =
@@ -1446,9 +1446,6 @@ class InternalMethod(EnsembleMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-
-        @type learning_rate: float
-        @param learning_rate: Learning rate.
         """
         self.precision = precision
         self.fixed_point_method = fixed_point_method
@@ -1640,11 +1637,6 @@ class InternalPolynomialGradient(InternalMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
-        @type learning_rate: float
-        @param learning_rate: Learning rate.
-        @type shift: float
-        @param shift: probability to change the leading method.
         """
         self.power = power
         InternalMethod.__init__(self, ens,
@@ -1762,7 +1754,6 @@ class InternalExponentiatedGradientDiscounted(InternalMethod):
         Note: this does not work in hourly mode.
         
         @type confidence: list of array
-        @type previous_weight: array
         @rtype: array
         """
         if self.extended:
