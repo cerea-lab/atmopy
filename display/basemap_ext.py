@@ -197,7 +197,7 @@ def disp(map, data, **kwargs):
     map.drawcountries()
     map.drawcoastlines()
     if with_states:
-        map.drawstates()        
+        map.drawstates()
 
     # Colorbar.
     if len(gcf().axes) > 1:
@@ -249,7 +249,7 @@ def dispcf(map, data, V = None, **kwargs):
     map.drawcountries()
     map.drawcoastlines()
     if with_states:
-        map.drawstates()        
+        map.drawstates()
 
     # Colorbar.
     if len(gcf().axes) > 1:

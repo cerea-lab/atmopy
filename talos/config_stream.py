@@ -48,7 +48,8 @@ class ConfigStream:
         Raises exception on failure.
 
         @type command: string
-        @param command: Options string to pass to extract_configuration program.
+        @param command: Options string to pass to extract_configuration
+        program.
 
         @rtype: string
         @return: extract_configuration Output and error messages, or
@@ -67,7 +68,7 @@ class ConfigStream:
                 return "".join(output)[:-1]
             else:
                 raise Exception, "Unable to launch: \"extract_configuration "\
-                          + self.filename + " " + command + "\""            
+                          + self.filename + " " + command + "\""
         else:
             (s, o) = commands.getstatusoutput(self.extract + self.filename \
                                               + " " + command)
@@ -115,12 +116,13 @@ class ConfigStream:
         @param element: The element (field) to be found in the configuration
         file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
         @type type: string
         @param type: The type of the element to be returned. It could be:
-        'Int', 'IntList', 'IntSection', 'Bool', 'Float', 'FloatList', 'FloatSection',
-        'String',  'StringList', 'StringSection', 'Num', 'NumList' or
-        'NumSection'. 'Num' means 'Int' or 'Float'.
+        'Int', 'IntList', 'IntSection', 'Bool', 'Float', 'FloatList',
+        'FloatSection', 'String',  'StringList', 'StringSection', 'Num',
+        'NumList' or 'NumSection'. 'Num' means 'Int' or 'Float'.
 
         @rtype: given by 'type'
         @return: The value of the field in the configuration file.
@@ -178,9 +180,11 @@ class ConfigStream:
         Returns the value (string) of a given field.
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: string
         @return: The value of the field in the configuration file.
@@ -195,9 +199,11 @@ class ConfigStream:
         Returns the value (number: int or float) of a given field.
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: int (preferred) or float
         @return: The value of the field in the configuration file.
@@ -214,9 +220,11 @@ class ConfigStream:
         Returns specified element value in given section, as float.
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: float
         @return: The specified element value in given section, as float.
@@ -232,9 +240,11 @@ class ConfigStream:
         Returns specified element value in given section, as integer
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: int
         @return: The specified element value in given section, as integer.
@@ -250,9 +260,11 @@ class ConfigStream:
         Returns the value (Boolean) of a given field.
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: Boolean
         @return: The value of the field in the configuration file.
@@ -275,9 +287,11 @@ class ConfigStream:
         Returns the value (datetime) of a given field.
 
         @type element: string
-        @param element: The element (field) to be found in the configuration file.
+        @param element: The element (field) to be found in the configuration
+        file.
         @type section: string
-        @param section: The section in which the element should be found, if any.
+        @param section: The section in which the element should be found, if
+        any.
 
         @rtype: datetime
         @return: The value of the field in the configuration file.

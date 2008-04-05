@@ -34,8 +34,8 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
     @type y: sequence of float or int
     @param y: Data to plot in ordinates
     @type fmt: string
-    @param fmt: Line style and color, combined in a single format string, as in
-    'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @param fmt: Line style and color, combined in a single format string, as
+    in 'bo' for blue circles. See Matplotlib 'plot' command for more details.
     @type maxdelta: float or int
     @param maxdelta: Maximum delta between two consecutive x values for
     which a line should be drawn.
@@ -56,7 +56,7 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
     ind = nonzero(greater(d, maxdelta))
     ind = ind+1
     if not len(ind):
-        lines.extend( plot(x,y,fmt,**kwargs) ) 
+        lines.extend( plot(x,y,fmt,**kwargs) )
     else:
         allind = [0]
         allind.extend(ind)
@@ -76,8 +76,8 @@ def segplot_logx(x, y, fmt, maxdelta, **kwargs):
     @type y: sequence of float or int
     @param y: Data to plot in ordinates
     @type fmt: string
-    @param fmt: Line style and color, combined in a single format string, as in
-    'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @param fmt: Line style and color, combined in a single format string, as
+    in 'bo' for blue circles. See Matplotlib 'plot' command for more details.
     @type maxdelta: float or int
     @param maxdelta: Maximum delta between two consecutive x values for
     which a line should be drawn.
@@ -98,7 +98,7 @@ def segplot_logx(x, y, fmt, maxdelta, **kwargs):
     ind = nonzero(greater(d, maxdelta))
     ind = ind+1
     if not len(ind):
-        lines.extend( semilogx(x,y,fmt,**kwargs) ) 
+        lines.extend( semilogx(x,y,fmt,**kwargs) )
     else:
         allind = [0]
         allind.extend(ind)
@@ -117,8 +117,8 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     @type y: sequence of float or int
     @param y: y values at those dates.
     @type fmt: string
-    @param fmt: Line style and color, combined in a single format string, as in
-    'bo' for blue circles. See Matplotlib 'plot' command for more details.
+    @param fmt: Line style and color, combined in a single format string, as
+    in 'bo' for blue circles. See Matplotlib 'plot' command for more details.
     @type maxdelta: float or int
     @param maxdelta: Maximum delta between two consecutive x values for
     which a line should be drawn.
@@ -139,7 +139,7 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     ind = nonzero(greater(d, maxdelta))
     ind = ind+1
     if not len(ind):
-        lines.extend(plot_date(x,y,fmt,**kwargs) ) 
+        lines.extend(plot_date(x,y,fmt,**kwargs) )
     else:
         allind = [0]
         allind.extend(ind)
@@ -212,7 +212,8 @@ def set_style_fromconfig(config, section, lines):
     @type config: ConfigStream
     @param config: The configstream containing the style definition.
     @type section: string
-    @param section: Name of the section in ConfigStream in which the style is defined.
+    @param section: Name of the section in ConfigStream in which the style is
+    defined.
     @type lines: matplotlib.lines
     @param lines: Lines to apply the loaded style to.
     """
@@ -222,7 +223,7 @@ def set_style_fromconfig(config, section, lines):
     linewidth_arg = config.GetElement("linewidth", section)
     grid_arg = config.GetElement("grid", section)
     date_format = config.GetElement("date_format", section)
-    labels_rotation = config.GetElement("labels_rotation", section)        
+    labels_rotation = config.GetElement("labels_rotation", section)
     set(lines, \
         antialiased = antialiased_arg, \
         color = color_arg, \

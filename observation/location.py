@@ -331,7 +331,8 @@ class Station:
         @param deltas: (deltax, deltay) distance between two cells on latitude
         and longitude.
         @type lengths: (int, int) tupe
-        @param lengths: (sizex, sizey) number of cells on latitude and longitude.
+        @param lengths: (sizex, sizey) number of cells on latitude and
+        longitude.
         @rtype: Boolean
         @return: True if station is in given area, False otherwise.
         """
@@ -445,8 +446,8 @@ def get_simulated_at_locations(origins, deltas, data, point_list):
     @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point_list: sequence of (float, float) tuples
-    @param point_list: Sequence of (latitude, longitude) of the points where the time
-    sequences must be computed.
+    @param point_list: Sequence of (latitude, longitude) of the points where
+    the time sequences must be computed.
     @rtype: sequence of 1D numpy.array
     @return: Sequence of time sequences of data at given points.
     """
@@ -507,8 +508,8 @@ def get_simulated_at_locations_closest(origins, deltas, data, point_list):
     @type data: 3D numpy.array
     @param data: 3D array of data to interpolate with T, Y, X dimensions.
     @type point_list: sequence of (float, float) tuples
-    @param point_list: Sequence of (latitude, longitude) of the points where the time
-    sequences must be computed.
+    @param point_list: Sequence of (latitude, longitude) of the points where
+    the time sequences must be computed.
     @rtype: sequence of 1D numpy.array
     @return: Sequence of time sequences of data at given points.
     """
@@ -604,8 +605,8 @@ def get_station(station_list, station_name):
     @type station_name: string
     @param station_name: Name of the station to search for in the list.
     @rtype: Station
-    @return: The Station object corresponding to the station name in the given list
-    of stations.
+    @return: The Station object corresponding to the station name in the given
+    list of stations.
     """
     for i in station_list:
         if i.name == station_name:
@@ -621,8 +622,9 @@ def filter_stations(filter_func, station_list):
     builtin.
 
     @type filter_func: Python function
-    @param filter_func: The function used to filter the station list. This function must
-    take a Station object as argument, and must return a boolean.
+    @param filter_func: The function used to filter the station list. This
+    function must take a Station object as argument, and must return a
+    boolean.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to filter.
     @rtype: sequence of Station
@@ -641,7 +643,8 @@ def map_stations(bool_func, station_list):
     This just calls the map builtin function.
 
     @type bool_func: Python function
-    @param bool_func: The function mapped to every station of the station_list.
+    @param bool_func: The function mapped to every station of the
+    station_list.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to apply bool_func to.
     @rtype: Boolean sequence
@@ -651,17 +654,18 @@ def map_stations(bool_func, station_list):
     return map(bool_func, station_list)
 
 
-def filter_stations_observations(filter_func, station_list, observations_list):
+def filter_stations_observations(filter_func, station_list,
+                                 observations_list):
     """
     Filters a station list and corresponding observations list in
     place according to the given filter which takes a station and an
     observation array in argument.
 
     @type filter_func: Python function
-    @param filter_func: The function used to filter the station sequence
-    and observation sequence . This function must
-    take a Station object and the corresponding observations sequence as argument,
-    and must return a boolean.
+    @param filter_func: The function used to filter the station sequence and
+    observation sequence . This function must take a Station object and the
+    corresponding observations sequence as argument, and must return a
+    boolean.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to filter.
     @type observations_list: sequence of 1D numpy.array
@@ -683,10 +687,9 @@ def map_stations_observations(map_func, station_list, observations_list):
     sequences.
 
     @type map_func: Python function
-    @param map_func: The function used to map the station sequence
-    and observation sequence. This function must
-    take a Station object and the corresponding observations array as argument,
-    and must return a boolean.
+    @param map_func: The function used to map the station sequence and
+    observation sequence. This function must take a Station object and the
+    corresponding observations array as argument, and must return a boolean.
     @type station_list: sequence of Station
     @param station_list: sequence of stations to map.
     @type observations_list: sequence of 1D numpy.array

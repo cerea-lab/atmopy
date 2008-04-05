@@ -24,7 +24,8 @@
 import numpy
 import datetime
 import sys, os
-sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+sys.path.insert(0,
+                os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import observation
 
 

@@ -50,8 +50,9 @@ class Config:
            3. the type of the attribute: 'Int', 'IntList', 'IntSection',
            'Bool', 'Float', 'FloatList', 'FloatSection', 'String',
            'StringList, 'StringSection', 'Num, 'NumList' or 'NumSection',
-           where 'Num' means 'Int' or 'Float', and 'Section' means that a whole
-           section is read and returned in a list made of the section lines.
+           where 'Num' means 'Int' or 'Float', and 'Section' means that a
+           whole section is read and returned in a list made of the section
+           lines.
         @type new_content: list of tuples of strings
         @param new_content: Description of all attributes. It overwrites the
         default attributes.
@@ -81,7 +82,8 @@ class Config:
                         ("y_range", "[output]", "NumList"), \
                         ("station", "[output]", "String"), \
                         ("file", "[output]", "output_file", "String"), \
-                        ("[species_list]", "", "species_list", "StringSection"), \
+                        ("[species_list]", "", "species_list",
+                         "StringSection"), \
                         ("[dir_list]", "", "dir_list", "StringSection"), \
                         ("[file_list]", "", "file_list", "StringSection")]
         self.content.extend(additional_content)
@@ -108,8 +110,9 @@ class Config:
            3. the type of the attribute: 'Int', 'IntList', 'IntSection',
            'Bool', 'Float', 'FloatList', 'FloatSection', 'String',
            'StringList, 'StringSection', 'Num, 'NumList' or 'NumSection',
-           where 'Num' means 'Int' or 'Float', and 'Section' means that a whole
-           section is read and returned in a list made of the section lines.
+           where 'Num' means 'Int' or 'Float', and 'Section' means that a
+           whole section is read and returned in a list made of the section
+           lines.
         """
         if not self.show_error:
             try:

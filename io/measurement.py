@@ -24,7 +24,8 @@
 import numpy
 import datetime
 import os, sys
-sys.path.insert(0, os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
+sys.path.insert(0,
+                os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
 import observation
 sys.path.pop(0)
 
@@ -40,11 +41,12 @@ def load_stations(filename, type, origins = (0, 0), \
     @param filename: Name of the file that describes the stations.
 
     @type type: string
-    @param type: The type of the initialization strings in the file. It could be
-    Default, Pioneer, Emep or Bdqa.
+    @param type: The type of the initialization strings in the file. It could
+    be Default, Pioneer, Emep or Bdqa.
 
     @type origins: (float, float)
-    @param origins: (latitude, longitude) as coordinates of the first cell in the mesh.
+    @param origins: (latitude, longitude) as coordinates of the first cell in
+    the mesh.
 
     @type deltas: (float, float)
     @param deltas: mesh sizes on latitude and longitude.
@@ -77,8 +79,8 @@ def load_station(filename, type, station_name):
     @type filename: string
     @param filename: Name of the file that describes the stations.
     @type type: string
-    @param type: The type of the initialization strings in the file. It could be
-    Default, Pioneer, Emep or Bdqa.
+    @param type: The type of the initialization strings in the file. It could
+    be Default, Pioneer, Emep or Bdqa.
     @type station_name: string
     @param station_name: Name of the station to load from the file.
 
@@ -101,7 +103,8 @@ def load_file_observations(name, directory):
     @param directory: location of the specified file.
 
     @rtype: datetime.datetime sequence, 1D numpy.array
-    @return: Sequence of datetime and corresponding observation values in 1D array.
+    @return: Sequence of datetime and corresponding observation values in 1D
+    array.
     """
 
     filename = os.path.normpath(directory) + '/' + name

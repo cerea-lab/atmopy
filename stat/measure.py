@@ -34,7 +34,7 @@ import math
 ## (MB) in [1], (MBE) in [2]
 ##
 ## \begin{displaymath}
-##   \textrm{MBE} = \frac{1}{n} \sum_{i=1}^{n} x_i - y_i 
+##   \textrm{MBE} = \frac{1}{n} \sum_{i=1}^{n} x_i - y_i
 ## \end{displaymath}
 def mbe(data1, data2):
     """
@@ -313,7 +313,7 @@ def bf(data1, data2, cutoff = 0.):
 
 
 ## Unpaired Peak Accuracy (or Peak Estimation Accuracy)
-## 
+##
 ## \begin{displaymath}
 ##   \textrm{UPA} =
 ##   \frac{x_{max} - y_{max}}{y_{max}}
@@ -341,7 +341,7 @@ def upa(data1, data2):
 ##
 ## \begin{displaymath}
 ##   \textrm{NMB} = \frac{\sum_{i=1}^{n} x_i - y_i}{\sum_{i=1}^{n}
-##   y_i} 
+##   y_i}
 ## \end{displaymath}
 def nmb(data1, data2):
     """ Computes Normalized Mean Bias (NMB) between data1 and data2.
