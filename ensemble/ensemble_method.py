@@ -944,6 +944,10 @@ class ELSd(EnsembleMethod):
                                 option = "step", verbose = verbose)
 
 
+    def Init(self):
+        self.initial_weight = ones(self.Nsim, dtype = 'd') / float(self.Nsim)
+
+
     def UpdateWeight(self, s, o):
         weight = combine.w_least_squares(s, o)
         self.AcquireWeight(weight)
@@ -984,6 +988,7 @@ class ELSdN(EnsembleMethod):
 
 
     def Init(self):
+        self.initial_weight = ones(self.Nsim, dtype = 'd') / float(self.Nsim)
         self.Nlearning = self.Nlearning_min
 
 
@@ -1037,6 +1042,7 @@ class BestModelStep(EnsembleMethod):
 
 
     def Init(self):
+        self.initial_weight = ones(self.Nsim, dtype = 'd') / float(self.Nsim)
         self.weight = []
         if self.bias_removal:
             self.bias = []
