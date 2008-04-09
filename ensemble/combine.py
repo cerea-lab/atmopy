@@ -219,7 +219,11 @@ def w_least_squares(sim, obs):
     @rtype: 1D-array
     @return: The coefficients (or weights) 'alpha' of the linear combination.
     """
-    return scipy.linalg.lstsq(transpose(sim), obs)[0]
+    output = scipy.linalg.lstsq(transpose(sim), obs)[0]
+    if output.ndim == 1:
+        return output
+    else:
+        return output[:, 0]
 
 
 def w_least_squares_simplex(sim, obs):
