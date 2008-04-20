@@ -56,9 +56,10 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     @param stations_out: The station(s) at which the concentrations are
     selected.
 
-    @rtype: (1D-array, 2D-array)
-    @return: The observed concentrations in a 1D-array and the corresponding
-    simulated concentrations in a 2D-array (simulations x concentrations).
+    @rtype: (2D-array, 1D-array)
+    @return: The simulated concentrations in a 2D-array (simulations x
+    concentrations) and the corresponding observed concentrations in a
+    1D-array.
     """
     # Initializations.
     if isinstance(sim[0], ndarray):
