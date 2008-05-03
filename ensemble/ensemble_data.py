@@ -203,7 +203,7 @@ class EnsembleData:
             # Peaks.
             if self.config.concentrations == "peak":
                 obs_date, obs = observation.get_daily_peaks(obs_date,
-                                                            obs, [11, 17])
+                                                            obs, [11, 17], 2)
                 obs_date = [observation.midnight(x) for x in obs_date]
 
             ### Enough measurements?
@@ -282,7 +282,8 @@ class EnsembleData:
                 if self.config.concentrations == "peak":
                     # Peaks.
                     sim_date, sim = observation.get_daily_peaks(sim_date,
-                                                                sim, [11, 17])
+                                                                sim, [11, 17],
+                                                                2)
                     sim_date = [observation.midnight(x) for x in sim_date]
 
                 # Time selections.
