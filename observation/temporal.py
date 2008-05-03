@@ -166,7 +166,7 @@ def get_daily_obs_peaks(dates, sim, obs, hour_range = [0, 23], \
     @return: The new dates for computed concentrations, the computed peaks,
     the corresponding measured peaks preceded by their own dates.
     """
-    nb_range_min = min(nb_range_min, len(hour_range))
+    nb_range_min = min(nb_range_min, hour_range[1] - hour_range[0] + 1)
     tmp_dates = dates[:]
     dates, sim = split_into_days(tmp_dates, sim)
     dates, obs = split_into_days(tmp_dates, obs)
@@ -234,7 +234,7 @@ def get_daily_peaks(dates, conc, hour_range = [0, 23], \
     @rtype: (list of datetime, numpy.array)
     @return: The concentration peaks preceded by their dates.
     """
-    nb_range_min = min(nb_range_min, len(hour_range))
+    nb_range_min = min(nb_range_min, hour_range[1] - hour_range[0] + 1)
     dates, conc = split_into_days(dates, conc)
     output_dates = []
     output_conc = []
