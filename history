@@ -2,6 +2,18 @@ o----------------o
 | ATMOPY HISTORY |
 o----------------o
 
+Version 1.5.1 (2008-05-09)
+-------------
+
+** Bug fix:
+
+- Fixed a bug in 'get_daily_obs_peaks' and 'get_daily_peaks': the keyword
+  argument 'nb_range_min' was not properly handled and it was de facto lower
+  than 2. This bug has slight consequences: the only AtmoPy code using this
+  function is in 'EnsembleData'. This class has been slightly modified so that
+  the results remain the same as previously.
+
+
 Version 1.5 (2008-04-22)
 -----------
 
