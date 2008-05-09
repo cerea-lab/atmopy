@@ -836,7 +836,7 @@ class ELS(EnsembleMethod):
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 0, constraint = None,
-                 option = "global"):
+                 option = "global", penalization = None):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments not described below.
@@ -845,8 +845,12 @@ class ELS(EnsembleMethod):
         @param constraint: The constraint put on weights: "simplex" if the
         weights should lie in the simplex of probability distributions, None
         otherwise.
+        @type penalization: None or float
+        @param penalization: The penalization on the 2-norm of the weight
+        vector.
         """
         self.constraint = constraint
+        self.penalization = penalization
         EnsembleMethod.__init__(self, ens,
                                 configuration_file = configuration_file,
                                 process = process, statistics = statistics,
@@ -874,6 +878,13 @@ class ELS(EnsembleMethod):
         elif self.option == "station":
             Nloop = self.ens.Nstation
 
+        if self.constraint is None and self.penalization is None:
+            combine_method = combine.w_least_squares
+        elif self.constraint is None: # With penalization
+            combine_method = combine.w_penalized_least_squares
+        else:
+            combine_method = combine.w_least_squares_simplex
+
         for i in range(Nloop):
             if self.option in ["global", "step"]:
                 stations_out = self.ens.station
@@ -885,10 +896,12 @@ class ELS(EnsembleMethod):
                                    period = self.all_dates,
                                    stations = self.ens.station,
                                    stations_out = stations_out)
-            if self.constraint is None:
-                self.weight.append(combine.w_least_squares(s, o))
+            if self.constraint is None and self.penalization == None:
+                self.weight.append(combine_method(s, o))
+            elif self.constraint is None: # With penalization
+                self.weight.append(combine_method(s, o, self.penalization))
             else:
-                self.weight.append(combine.w_least_squares_simplex(s, o))
+                self.weight.append(combine_method(s, o))
         # Reshapes to ease computations.
         self.weight = map(lambda x: x.reshape(x.size, 1), self.weight)
 
