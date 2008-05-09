@@ -865,6 +865,7 @@ class ELS(EnsembleMethod):
         self.all_dates = []
         self.weight = []
 
+
     def Process(self):
         """
         Computes the weights and the resulting combination.
