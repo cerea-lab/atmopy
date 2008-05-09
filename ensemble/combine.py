@@ -228,6 +228,29 @@ def w_least_squares(sim, obs):
         return output[:, 0]
 
 
+def w_penalized_least_squares(sim, obs, penalization):
+    """
+    Solves a least square problem in order to optimally combine
+    simulations. It minimizes "penalization * alpha^2 + (sim^T alpha - obs)^2"
+    where x^2 is the square of the 2-norm of x.
+
+    @type sim: 2D-array
+    @param sim: The simulated concentrations are a 2D-array, (simulation x
+    concentrations).
+    @type obs: 1D-array
+    @param obs: Observations (or any other target).
+    @type penalization: float
+    @param penalization: The penalization on the 2-norm of the weights.
+
+    @rtype: 1D-array
+    @return: The coefficients (or weights) 'alpha' of the linear combination.
+    """
+    A = penalization * identity(sim.shape[0], dtype = 'd')
+    for i in range(sim.shape[1]):
+        A += outer(sim[:, i], sim[:, i])
+    return dot(linalg.inv(A), dot(sim, obs))
+
+
 def w_least_squares_simplex(sim, obs):
     """
     Computes the optimal combination weights in the least-square sense, with
