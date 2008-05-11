@@ -946,11 +946,13 @@ class ELSd(EnsembleMethod):
     
 
     def __init__(self, ens, configuration_file = None, process = True,
-                 statistics = True, Nskip = 0, verbose = False):
+                 statistics = True, Nskip = 0, verbose = False,
+                 penalization = None):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
         """
+        self.penalization = penalization
         EnsembleMethod.__init__(self, ens,
                                 configuration_file = configuration_file,
                                 process = process, statistics = statistics,
@@ -963,7 +965,11 @@ class ELSd(EnsembleMethod):
 
 
     def UpdateWeight(self, s, o):
-        weight = combine.w_least_squares(s, o)
+        if self.penalization is None:
+            weight = combine.w_least_squares(s, o)
+        else:
+            weight = combine.w_penalized_least_squares(s, o,
+                                                       self.penalization)
         self.AcquireWeight(weight)
 
 
