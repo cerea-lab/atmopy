@@ -65,6 +65,7 @@ class EnsembleMethod:
        weights).
        6. stat (possibly): global statistics;
        7. stat_step (possibly): statistics per time step.
+       8. stat_station (possibly): statistics per station.
 
     Warning: in 'UpdateWeight', it is assume that 'self.step' is the step of
     weights to be forecasted. The forecasted weights are therefore at date

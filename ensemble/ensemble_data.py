@@ -54,6 +54,7 @@ class EnsembleData:
        first observation and ending with the last observation;
        7. stat (possibly): global statistics;
        8. stat_step (possibly): statistics per time step.
+       9. stat_station (possibly): statistics per station.
     """
 
 
