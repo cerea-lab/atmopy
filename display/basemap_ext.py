@@ -27,6 +27,11 @@ try:
     from matplotlib.toolkits.basemap import Basemap
 except:
     pass
+# From version 0.98.0 of Matplotlib.
+try:
+    from mpl_toolkits.basemap import Basemap
+except:
+    pass
 import sys, os
 sys.path.insert(0,
                 os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
