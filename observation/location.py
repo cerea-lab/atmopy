@@ -413,7 +413,7 @@ def get_simulated_at_location(origin, delta, data, point):
     @rtype: 1D numpy.array
     @return: Time sequence of data at given point.
     """
-    # Gets index of bottom right data point of specified point
+    # Gets index of bottom left data point of specified point
     index_y = int((point[0] - origin[1]) / delta[1])
     index_x = int((point[1] - origin[2]) / delta[2])
 
