@@ -27,7 +27,8 @@ import math
 ### Sources for formulas :
 # [1] http://nwairquest.wsu.edu/projects/presentations/WRAP_CMAQ_Eval.pdf
 # [2] http://www.raqc.org/ozone/EAC/MRP/MM5_Report/Appen_A.pdf
-# [3] http://www.cleanairinfo.com/PMModelPerformanceWorkshop2004/presentations/Tonnesen_Nested_Grids_WRAP.ppt
+# [3] http://www.cleanairinfo.com/PMModelPerformanceWorkshop2004/
+#            presentations/Tonnesen_Nested_Grids_WRAP.ppt
 
 
 ## Mean Bias Error
