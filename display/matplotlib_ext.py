@@ -53,7 +53,7 @@ def segplot(x, y, fmt, maxdelta, **kwargs):
     y = asarray(y)
     d = diff(x)
     lines = []
-    ind = nonzero(greater(d, maxdelta))
+    ind = nonzero(greater(d, maxdelta))[0]
     ind = ind+1
     if not len(ind):
         lines.extend( plot(x,y,fmt,**kwargs) )
@@ -95,7 +95,7 @@ def segplot_logx(x, y, fmt, maxdelta, **kwargs):
     y = asarray(y)
     d = diff(x)
     lines = []
-    ind = nonzero(greater(d, maxdelta))
+    ind = nonzero(greater(d, maxdelta))[0]
     ind = ind+1
     if not len(ind):
         lines.extend( semilogx(x,y,fmt,**kwargs) )
@@ -136,7 +136,7 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     y = asarray(y)
     d = diff(x)
     lines = []
-    ind = nonzero(greater(d, maxdelta))
+    ind = nonzero(greater(d, maxdelta))[0]
     ind = ind+1
     if not len(ind):
         lines.extend(plot_date(x,y,fmt,**kwargs) )
