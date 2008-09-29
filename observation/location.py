@@ -418,7 +418,7 @@ def get_simulated_at_location(origin, delta, data, point):
     index_x = int((point[1] - origin[2]) / delta[2])
 
     # Interpolation impossible.
-    if index_x >= data.shape[2] or index_y >= data.shape[1] \
+    if index_x >= data.shape[2] - 1 or index_y >= data.shape[1] - 1 \
            or index_x < 0 or index_y < 0:
         return numpy.array([])
 
