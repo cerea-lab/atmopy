@@ -139,15 +139,25 @@ class Station:
            5. the country;
            6. the station type;
            7. the network.
-        where latitude and longitude are in decimal float number, the altitude
-        is in meters (set to zero if no altitude info.)
+        If the latitude, the longitude or the altitude is not available, it
+        can be replaced, in the string, with any non-numerical value -- then
+        it will be set to -1.e10.
         """
         l = str.strip().split(";")
         self.name = l[0].strip()
         self.real_name = l[1].strip()
-        self.latitude = float(l[2].strip())
-        self.longitude = float(l[3].strip())
-        self.altitude = float(l[4].strip())
+        try:
+            self.latitude = float(l[2].strip())
+        except:
+            self.latitude = -1.e10
+        try:
+            self.longitude = float(l[3].strip())
+        except:
+            self.longitude = -1.e10
+        try:
+            self.altitude = float(l[4].strip())
+        except:
+            self.altitude = -1.e10
         self.country = l[5].strip()
         self.type = l[6].strip()
         self.network = l[7].strip()
