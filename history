@@ -2,6 +2,30 @@ o----------------o
 | ATMOPY HISTORY |
 o----------------o
 
+
+Version 1.6 (2008-11-12)
+-----------
+
+** Improvements:
+
+- Added the ability to penalize the 2-norm of the weight vector in 'ELS' and
+  'ELSd'.
+- Added 'w_penalized_least_squares'.
+- Added the normalized mean square error (NMSE).
+- Improved the support of the default string format in 'Station': the
+  latitude, the longitude and the altitude of the station may now be missing.
+- Took into account an API change that occurred in Matplotlib so that
+  Matplotlib 0.98.x may be supported.
+
+** Bug fixes:
+
+- 'segplot', 'segplot_logx' and 'segplot_date' raised an exception whatever
+  their arguments may be.
+- For some locations outside the domain, 'get_simulated_at_location' raised
+  an exception (because of indices out of range) instead of returning an empty
+  array.
+
+
 Version 1.5.1 (2008-05-09)
 -------------
 
