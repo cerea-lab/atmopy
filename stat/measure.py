@@ -385,23 +385,26 @@ def nme(data1, data2):
     return (abs(data1 - data2)).sum() / data2.sum()
 
 
-## Normalized Mean Square Error (NMSE)
+## Square Root of the second version of the Normalized Mean Square Error
+## (RNMSE_2)
 ##
 ## \begin{displaymath}
-##   \textrm{NMSE} = \sqrt{\frac{\sum_{i=1}^{n} (x_i - y_i)^2}{\sum_{i=1}^{n}
-##    y_i^2}}
+##   \textrm{RNMSE}_2 = \sqrt{\frac{\sum_{i=1}^{n} (x_i - y_i)^2}
+##                            {\sum_{i=1}^{n} y_i^2}}
 ## \end{displaymath}
-def nmse(data1, data2, cutoff = 0.):
-    """ Computes Normalized Mean Square Error (NMSE) between data1 and data2.
+def rnmse_2(data1, data2, cutoff = 0.):
+    """ Computes the Square Root of the second version of the Normalized Mean
+    Square Error (RNMSE_2) between data1 and data2.
 
     @type data1: numpy.array
-    @param data1: 1D array to compute NMSE.
+    @param data1: 1D array to compute RNMSE_2.
 
     @type data2: numpy.array
-    @param data2: 1D array to compute NMSE.
+    @param data2: 1D array to compute RNMSE_2.
 
     @rtype: float
-    @return: Normalized Mean Square Error between data1 and data2.
+    @return: Square Root of the second version of the Normalized Mean Square
+    Error between data1 and data2.
     """
     if len(data1) != len(data2):
         raise ValueError, "Data samples do not have the same length."
