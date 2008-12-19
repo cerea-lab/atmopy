@@ -412,3 +412,154 @@ def rnmse_2(data1, data2, cutoff = 0.):
     data2 = data2[data2 > cutoff]
     tmp = (data1 - data2) / data2
     return math.sqrt((tmp * tmp).mean())
+
+
+def fac2(data1, data2):
+    """
+    Computes the proportion of values of data1 within a factor 2 of the values
+    of data2.
+    @type data1: numarray.array
+    @param data1: 1D array to compute fac2.
+    @type data2: numarray.array
+    @param data2: 1D array to compute fac2.
+
+    @rtype: float
+    @return: The proportion of data1 values within a factor 2 of data2 values.
+    """
+    fac2 = 0.
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
+    Nexp = len(data2)
+    for i in range(0, Nexp):
+        if data1[i] >= 0.5 * data2[i] and data1[i] <= 2. * data2[i]:
+            fac2 += 1. / float(Nexp)
+    return fac2
+
+
+def fac5(data1, data2):
+    """
+    Computes the proportion of values of data1 within a factor 5 of the values
+    of data2.
+    @type data1: numarray.array
+    @param data1: 1D array to compute fac5.
+    @type data2: numarray.array
+    @param data2: 1D array to compute fac5.
+
+    @rtype: float
+    @return: The proportion of data1 values within a factor 5 of data2 values.
+    """
+    fac5 = 0.
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
+    Nexp = len(data1)
+    for i in range(0, Nexp):
+        if data1[i] >= 0.2 * data2[i] and data1[i] <= 5. * data2[i]:
+            fac5 += 1. / float(Nexp)
+    return fac5
+
+
+## First version of the Normalized Mean Square Error (NMSE_1)
+##
+## \begin{displaymath}
+##   \textrm{NMSE}_1 = \frac{\sum_{i=1}^{n} (x_i - y_i)^2}
+##                          {(\sum_{i=1}^{n} x_i)(\sum_{i=1}^{n} y_i)}
+## \end{displaymath}
+def nmse_1(data1, data2):
+    """
+    Computes Normalized Mean Square Error (NMSE_1) between data1 and data2.
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute NMSE_1.
+    @type data2: numarray.array
+    @param data2: 1D array to compute NMSE_1.
+
+    @rtype: float
+    @return: First version of Normalized Mean Square Error
+    between data1 and data2.
+    """
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
+    temp = data1 - data2
+    temp = temp*temp
+    return temp.mean() / (data1.mean() * data2.mean())
+
+
+## Geometric Mean Bias (MG).
+## \begin{displaymath}
+##   \textrm{MG} = \exp \left (\overline{\ln x} - \overline{\ln y}\right )
+## \end{displaymath}
+def mg(data1, data2, cutoff = 0.):
+    """
+    Computes Geometric Mean Bias (mg) between data1 and data2.
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute NMSE.
+    @type data2: numarray.array
+    @param data2: 1D array to compute NMSE.
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and 'data1' values.
+
+    @rtype: float
+    @return: Geometric Mean Bias between data1 and data2.
+    """
+    data2 = data2[data1 > cutoff]
+    data1 = data1[data1 > cutoff]
+    return exp(log(data1).mean() - log(data2).mean())
+
+
+## Geometric Variance (VG).
+## \begin{displaymath}
+##   \textrm{VG} = \exp \left [\overline{(\ln x- \ln y)^2}\right ]
+## \end{displaymath}
+def vg(data1, data2, cutoff = 0.):
+    """
+    Computes Geometric Variance (vg) between data1 and data2.
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute NMSE.
+    @type data2: numarray.array
+    @param data2: 1D array to compute NMSE.
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
+    @rtype: float
+    @return: Geometric Variance between data1 and data2.
+    """
+    data2 = data2[data1 > cutoff]
+    data1 = data1[data1 > cutoff]
+    temp = log(data1) - log(data2)
+    temp = temp * temp
+    return exp(temp.mean())
+
+
+## Figure of Merit in Time (FMT).
+## \begin{displaymath}
+##   \textrm{FMT} = \frac{ \sum_{i=1}^{n} \min (x_i, y_i)}
+##                       { \sum_{i=1}^{n} \max (x_i, y_i)}
+## \end{displaymath}
+def fmt(data1, data2):
+    """
+    Computes the figure of merit in time of data2 and data1.
+    
+    @type data1: numarray.array
+    @param data1: 1D array to compute fb.
+    @type data2: numarray.array
+    @param data2: 1D array to compute fb.
+
+    @rtype: float
+    @return: The figure of merit in time of data2 and data1.
+    """
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
+    min_tot = 0.
+    max_tot = 0.
+    for i in range(len(data1)):
+        min_tot += min(data1[i], data2[i])
+        max_tot += max(data1[i], data2[i])
+    if max_tot != 0.:
+        fmt = min_tot / max_tot
+    else:
+        fmt = 0.
+    return fmt
