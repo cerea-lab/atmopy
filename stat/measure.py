@@ -22,7 +22,7 @@
 
 
 import math
-
+import numpy
 
 ### Sources for formulas :
 # [1] http://nwairquest.wsu.edu/projects/presentations/WRAP_CMAQ_Eval.pdf
@@ -492,9 +492,9 @@ def mg(data1, data2, cutoff = 0.):
     """
     Computes Geometric Mean Bias (mg) between data1 and data2.
     
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute NMSE.
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute NMSE.
     @type cutoff: float
     @param cutoff: The value below (or equal) which data is discarded. This
@@ -503,9 +503,15 @@ def mg(data1, data2, cutoff = 0.):
     @rtype: float
     @return: Geometric Mean Bias between data1 and data2.
     """
+
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
     data2 = data2[data1 > cutoff]
     data1 = data1[data1 > cutoff]
-    return exp(log(data1).mean() - log(data2).mean())
+    ldata1 = numpy.log(data1)
+    ldata2 = numpy.log(data2)
+    tmp = ldata1.mean() - ldata2.mean()
+    return math.exp(tmp)
 
 
 ## Geometric Variance (VG).
@@ -516,9 +522,9 @@ def vg(data1, data2, cutoff = 0.):
     """
     Computes Geometric Variance (vg) between data1 and data2.
     
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute NMSE.
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute NMSE.
     @type cutoff: float
     @param cutoff: The value below (or equal) which data is discarded. This
@@ -527,11 +533,13 @@ def vg(data1, data2, cutoff = 0.):
     @rtype: float
     @return: Geometric Variance between data1 and data2.
     """
+    if len(data1) != len(data2):
+        raise ValueError, "Data samples do not have the same length."
     data2 = data2[data1 > cutoff]
     data1 = data1[data1 > cutoff]
-    temp = log(data1) - log(data2)
+    temp = numpy.log(data1) - numpy.log(data2)
     temp = temp * temp
-    return exp(temp.mean())
+    return math.exp(temp.mean())
 
 
 ## Figure of Merit in Time (FMT).
@@ -543,9 +551,9 @@ def fmt(data1, data2):
     """
     Computes the figure of merit in time of data2 and data1.
     
-    @type data1: numarray.array
+    @type data1: numpy.array
     @param data1: 1D array to compute fb.
-    @type data2: numarray.array
+    @type data2: numpy.array
     @param data2: 1D array to compute fb.
 
     @rtype: float
