@@ -3,6 +3,15 @@ o----------------o
 o----------------o
 
 
+Version 1.7.1 (2010-11-03)
+-------------
+
+** Improvements:
+
+- Added support for AERONET data (tropospheric column optical depth) in class
+  'Station'.
+
+
 Version 1.7 (2009-05-18)
 -----------
 
