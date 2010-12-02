@@ -162,7 +162,7 @@ class Station:
         self.type = l[6].strip()
         self.network = l[7].strip()
 
-   def FromAeronetString(self, str):
+    def FromAeronetString(self, str):
         """
         Sets station attributes from a string.
 
