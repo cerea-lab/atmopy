@@ -3,6 +3,14 @@ o----------------o
 o----------------o
 
 
+Version 1.7.2 (2010-12-02)
+-------------
+
+** Bug fixes:
+
+- AtmoPy could not be imported anymore because of an indentation error.
+
+
 Version 1.7.1 (2010-11-03)
 -------------
 
