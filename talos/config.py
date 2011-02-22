@@ -63,29 +63,37 @@ class Config:
         self.filename = filename
         self.stream = config_stream.ConfigStream(self.filename)
         self.content = [("t_min", "", "DateTime"), \
-                        ("x_min", "", "Float"), \
-                        ("y_min", "", "Float"), \
-                        ("Delta_t", "", "Float"), \
-                        ("Delta_x", "", "Float"), \
-                        ("Delta_y", "", "Float"), \
-                        ("Nt", "", "Int"), ("Nx", "", "Int"), \
-                        ("Ny", "", "Int"), ("Nz", "", "Int"), \
-                        ("file", "", "input_file", "String"), \
-                        ("species", "", "String"), \
-                        ("obs_dir", "", "String"), \
-                        ("station_file", "", "String"), \
-                        ("station_file_type", "", "String"), \
-                        ("type", "[output]", "String"), \
-                        ("terminal", "[output]", "String"), \
-                        ("t_range", "[output]", "DateTimeList"), \
-                        ("x_range", "[output]", "NumList"), \
-                        ("y_range", "[output]", "NumList"), \
-                        ("station", "[output]", "String"), \
-                        ("file", "[output]", "output_file", "String"), \
-                        ("[species_list]", "", "species_list",
-                         "StringSection"), \
-                        ("[dir_list]", "", "dir_list", "StringSection"), \
-                        ("[file_list]", "", "file_list", "StringSection")]
+                            ("x_min", "", "Float"), \
+                            ("y_min", "", "Float"), \
+                            ("time_angle_min", "", "Float"), \
+                            ("day_min", "", "Float"), \
+                            ("Delta_t", "", "Float"), \
+                            ("Delta_x", "", "Float"), \
+                            ("Delta_y", "", "Float"), \
+                            ("Delta_time_angle", "", "Float"), \
+                            ("Delta_t", "", "Float"), \
+                            ("Nt", "", "Int"), ("Nx", "", "Int"), \
+                            ("Ny", "", "Int"), ("Nz", "", "Int"), \
+                            ("Ntheta", "", "Int"), ("Ndays", "", "Int"), \
+                            ("[levels_heights]", "",
+                             "levels", "IntList"), \
+                            ("[Jlevels_height]", "", "Jlevels", "IntList"), \
+                            ("file", "", "input_file", "String"), \
+                            ("species", "", "String"), \
+                            ("obs_dir", "", "String"), \
+                            ("station_file", "", "String"), \
+                            ("station_file_type", "", "String"), \
+                            ("type", "[output]", "String"), \
+                            ("terminal", "[output]", "String"), \
+                            ("t_range", "[output]", "DateTimeList"), \
+                            ("x_range", "[output]", "NumList"), \
+                            ("y_range", "[output]", "NumList"), \
+                            ("station", "[output]", "String"), \
+                            ("file", "[output]", "output_file", "String"), \
+                            ("[species_list]", "", "species_list",
+                             "StringSection"), \
+                            ("[dir_list]", "", "dir_list", "StringSection"), \
+                            ("[file_list]", "", "file_list", "StringSection")]
         self.content.extend(additional_content)
         if len(new_content) != 0:
             self.content = new_content[:]
