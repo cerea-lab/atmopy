@@ -50,6 +50,11 @@ using namespace std;
 %include "../../verdandi/include/seldon/vector/Vector2.hxx"
 %include "../../driver/common/observation/GroundNetworkObservationManager.hxx"
 
+namespace Seldon
+{
+  %template(Vector2Double) Vector2<double>;
+}
+
 namespace Polyphemus
 {
   %template(GroundNetworkOM) GroundNetworkObservationManager<double>;

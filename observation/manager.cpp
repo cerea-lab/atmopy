@@ -28,6 +28,19 @@
 
 #include "../../driver/common/observation/GroundNetworkObservationManager.cxx"
 
+namespace Seldon
+{
+  template class MallocAlloc<int>;
+  template class Vector_Base<int, MallocAlloc<int> >;
+  template class Vector<int, VectFull, MallocAlloc<int> >;
+  template class MallocAlloc<double>;
+  template class Vector_Base<double, MallocAlloc<double> >;
+  template class Vector<double, VectFull, MallocAlloc<double> >;
+
+  template class MallocObject<Vector<double> >;
+  template class Vector2<double>;
+}
+
 namespace Polyphemus
 {
   template class GroundNetworkObservationManager<double>;
