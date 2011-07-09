@@ -30,14 +30,22 @@
 
   // TODO: getting rid of the following inclusions.
 #include "model/QuadraticModel.hxx"
+#include "model/ClampedBar.hxx"
 #include "observation_manager/GridToNetworkObservationManager.hxx"
 #include "observation_manager/LinearObservationManager.hxx"
 #include "method/OptimalInterpolation.hxx"
 #include "method/ForwardDriver.hxx"
+#include "method/ReducedOrderExtendedKalmanFilter.hxx"
   %}
 
 %include "std_string.i"
+%include "std_vector.i"
 using namespace std;
+
+namespace std
+{
+  %template(vector_string) vector<string>;
+}
 
 %import "../../verdandi/python/verdandi.i"
 
