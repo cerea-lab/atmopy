@@ -44,6 +44,7 @@ namespace Seldon
 namespace Polyphemus
 {
   template class GroundNetworkObservationManager<double>;
+  template void GroundNetworkObservationManager<double>::ApplyOperator(const Seldon::Vector<double>& x, Seldon::Vector<double>& y) const;
 }
 
 

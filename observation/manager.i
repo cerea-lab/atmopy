@@ -66,4 +66,8 @@ namespace Seldon
 namespace Polyphemus
 {
   %template(GroundNetworkOM) GroundNetworkObservationManager<double>;
+  %extend GroundNetworkObservationManager<double>
+  {
+    %template(ApplyOperator) ApplyOperator<Seldon::Vector<double> >;
+  }
 }
