@@ -23,10 +23,8 @@
 
 #ifndef ATMOPY_FILE_MANAGER_CPP
 
-#define OPS_WITH_EXCEPTION
-#define SELDON_DEBUG_LEVEL_2
-
-#include "../../driver/common/observation/GroundNetworkObservationManager.cxx"
+#include "../../observation/GroundNetworkObservationManager.cxx"
+#include "share/Functions_Vector2.cxx"
 
 namespace Seldon
 {
@@ -37,8 +35,30 @@ namespace Seldon
   template class Vector_Base<double, MallocAlloc<double> >;
   template class Vector<double, VectFull, MallocAlloc<double> >;
 
+  template class MallocObject<Vector<int> >;
+  template class Vector2<int>;
+
   template class MallocObject<Vector<double> >;
   template class Vector2<double>;
+
+  template class MallocObject < Vector < Vector<double, Vect_Full, MallocAlloc<double> >,
+                                         Vect_Full, MallocObject<Vector<double> > > >;
+  template class Vector3<double>;
+  template void Vector3<double>::Flatten<double, MallocAlloc<double> >
+  (Vector<double, VectFull, MallocAlloc<double> >& data) const;
+  template void Vector3<double>::Flatten<double, MallocAlloc<double> >
+  (int beg, int end, Vector<double, VectFull, MallocAlloc<double> >& data) const;
+}
+
+namespace Verdandi
+{
+  template void SelectLocation<MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >
+  (const Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >&,
+   Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >&);
+  template void SelectLocation<MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > >
+  (const Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >&,
+   Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >&,
+   Vector2<double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > >&);
 }
 
 namespace Polyphemus

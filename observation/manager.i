@@ -22,20 +22,19 @@
 
 %module manager
 %{
-
-#define OPS_WITH_EXCEPTION
-#define SELDON_DEBUG_LEVEL_2
-
-#include "../../driver/common/observation/GroundNetworkObservationManager.hxx"
+#include "../../observation/GroundNetworkObservationManager.hxx"
 
   // TODO: getting rid of the following inclusions.
 #include "model/QuadraticModel.hxx"
 #include "model/ClampedBar.hxx"
+#include "model/PythonModel.hxx"
 #include "observation_manager/GridToNetworkObservationManager.hxx"
 #include "observation_manager/LinearObservationManager.hxx"
+#include "observation_manager/PythonObservationManager.hxx"
 #include "method/OptimalInterpolation.hxx"
 #include "method/ForwardDriver.hxx"
 #include "method/ReducedOrderExtendedKalmanFilter.hxx"
+#include "share/Functions_Vector2.hxx"
   %}
 
 %include "std_string.i"
@@ -52,15 +51,29 @@ namespace std
 %include "../../verdandi/VerdandiHeader.hxx"
 %include "../../verdandi/share/VerdandiBase.hxx"
 %include "../../verdandi/share/UsefulFunction.hxx"
+%include "../../verdandi/share/Functions_Vector2.hxx"
 
 %include "../../Talos/TalosHeader.hxx"
 
 %include "../../verdandi/include/seldon/vector/Vector2.hxx"
-%include "../../driver/common/observation/GroundNetworkObservationManager.hxx"
+%include "../../verdandi/include/seldon/vector/Vector3.hxx"
+%include "../../observation/GroundNetworkObservationManager.hxx"
 
 namespace Seldon
 {
+  %template(Vector2Int) Vector2<int>;
   %template(Vector2Double) Vector2<double>;
+  %template(Vector3Double) Vector3<double>;
+  %extend Vector3<double>
+  {
+    %template(Flatten) Flatten<double, MallocAlloc<double> >;
+  }
+}
+
+namespace Verdandi
+{
+  %template(SelectLocationInt) SelectLocation<MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > >;
+  %template(SelectLocationDouble) SelectLocation<MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > >, double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > >;
 }
 
 namespace Polyphemus
