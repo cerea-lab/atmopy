@@ -23,6 +23,7 @@
 %module manager
 %{
 #include "../../observation/GroundNetworkObservationManager.hxx"
+#include "../../observation/EnsembleObservationManager.hxx"
 
   // TODO: getting rid of the following inclusions.
 #include "model/QuadraticModel.hxx"
@@ -58,6 +59,7 @@ namespace std
 %include "../../verdandi/include/seldon/vector/Vector2.hxx"
 %include "../../verdandi/include/seldon/vector/Vector3.hxx"
 %include "../../observation/GroundNetworkObservationManager.hxx"
+%include "../../observation/EnsembleObservationManager.hxx"
 
 namespace Seldon
 {
@@ -83,4 +85,6 @@ namespace Polyphemus
   {
     %template(ApplyOperator) ApplyOperator<Seldon::Vector<double> >;
   }
+
+  %template(EnsembleOM) EnsembleObservationManager<double>;
 }

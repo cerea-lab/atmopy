@@ -24,6 +24,7 @@
 #ifndef ATMOPY_FILE_MANAGER_CPP
 
 #include "../../observation/GroundNetworkObservationManager.cxx"
+#include "../../observation/EnsembleObservationManager.cxx"
 #include "share/Functions_Vector2.cxx"
 
 namespace Seldon
@@ -65,6 +66,8 @@ namespace Polyphemus
 {
   template class GroundNetworkObservationManager<double>;
   template void GroundNetworkObservationManager<double>::ApplyOperator(const Seldon::Vector<double>& x, Seldon::Vector<double>& y) const;
+
+  template class EnsembleObservationManager<double>;
 }
 
 
