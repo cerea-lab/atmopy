@@ -68,6 +68,7 @@ namespace Seldon
   {
     %template(HasSameShapeInt) HasSameShape<Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > > >;
     %template(HasSameShapeDouble) HasSameShape<Vector2<double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > > >;
+    %template(Flatten) Flatten<int, MallocAlloc<int> >;
   }
 
   %template(Vector2Double) Vector2<double>;
@@ -75,6 +76,7 @@ namespace Seldon
   {
     %template(HasSameShapeDouble) HasSameShape<Vector2<double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > > >;
     %template(HasSameShapeInt) HasSameShape<Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > > >;
+    %template(Flatten) Flatten<double, MallocAlloc<double> >;
   }
 
   %template(Vector3Double) Vector3<double>;
