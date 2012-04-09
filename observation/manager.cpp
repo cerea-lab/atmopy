@@ -38,9 +38,13 @@ namespace Seldon
 
   template class MallocObject<Vector<int> >;
   template class Vector2<int>;
+  template bool Vector2<int>::HasSameShape<Vector2<int> >(const Vector2<int>& V) const;
+  template bool Vector2<int>::HasSameShape<Vector2<double> >(const Vector2<double>& V) const;
 
   template class MallocObject<Vector<double> >;
   template class Vector2<double>;
+  template bool Vector2<double>::HasSameShape<Vector2<double> >(const Vector2<double>& V) const;
+  template bool Vector2<double>::HasSameShape<Vector2<int> >(const Vector2<int>& V) const;
 
   template class MallocObject < Vector < Vector<double, Vect_Full, MallocAlloc<double> >,
                                          Vect_Full, MallocObject<Vector<double> > > >;

@@ -64,7 +64,19 @@ namespace std
 namespace Seldon
 {
   %template(Vector2Int) Vector2<int>;
+  %extend Vector2<int>
+  {
+    %template(HasSameShapeInt) HasSameShape<Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > > >;
+    %template(HasSameShapeDouble) HasSameShape<Vector2<double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > > >;
+  }
+
   %template(Vector2Double) Vector2<double>;
+  %extend Vector2<double>
+  {
+    %template(HasSameShapeDouble) HasSameShape<Vector2<double, MallocAlloc<double>, MallocObject<Vector<double, VectFull, MallocAlloc<double> > > > >;
+    %template(HasSameShapeInt) HasSameShape<Vector2<int, MallocAlloc<int>, MallocObject<Vector<int, VectFull, MallocAlloc<int> > > > >;
+  }
+
   %template(Vector3Double) Vector3<double>;
   %extend Vector3<double>
   {
