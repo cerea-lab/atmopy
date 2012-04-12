@@ -61,6 +61,8 @@ namespace Seldon
   (Vector<double, VectFull, MallocAlloc<double> >& data) const;
   template void Vector3<double>::Flatten<double, MallocAlloc<double> >
   (int beg, int end, Vector<double, VectFull, MallocAlloc<double> >& data) const;
+  template void Vector3<double>::Flatten<double, MallocAlloc<double> >
+  (int beg0, int end0, int beg1, int end1, Vector<double, VectFull, MallocAlloc<double> >& data) const;
 }
 
 namespace Verdandi
