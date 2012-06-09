@@ -1,0 +1,92 @@
+# Copyright (C) 2012 INRIA
+# Author(s): Vivien Mallet, Claire Mouton
+#
+# This file is part of AtmoPy library, a tool for data processing and
+# visualization in atmospheric sciences.
+#
+# AtmoPy is developed in the INRIA - ENPC joint project-team CLIME and in
+# the ENPC - EDF R&D joint laboratory CEREA.
+#
+# AtmoPy is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
+#
+# AtmoPy is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# For more information, visit the AtmoPy home page:
+#     http://cerea.enpc.fr/polyphemus/atmopy.html
+
+import os, glob
+
+verdandi_path = "../../verdandi/"
+polyphemus_path = "../../../"
+
+include_path = """../../
+                  ../../models
+                  ../../modules/common
+                  ../../modules/chemistry/Common
+                  ../../modules/chemistry/RACM
+                  ../../modules/chemistry/CB05
+                  ../../modules/chemistry/RACM2
+                  ../../modules/transport/SplitAdvectionDST3
+                  ../../modules/transport/DiffusionROS2
+                  ../../Talos
+                  ../../SeldonData
+                  ../../AtmoData
+                  """
+
+exclude_target = glob.glob("*.cpp") # excludes all default targets.
+
+execfile(os.path.join(verdandi_path, "share/SConstruct"))
+
+
+##################
+# OTHER INCLUDES #
+##################
+
+
+# Dependency list.
+dependency_list = to_string_list("dependency_list")
+for path in include_path_list:
+    dependency_list += glob.glob(os.path.join(path, "*.f"))
+    dependency_list += glob.glob(os.path.join(path, "*.F"))
+    dependency_list += glob.glob(os.path.join(path, "*.f90"))
+    dependency_list += glob.glob(os.path.join(path, "*.C"))
+    dependency_list += glob.glob(os.path.join(path, "*.c"))
+# In case there is a list of dependencies to be excluded.
+exclude_dependency = to_string_list("exclude_dependency")
+for expression in exclude_dependency:
+    for dependency in dependency_list[:]:
+        if re.search(expression, dependency) is not None:
+            dependency_list.remove(dependency)
+
+
+########
+# SWIG #
+########
+
+
+env_swig = env.Clone()
+
+env_swig.Replace(SWIGFLAGS = ["-Wall", "-c++", "-python"])
+env_swig.Append(SWIGPATH = env_swig["CPPPATH"])
+env_swig.Replace(CCFLAGS = debug_flag("debug_cpp"))
+env_swig.Append(CPPFLAGS = ["-DSELDON_EXCLUDE_FROM_EXPLICIT_INSTANTIATION",
+                            "-DSELDON_DEBUG_LEVEL_4"])
+env_swig.Append(CPPPATH = distutils.sysconfig.get_python_inc())
+env_swig.Replace(SHLIBPREFIX = "")
+
+if env_swig['PLATFORM'] == 'win32':
+    env_swig.SharedLibrary("_polair3d.so", ["polair3d.cpp", "polair3d.i"]
+                           + dependency_list)
+else:
+    env_swig['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
+    env_swig.SharedLibrary("_polair3d.so",
+                           ["polair3d.cpp", "polair3d.i", lua_library]
+                           + dependency_list)
+
+env_swig.Alias(["swig", "polair3d.py"], "_polair3d.so")
