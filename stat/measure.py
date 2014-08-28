@@ -65,7 +65,7 @@ def mage(data1, data2):
     """
     Computes Mean Absolute Gross Error (MAGE) between data1 and
     data2.
-    
+
     @type data1: numpy.array
     @param data1: 1D array to compute error.
 
@@ -92,7 +92,7 @@ def mnge(data1, data2, cutoff = 0.):
     Computes Mean Normalized Gross Error (MNGE) between data1 and data2 1D
     arrays.
     ( MNGE = 1 / n * NME )
-    
+
     @type data1: numpy.array
     @param data1: 1D array to compute error.
 
@@ -467,7 +467,7 @@ def fac5(data1, data2):
 def nmse_1(data1, data2):
     """
     Computes Normalized Mean Square Error (NMSE_1) between data1 and data2.
-    
+
     @type data1: numarray.array
     @param data1: 1D array to compute NMSE_1.
     @type data2: numarray.array
@@ -491,7 +491,7 @@ def nmse_1(data1, data2):
 def mg(data1, data2, cutoff = 0.):
     """
     Computes Geometric Mean Bias (mg) between data1 and data2.
-    
+
     @type data1: numpy.array
     @param data1: 1D array to compute NMSE.
     @type data2: numpy.array
@@ -521,7 +521,7 @@ def mg(data1, data2, cutoff = 0.):
 def vg(data1, data2, cutoff = 0.):
     """
     Computes Geometric Variance (vg) between data1 and data2.
-    
+
     @type data1: numpy.array
     @param data1: 1D array to compute NMSE.
     @type data2: numpy.array
@@ -550,7 +550,7 @@ def vg(data1, data2, cutoff = 0.):
 def fmt(data1, data2):
     """
     Computes the figure of merit in time of data2 and data1.
-    
+
     @type data1: numpy.array
     @param data1: 1D array to compute fb.
     @type data2: numpy.array

@@ -25,7 +25,7 @@ Version 1.7 (2009-05-18)
 
 ** Improvements:
 
-- Added the class 'Source' with the related functions 'read_sources', 
+- Added the class 'Source' with the related functions 'read_sources',
   'get_sources_coordinates', 'get_species_sources_coordinates' and
   'get_level_sources_coordinates' to display point sources.
 - Added functions 'fac2', 'fac5', 'nmse_1', 'mg', 'vg' and 'fmt'. Also

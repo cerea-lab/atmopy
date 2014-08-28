@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 {
 
   TRY;
-  
+
   if (argc == 1)
     {
       string mesg  = "\nUsage:\n";
@@ -87,12 +87,12 @@ int main(int argc, char** argv)
     {
       configuration.Rewind();
       while (configuration.GetLine(line))
-	if (line[0] == '[')
-	  {
-	    extract_section = split(line, "[]");
-	    if (!extract_section.empty())
-	      cout << "[" << split(line, "[]")[0] << "]" << endl;
-	  }
+        if (line[0] == '[')
+          {
+            extract_section = split(line, "[]");
+            if (!extract_section.empty())
+              cout << "[" << split(line, "[]")[0] << "]" << endl;
+          }
     }
 
   int i = 2;
@@ -100,63 +100,63 @@ int main(int argc, char** argv)
     {
       // Is there an option?
       if (option == "" && argv[i][0] == '-')
-	option = &argv[i][1];
+        option = &argv[i][1];
 
       // Stores the option tag and skips it.
       if (option != "")
-	{
-	  ++i;
-	  if (i == argc && option != "ls" && option != "ll")
-	    throw string("Option -") + option + " should be followed by a value.";
-	  else if (option != "ls" && option != "ll")
-	    value = argv[i];
-	}
+        {
+          ++i;
+          if (i == argc && option != "ls" && option != "ll")
+            throw string("Option -") + option + " should be followed by a value.";
+          else if (option != "ls" && option != "ll")
+            value = argv[i];
+        }
 
       // Lists all lines.
       if (option == "ll")
-	{
-	  configuration.Rewind();
-	  while (configuration.GetLine(line))
-	    cout << line << endl;
-	  option = "";
-	  --i;
-	}
+        {
+          configuration.Rewind();
+          while (configuration.GetLine(line))
+            cout << line << endl;
+          option = "";
+          --i;
+        }
       // Lists all sections.
       else if (option == "ls")
-	{
-	  configuration.Rewind();
-	  while (configuration.GetLine(line))
-	    if (line[0] == '[')
-	      {
-		extract_section = split(line, "[]");
-		if (!extract_section.empty())
-		  cout << "[" << split(line, "[]")[0] << "]" << endl;
-	      }
-	  option = "";
-	  --i;
-	}
+        {
+          configuration.Rewind();
+          while (configuration.GetLine(line))
+            if (line[0] == '[')
+              {
+                extract_section = split(line, "[]");
+                if (!extract_section.empty())
+                  cout << "[" << split(line, "[]")[0] << "]" << endl;
+              }
+          option = "";
+          --i;
+        }
       // Section tag.
       else if (option == "s")
-	{
-	  sections.push_back(value);
-	  keys.push_back(list<string>());
-	  option = "";
-	}
+        {
+          sections.push_back(value);
+          keys.push_back(list<string>());
+          option = "";
+        }
       // No option: just a key.
       else if (option == "")
-	{
-	  value = argv[i];
-	  // Not in a given section yet.
-	  if (sections.empty())
-	    {
-	      sections.push_back("");
-	      keys.push_back(list<string>(1, value));
-	    }
-	  else // In a given section.
-	    keys[keys.size() - 1].push_back(value);
-	}
+        {
+          value = argv[i];
+          // Not in a given section yet.
+          if (sections.empty())
+            {
+              sections.push_back("");
+              keys.push_back(list<string>(1, value));
+            }
+          else // In a given section.
+            keys[keys.size() - 1].push_back(value);
+        }
       else
-	throw string("Option -") + option + " unrecognized.";
+        throw string("Option -") + option + " unrecognized.";
       ++i;
     }
 
@@ -164,19 +164,19 @@ int main(int argc, char** argv)
   for (i = 0; i < int(sections.size()); i++)
     {
       if (sections[i] != "")
-	configuration.SetSection(sections[i]);
+        configuration.SetSection(sections[i]);
       if (!keys[i].empty())
-	{
-	  list<string>::iterator j;
-	  for (j = keys[i].begin(); j != keys[i].end(); j++)
-	    cout << configuration.PeekValue(*j) << endl;
-	}
+        {
+          list<string>::iterator j;
+          for (j = keys[i].begin(); j != keys[i].end(); j++)
+            cout << configuration.PeekValue(*j) << endl;
+        }
       else // Prints lines of the current section.
-	while (configuration.PeekLine(line) && line[0] != '[')
-	  {
-	    cout << line << endl;
-	    configuration.GetLine(line);
-	  }
+        while (configuration.PeekLine(line) && line[0] != '[')
+          {
+            cout << line << endl;
+            configuration.GetLine(line);
+          }
     }
 
   END;

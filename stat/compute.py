@@ -98,7 +98,7 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     # Output arrays.
     out_obs = []
     out_sim = [[] for i in range(len(sim))]
-    
+
     for istation in range(len(stations)):
         if stations[istation] in stations_out:
             # Searches for the first date in the considered period.
@@ -272,7 +272,7 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
     if obs_type != "hourly" and obs_type != "peak":
         raise Exception, "Concentrations must be hourly concentrations" \
               + " or peaks."
-    
+
     if isinstance(period, datetime.datetime) \
            or isinstance(period, datetime.date):
         period = (period, period)

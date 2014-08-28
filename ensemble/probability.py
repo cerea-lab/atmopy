@@ -62,7 +62,7 @@ def pdf(data, Nbins = 200, val = None):
     bins = arange(Nbins + 1., dtype = 'd') * delta + data[0]
     bins[0] = data[0] - delta   # So that all elements are counted.
     bins[-1] = data[-1] + delta   # So that all elements are counted.
-    
+
     res = searchsorted(data, bins)
 
     return arange(data[0] + delta / 2., data[-1], delta), \

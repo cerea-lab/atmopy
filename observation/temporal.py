@@ -117,7 +117,7 @@ def split_into_days(dates, data):
 
     if len(data) == 0:
         return [numpy.array([])], [[]]
-    
+
     output_data = [[data[0]]]
     output_dates = [[dates[0]]]
 
@@ -371,7 +371,7 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
     dates = list(sim_dates)
     sim_condition = numpy.zeros(len(simulated))
     obs_condition = numpy.zeros(len(obs))
-    
+
     for i in range(len(dates)):
        try:
            ind = obs_dates.index(dates[i])
@@ -421,7 +421,7 @@ def masks_for_common_dates(dates0, dates1):
             mask0[i0] = True
             mask1[i1] = True
         i0 += 1
-    
+
     return mask0, mask1
 
 
@@ -502,7 +502,7 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     @return: List of dates common to observation and simulation data, and
     corresponding data arrays for simulation and observation.
     """
-    
+
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
         print len(simulated), len(sim_dates), len(obs), len(obs_dates)
         raise ValueError, "Incompatible dimensions!"
@@ -516,7 +516,7 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     # Selection.
     sim_condition = numpy.zeros(len(simulated))
     obs_condition = numpy.zeros(len(obs))
-    
+
     # Selects the common days.
     for i in range(len(sim_dates_iso)):
        try:
@@ -613,7 +613,7 @@ def mask_for_series(dates, delta, Ndates):
         prev_date = dates[idate]
 
     return mask
-    
+
 
 def remove_incomplete_days(dates, data):
     """
@@ -692,7 +692,7 @@ def remove_days(dates, data, days):
     while i < len(dates) and (dates[i] - dates[0]).days < days:
         i += 1
     return dates[i:], data[i:]
-    
+
 
 def midnight(date):
     """
@@ -715,7 +715,7 @@ def timedelta2num(delta):
 
     @type delta: datetime.timedelta
     @param delta: The time-delta to be converted in days.
-    
+
     @rtype: float
     @return: The number of days in 'delta'.
     """
@@ -726,7 +726,7 @@ def timedelta2num(delta):
         num = date2num(datetime.datetime(1,1,1) + delta) \
               - date2num(datetime.datetime(1,1,1))
     return num
-           
+
 
 def get_simulation_dates(t_min, delta_t, Nt):
     """

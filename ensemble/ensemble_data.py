@@ -99,7 +99,7 @@ class EnsembleData:
                   + "\"" + configuration_file + "\"."
 
         self.configuration_file = configuration_file
-        
+
         add_content = [("discarded_cells", "[input]", "Int"),
                        ("discarded_days", "[input]", "Int"),
                        ("concentrations", "[output]", "String"),
@@ -172,7 +172,7 @@ class EnsembleData:
 
         self.Nstation = len(self.station)
 
-        
+
     def LoadObservation(self):
         """
         Loads observations.
@@ -182,7 +182,7 @@ class EnsembleData:
         self.date = []
 
         station_restricted = []
-        
+
         for istation in range(self.Nstation):
             station = self.station[istation]
 
@@ -246,9 +246,9 @@ class EnsembleData:
         """
         # Output attribute.
         self.sim = [[] for i in range(self.Nsim)]
-        
+
         mask = [None for i in range(self.Nstation)]
-        
+
         # Simulation dates.
         date = observation.get_simulation_dates(self.config.t_min,
                                                 self.config.Delta_t,

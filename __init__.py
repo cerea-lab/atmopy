@@ -80,7 +80,7 @@ def atmopy_test():
     # Saves data in a binary file.
     o, name_data = tempfile.mkstemp()
     d.tofile(name_data)
-    
+
     # Tests Talos and display capabilities.
     m = display.getm(name)
     d = display.getd(name, name_data, Nt = 0, Nz = 1)

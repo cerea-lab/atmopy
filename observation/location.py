@@ -25,7 +25,7 @@ class Station:
     """
     Stores information about an observation station
     """
-    
+
     def __init__(self, str = "", type = ""):
         """
         Initializes the instance in case 'str' and 'type' are not empty.
@@ -38,7 +38,7 @@ class Station:
         """
         if str != "" and type != "":
             getattr(self, "From" + type.capitalize() + "String")(str)
-        
+
     def __str__(self):
         return self.name + " [" + self.real_name + "] (" \
                + str(self.latitude) + ", " + str(self.longitude) + ") " \
@@ -188,7 +188,7 @@ class Station:
         self.altitude = float(l[3].strip())
         self.country = "FR"
         self.type = "AERONET"
-        self.network = "AERONET"	
+        self.network = "AERONET"
 
 
     def FromAirparifString(self, str):
@@ -284,7 +284,7 @@ class Station:
             self.latitude *= -1.
         self.network = "EMEP"
         self.type = "EMEP"
-        
+
     def FromPioneerString(self, str):
         """
         Sets station attributes from a string.
@@ -317,7 +317,7 @@ class Station:
         self.name = values[7]
         self.real_name = self.name
         self.network = values[8]
-        
+
     def FromFile(self, filename, station_name, type):
         """
         Loads station attributes from a text file.
@@ -335,7 +335,7 @@ class Station:
             if Station(line, type).name == station_name:
                 self.FromString(line, type)
                 break
-    
+
     def IsInsideBox(self, lat_min, lat_max, lon_min, lon_max):
         """
         Checks wether the station is inside a given area.

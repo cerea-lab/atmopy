@@ -32,7 +32,7 @@ class Source:
     """
     Stores information about a point source
     """
-    
+
     def __init__(self, content = []):
         """
         Initializes the instance in case 'content' is not empty.
@@ -73,7 +73,7 @@ class Source:
 def read_sources(config_file):
     """
     Loads sources attributes from a configuration file.
-    
+
     @type config_file: string
     @param config_file: The configuration file in which source attributes are
     to be found.
@@ -118,7 +118,7 @@ def read_sources(config_file):
 def get_sources_coordinates(config_file):
     """
     Loads sources coordinates from a configuration file.
-    
+
     @type config_file: string
     @param config_file: The configuration file in which source attributes are
     to be found.
@@ -135,7 +135,7 @@ def get_species_sources_coordinates(config_file, species, min_rate = 0.):
     """
     Loads sources coordinates from a configuration file, for sources emitting
     a given species.
-    
+
     @type config_file: string
     @type species: string
     @type min_rate: float

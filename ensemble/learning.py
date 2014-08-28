@@ -38,7 +38,7 @@ class ExponentiallyWeightedAverage(EnsembleMethod):
     This class implements the exponentially weighted average algorithm
     (Cesa-Bianchi & Lugosi, 2006, p. 45).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1, learning_rate =
@@ -57,7 +57,7 @@ class ExponentiallyWeightedAverage(EnsembleMethod):
                                 Nskip = Nskip, Nlearning = Nlearning,
                                 option = option, verbose = verbose)
 
-        
+
     def Init(self):
         self.initial_weight = ones(self.Nsim, 'd') / float(self.Nsim)
 
@@ -82,7 +82,7 @@ class ExponentiatedGradient(EnsembleMethod):
     This class implements the exponentiated gradient algorithm (Cesa-Bianchi,
     1999; Cesa-Bianchi & Lugosi, 2006, p. 23).
     """
-  
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -106,7 +106,7 @@ class ExponentiatedGradient(EnsembleMethod):
 
     def Init(self):
         self.initial_weight = ones((self.Nsim), 'd') / float(self.Nsim)
-        
+
 
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
@@ -137,7 +137,7 @@ class ExponentiatedGradientWindow(ExponentiatedGradient):
         """
         See documentation of 'ExponentiatedGradient.__init__' for explanations
         about arguments.
-        
+
         @type Nkeep: integer
         @param Nkeep: number of training steps.
         """
@@ -215,7 +215,7 @@ class ExponentiatedGradientDiscounted(EnsembleMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type learning_rate: float
         @param learning_rate: Learning rate.
         @type forget_rate: float
@@ -295,7 +295,7 @@ class ExponentiatedGradientAdaptive(ExponentiatedGradientDiscounted):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type a: float
         @param a: A parameter to compute the learning rate.
         @type b: float
@@ -351,7 +351,7 @@ class ExponentiatedGradientAdaptive(ExponentiatedGradientDiscounted):
         confidence, variance, bound, learning_rate = self.GetTools()
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1)
         mean_loss = inner(previous_weight, loss)
-         
+
         # Adds the variance of the gradient-loss term.
         variance += inner(previous_weight, (loss - mean_loss) ** 2)
         bound = max(bound, abs(loss).max())
@@ -423,7 +423,7 @@ class GradientDescent(EnsembleMethod):
     """
     This class implements algorithm GD (Cesa-Bianchi, 1999).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1,
@@ -457,7 +457,7 @@ class GradientDescent(EnsembleMethod):
 
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1)
         weight = previous_weight - self.learning_rate * loss
-       
+
         self.AcquireWeight(weight)
 
 
@@ -524,7 +524,7 @@ class Zink(EnsembleMethod):
     This class implements the greedy projection gradient algorithm (Zinkevich,
     2003).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -559,7 +559,7 @@ class Zink(EnsembleMethod):
                and self.extended:
             raise Exception, \
                   "'extended' option only allowed with projection_simplex."
-        
+
 
     def UpdateWeight(self, s, o):
         import inspect
@@ -573,7 +573,7 @@ class Zink(EnsembleMethod):
             weight = self.projection_function(previous_weight
                                               - self.learning_rate * loss,
                                               self.radius)
-            
+
         self.AcquireWeight(weight)
 
 
@@ -605,12 +605,12 @@ class RidgeRegression(EnsembleMethod):
                                 process = process, statistics = statistics,
                                 Nskip = Nskip, Nlearning = Nlearning,
                                 option = option, verbose = verbose)
-            
+
 
     def Init(self):
         self.initial_weight = zeros(self.Nsim)
         self.A = self.InitialList(self.penalization * identity(self.Nsim))
-        
+
 
     def GetTools(self):
         if self.ens.config.concentrations == "peak":
@@ -631,7 +631,7 @@ class RidgeRegression(EnsembleMethod):
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         A = self.GetTools()
-        
+
         Nobs = len(o)
         bt = zeros(self.Nsim)
         for i in range(Nobs):
@@ -640,7 +640,7 @@ class RidgeRegression(EnsembleMethod):
             bt += (inner(x_it, previous_weight) - o[i]) * x_it
         # Warning: A grows quickly (but linearly).
         weight = previous_weight - dot(scipy.linalg.pinv2(A), bt)
-        
+
         self.UpdateTools(A)
         self.AcquireWeight(weight)
 
@@ -673,13 +673,13 @@ class RidgeRegressionModified(RidgeRegression):
                                  Nskip = Nskip, Nlearning = Nlearning,
                                  option = option, penalization = penalization,
                                  verbose = verbose)
-            
+
 
     def Init(self):
         self.initial_weight = zeros(self.Nsim, 'd')
         self.A = self.InitialList(self.penalization * identity(self.Nsim))
         self.b = self.InitialList(zeros(self.Nsim, 'd'))
-        
+
 
     def GetTools(self):
         if self.ens.config.concentrations == "peak":
@@ -702,11 +702,11 @@ class RidgeRegressionModified(RidgeRegression):
     def UpdateWeight(self, s, o):
         prev_weight = self.GetPreviousWeight()
         A, b = self.GetTools()
-        
+
         index = range(len(o))
         tmp_mat = [outer(s[:, i], s[:, i]) for i in index]
         A += reduce(add, tmp_mat)
-        
+
         weight = dot(scipy.linalg.pinv2(A), b)
         # 'b' is updated after forecast.
         b += reduce(add, map(multiply,
@@ -751,7 +751,7 @@ class RidgeRegressionDiscounted(RidgeRegressionModified):
                                          Nskip = Nskip, Nlearning = Nlearning,
                                          penalization = penalization, option =
                                          option, verbose = verbose)
-            
+
 
     def Init(self):
         self.initial_weight = zeros(self.Nsim)
@@ -762,7 +762,7 @@ class RidgeRegressionDiscounted(RidgeRegressionModified):
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         At, b = self.GetTools()
-        
+
         tmp_mat = [outer(s[:, i], s[:, i]) for i in range(len(o))]
         tmp_b = reduce(add, map(multiply, o, [s[:,i] for i in range(len(o))]))
         At.append(reduce(add, tmp_mat))
@@ -775,7 +775,7 @@ class RidgeRegressionDiscounted(RidgeRegressionModified):
         bt = reduce(add, map(multiply, b, forget))
         A += self.penalization * identity(self.Nsim)
         weight = dot(scipy.linalg.pinv2(A), bt)
-        
+
         self.UpdateTools(At, b)
         self.AcquireWeight(weight)
 
@@ -810,7 +810,7 @@ class RidgeRegressionWindow(RidgeRegressionModified):
                                          Nskip = Nskip, Nlearning = Nlearning,
                                          option = option, verbose = verbose,
                                          penalization = penalization)
-            
+
 
     def Init(self):
         self.initial_weight = zeros(self.Nsim)
@@ -836,7 +836,7 @@ class RidgeRegressionWindow(RidgeRegressionModified):
         period = self.GetLearningDates()
         s, o = self.CollectData(period)
         A, b = self.GetTools()
-        
+
         Nobs = len(o)
         At = zeros([self.Nsim, self.Nsim], 'd')
         bt = zeros(self.Nsim, 'd')
@@ -844,13 +844,13 @@ class RidgeRegressionWindow(RidgeRegressionModified):
             x_it = s[:, i]
             At += outer(x_it, x_it)
             bt += o[i] * x_it
-            
+
         A, b = self.Upkeep(A, At, b, bt)
         Atmp = reduce(add, A)
         btmp = reduce(add, b)
         Atmp += self.penalization * identity(self.Nsim)
         weight = dot(scipy.linalg.pinv2(Atmp), btmp)
-        
+
         self.UpdateTools(A, b)
         self.AcquireWeight(weight)
 
@@ -884,7 +884,7 @@ class Mixture(EnsembleMethod):
     This class implements the exponentially weighted average mixture algorithm
     (Cesa-Bianchi & Lugosi, 2006, p. 48).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -909,7 +909,7 @@ class Mixture(EnsembleMethod):
                                 option = option, extended = extended,
                                 verbose = verbose, U = U)
 
-        
+
     def Init(self):
         self.initial_weight = ones(self.Nsim, 'd') / float(self.Nsim)
         self.confidence = self.InitialList(ones(self.Napprox, 'd')
@@ -944,7 +944,7 @@ class Mixture(EnsembleMethod):
 
     def UpdateWeight(self, s, o):
         confidence = self.GetTools()
-        
+
         for i in range(self.Napprox):
             loss = exp(-self.learning_rate
                        * sum((dot(self.interpolweights[:, i], s) - o) ** 2))
@@ -966,7 +966,7 @@ class Polynomial(EnsembleMethod):
     This class implements the polynomially weighted average forecaster
     (Cesa-Bianchi & Lugosi, 2006, p. 12).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1, power = 2.,
@@ -1035,7 +1035,7 @@ class PolynomialGradient(Polynomial):
     This class implements polynomially weighted average forecaster using the
     gradient of the loss (Cesa-Bianchi & Lugosi, 2006, pp. 12 & 23).
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -1065,7 +1065,7 @@ class PolynomialGradient(Polynomial):
         else:
             self.regret = self.InitialList(zeros(self.Nsim, 'd'))
 
-            
+
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         regret = self.GetTools()
@@ -1102,7 +1102,7 @@ class FixedShare(EnsembleMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type learning_rate: float
         @param learning_rate: Learning rate.
         @type shift: float
@@ -1171,7 +1171,7 @@ class FixedShareGradient(FixedShare):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type learning_rate: float
         @param learning_rate: Learning rate.
         @type shift: float
@@ -1202,7 +1202,7 @@ class FixedShareGradient(FixedShare):
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         confidence = self.GetTools()
-        
+
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1)
         weight_tmp = confidence * exp(-self.learning_rate * loss)
         confidence = self.shift * sum(weight_tmp) / float(self.Nsim) \
@@ -1232,7 +1232,7 @@ class VariableShareGradient(FixedShareGradient):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type learning_rate: float
         @param learning_rate: Learning rate.
         @type shift: float
@@ -1253,7 +1253,7 @@ class VariableShareGradient(FixedShareGradient):
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         confidence = self.GetTools()
-        
+
         # Loss normalized by L.
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1) / 1.e6
         # N : number of models, even in extended mode.
@@ -1282,7 +1282,7 @@ class VariableShareGradient(FixedShareGradient):
 def projASimplex(A, y):
     """
     Projection on the simplex under A^-1 distance.
-    
+
     @type A : array
     @param A: array.
     @type y : array
@@ -1316,7 +1316,7 @@ class OnlineNewtonStep(EnsembleMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type beta: float
         @param beta: A parameter in the body of the algorithm.
         @type mix: float
@@ -1361,7 +1361,7 @@ class OnlineNewtonStep(EnsembleMethod):
             self.A[hour] = At
             self.b[hour] = bt
 
-        
+
     def UpdateWeight(self, s, o):
         previous_weight = self.GetPreviousWeight()
         At, bt = self.GetTools()
@@ -1388,14 +1388,14 @@ def i2j(N,i,j):
     """
     Returns the matrix that, applied to a vector, adds the i-th element to the
     j-th element, and sets the i-th element to 0.
-    
+
     @type N: int
     @param N: The size of the matrix.
     @type i: int
     @param i: The index of the element to be added and to be set to zero.
     @type j: int
     @param j: The index of the element to be augmented.
-    
+
     @rtype: 2D array
     @return: The proper matrix.
     """
@@ -1415,7 +1415,7 @@ def fixed_point2(Q, prec, w):
         N = Q.shape[0]
         M = transpose(Q) - diag(sum(Q,1))
         return M
-    
+
     n = Q.shape[0]
     M = MatZero(Q)
     Id = identity(n, dtype = 'd')
@@ -1437,7 +1437,7 @@ class InternalMethod(EnsembleMethod):
     This class implements the template for internal computation of weights
     (Cesa-Bianchi, 1999; Cesa-Bianchi & Lugosi, 2006, p. 23).
     """
-  
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -1482,13 +1482,13 @@ class InternalMethod(EnsembleMethod):
         elif self.ens.config.concentrations == "hourly":
             hour = self.ens.all_dates[self.step].hour
             self.Q[hour] = Q
-        
+
 
     def compute_proba_on_couples(self, Q, loss, prev_weight):
         """
         Computes the matrix of probability on couples (i, j). Its diagonal is
         null.
-        
+
         @type Q: array
         @type loss: array
         @type prev_weight: array
@@ -1502,12 +1502,12 @@ class InternalMethod(EnsembleMethod):
                 Q[i,j] = self.__core_calculus( Q[i,j], lossij)
         Q /= Q.sum()
         return Q
-        
+
 
     def __core_calculus(self, prev_w, loss):
         """
         Core function to compute the updated weight vector.
-        
+
         @type prev_w: array
         @type loss: array
         """
@@ -1519,7 +1519,7 @@ class InternalMethod(EnsembleMethod):
         previous_weight = self.GetPreviousWeight()
         Q = self.GetTools()
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1)
-        
+
         Q = self.compute_proba_on_couples(Q, loss, previous_weight)
         weight = self.fixed_point_method(Q, self.precision, previous_weight)
         weight /= weight.sum()
@@ -1539,7 +1539,7 @@ class InternalZink(InternalMethod):
     internal regret (Zinkevich, 2003). You should not change the projection
     function ('projection_simplex').
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, extended = False, U = 1., Nskip = 1,
@@ -1571,7 +1571,7 @@ class InternalZink(InternalMethod):
     def mat2vec(self, matrix):
         """
         Reshapes a matrix with a null diagonal to a vector (of size n(n-1)).
-        
+
         @type matrix: 2D array
         @rtype: 1D array
         """
@@ -1587,7 +1587,7 @@ class InternalZink(InternalMethod):
         """
         Reverses 'mat2vec'. It rebuilds the corresponding matrix with null
         diagonal.
-        
+
         @type vec: array
         @type N: int
         @rtype: 2D array
@@ -1608,7 +1608,7 @@ class InternalZink(InternalMethod):
                 p_ij = dot(i2j(N, i,j), prev_weight)
                 lossij = dot(p_ij, loss)
                 internal_loss[i, j] = lossij
-                
+
         Q -= self.learning_rate * internal_loss
         V = self.mat2vec(Q)
         proj_V = self.projection_function(V)
@@ -1652,7 +1652,7 @@ class InternalPolynomialGradient(InternalMethod):
     def compute_proba_on_couples(self, Q, gradloss, prev_weight):
         """
         Q is the matrix of regret with forecast shifted by index on i and j.
-        
+
         @type Q: array
         @type gradloss: array
         @type prev_weight: array
@@ -1704,7 +1704,7 @@ class InternalExponentiatedGradientDiscounted(InternalMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-        
+
         @type learning_rate: float
         @param learning_rate: Learning rate.
         @type forget_rate: float
@@ -1752,7 +1752,7 @@ class InternalExponentiatedGradientDiscounted(InternalMethod):
     def compute_proba_on_couples(self, confidence):
         """
         Note: this does not work in hourly mode.
-        
+
         @type confidence: list of array
         @rtype: array
         """
@@ -1796,7 +1796,7 @@ class InternalExponentiatedGradientDiscounted(InternalMethod):
 
         Q = self.compute_proba_on_couples(confidence)
         weight = self.fixed_point_method(Q, self.precision, previous_weight)
-        
+
         self.UpdateTools(confidence)
         self.AcquireWeight(weight)
 
@@ -1811,7 +1811,7 @@ class DynamicLinearRegression(EnsembleMethod):
     This class implements the Dynamic Linear Regression algorithm
     (West and Harrison 1989).
     """
-  
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1,
@@ -1831,7 +1831,7 @@ class DynamicLinearRegression(EnsembleMethod):
                                 Nskip = Nskip, Nlearning = Nlearning,
                                 option = "station", verbose = verbose)
 
-      
+
     def Init(self):
         self.initial_weight = zeros(self.Nsim, 'd')
         self.R = self.InitialList(identity(self.Nsim, 'd'))
@@ -1880,7 +1880,7 @@ class DynamicLinearRegression(EnsembleMethod):
         # R, C, W  variables are variance matrix. Q is a [1, 1]-array.
         prev_weight = self.GetPreviousWeight()
         R, Q, C, W, e, s, d, n = self.GetTools()
-        
+
         n += 1
         # With known update of W, we would have R = C + W
         # Here, we use a discount factor 'delta'.

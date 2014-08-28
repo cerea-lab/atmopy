@@ -214,7 +214,7 @@ class EnsembleMethod:
         Initialization of the combination process.
         """
         self.all_dates = []
-            
+
 
     def UpdateWeight(self, s, o):
         """
@@ -250,7 +250,7 @@ class EnsembleMethod:
         else:
             raise Exception, "Unsupported concentration type: \"" \
                   + self.ens.config.concentrations + "\"."
-        
+
         value_type = type(value)
         if value_type in [int, float]:
             return [value for i in range(length)]
@@ -354,7 +354,7 @@ class EnsembleMethod:
         """
         Gets the data with the right format according to the 'extended'
         option.
-        
+
         @type period: list of datetime
         @param period: It defines the selected list of dates.
 
@@ -365,7 +365,7 @@ class EnsembleMethod:
             stations_out = self.ens.station
         elif self.option == "station":
             stations_out = [self.ens.station[self.station]]
-            
+
         s1, o = combine.collect_dates(self.ens.sim, self.ens.obs,
                                       dates = self.ens.date,
                                       stations = self.ens.station,
@@ -384,7 +384,7 @@ class EnsembleMethod:
     def AcquireWeight(self, weight):
         """
         Stores the weights according to the activation of 'extended' option.
-        
+
         @type weight: 1D array
         @param weight: The weights (possibly extended) associated with the
         models.
@@ -421,12 +421,12 @@ class EnsembleMethod:
             starting_date = self.Nskip
         elif self.ens.config.concentrations == "hourly":
             starting_date = 24 * self.Nskip
-            
+
         for self.station in range(Ncycle):
             if self.option == "station":
                 self.prt("Number of processed stations: " + str(self.station)
                          + "/" + str(Ncycle))
-            
+
             self.Init()
             for self.step in range(starting_date, len(self.ens.all_dates)):
                 if self.option in ["step", "global"]:
@@ -440,7 +440,7 @@ class EnsembleMethod:
                 elif self.option == "station":
                     tmp = self.ens.all_dates[self.step]
                     self.weight_date[self.station].append(tmp)
-       
+
                 if o.shape != (0,):
                     self.UpdateWeight(s, o)
                 else:
@@ -465,7 +465,7 @@ class EnsembleMethod:
             combine_method = combine.combine_step
         elif self.option == "station":
             combine_method = combine.combine_station_step
-            
+
         self.date, self.sim = combine_method(self.ens.date, self.ens.sim,
                                              self.weight_date, self.weight,
                                              restricted = True)
@@ -482,7 +482,7 @@ class EnsembleMethod:
                 o = restriction(self.date[i], self.sim[i], self.ens.date[i],
                                 self.ens.obs[i])[2]
                 self.obs.append(o)
-            
+
         self.CheckCompatibility(self.sim, self.obs)
         self.CheckCompatibility(self.date, self.obs)
 
@@ -575,7 +575,7 @@ class EnsembleMethod:
         self.all_dates = [self.period[0]]
         while self.all_dates[-1] < self.period[-1]:
             self.all_dates.append(self.all_dates[-1] + delta)
-        
+
 
     def RestrictToPeriod(self, period):
         """
@@ -610,7 +610,7 @@ class BestModel(EnsembleMethod):
     Selects the best model (for a given measure) in the ensemble.
     In station mode, it computes the best model for each station.
     """
-    
+
 
     def __init__(self, ens, measure = "rmse", option = "global",
                  configuration_file = None, process = True,
@@ -642,7 +642,7 @@ class BestModel(EnsembleMethod):
         elif self.ens.config.concentrations == "hourly":
             Nskip = 24 * self.Nskip
         compute_stat = stat.compute_stat
-        
+
         if self.option == "global":
             sim_stat = compute_stat(self.ens.sim, self.ens.obs,
                                     (self.measure,), dates = self.ens.date,
@@ -674,7 +674,7 @@ class BestModel(EnsembleMethod):
 ################
 # ENSEMBLEMEAN #
 ################
-        
+
 
 class EnsembleMean(EnsembleMethod):
     """
@@ -688,7 +688,7 @@ class EnsembleMean(EnsembleMethod):
         """
         See documentation of 'EnsembleMethod.__init__' for explanations about
         arguments.
-       
+
         @type bias_removal: Boolean
         @param bias_removal: Should bias be removed?
         @type Nbias: integer
@@ -738,7 +738,7 @@ class EnsembleMean(EnsembleMethod):
             ibias.append((dot(weight, s) - o).mean())
             self.bias.append(mean(ibias[-min(self.Nbias, l):]))
             self.UpdateTools(ibias)
-            
+
         self.AcquireWeight(weight)
 
 
@@ -752,7 +752,7 @@ class EnsembleMedian(EnsembleMethod):
     Computes the ensemble median. If there is an even number of models, the
     mean of the two middle models is used.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, bias_removal = False, Nbias = None,
@@ -815,7 +815,7 @@ class EnsembleMedian(EnsembleMethod):
                     ibias = self.instantaneous_bias[0]
                 elif self.ens.config.concentrations == "hourly":
                     ibias = self.instantaneous_bias[hour]
-                
+
                 l = len(ibias)
                 ibias.append((s - o).mean())
                 self.bias.append(mean(ibias[-min(self.Nbias, l):]))
@@ -833,7 +833,7 @@ class ELS(EnsembleMethod):
     ELS method, where LS stands for least-squares, computes the a posteriori
     best constant linear combination.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 0, constraint = None,
@@ -892,7 +892,7 @@ class ELS(EnsembleMethod):
                 stations_out = self.ens.station
             elif self.option == "station":
                 stations_out = [self.ens.station[i]]
-                
+
             s, o = combine.collect(self.ens.sim, self.ens.obs,
                                    dates = self.ens.date,
                                    period = self.all_dates,
@@ -944,7 +944,7 @@ class ELSd(EnsembleMethod):
     coefficients in the least-square sense at each step. The same coefficients
     are applied at all stations.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 0, verbose = False,
@@ -984,7 +984,7 @@ class ELSdN(EnsembleMethod):
     ELS^{d, N} method where LS stands for least-squares, 'd' for date, and 'N'
     refers to the length of the learning period.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1,
@@ -1028,7 +1028,7 @@ class BestModelStep(EnsembleMethod):
     This method selects the best models in the learning period and use the
     mean of them for the next step.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, Nskip = 1, Nlearning = 1,
@@ -1068,7 +1068,7 @@ class BestModelStep(EnsembleMethod):
         if self.bias_removal:
             self.bias = []
         self.all_dates = []
-            
+
 
     def UpdateWeight(self, s, o):
         weight = zeros(shape = (self.Nsim, ), dtype = 'd')
@@ -1098,7 +1098,7 @@ class BestModelStepStation(EnsembleMethod):
     """
     This method selects the best models at each step and station.
     """
-    
+
 
     def __init__(self, ens, configuration_file = None, process = True,
                  statistics = True, verbose = False):
@@ -1119,11 +1119,11 @@ class BestModelStepStation(EnsembleMethod):
         self.sim = [[] for i in range(self.ens.Nstation)]
         self.isim = [[] for i in range(self.ens.Nstation)]
         self.obs = [[] for i in range(self.ens.Nstation)]
-            
+
 
     def Process(self):
         self.Init()
-        
+
         # Dates.
         for self.step in range(len(self.ens.all_dates)):
             self.all_dates.append(self.ens.all_dates[self.step])

@@ -60,7 +60,7 @@ def getm(config = None, y_min = None, x_min = None,
             config = talos.Config(config)
         else:
             raise IOError, "Configuration file \"" + config + "\" not found."
-            
+
     if x_min is None:
         x_min = config.x_min
     if y_min is None:
@@ -144,7 +144,7 @@ def getd(config = None, filename = "", Nt = None,
         Nz = int(os.stat(filename)[6] / 4) / Nx / Ny / Nt
     if Nt == 0:
         Nt = int(os.stat(filename)[6] / 4) / Nx / Ny / Nz
-        
+
     length = 1
     for l in [Nt, Nz, Ny, Nx]:
         length *= l
@@ -209,7 +209,7 @@ def disp(map, data, **kwargs):
         gcf().axes[1].clear()
         cax = gcf().axes[1]
         colorbar(cax = cax)
-    
+
 
 def dispcf(map, data, V = None, **kwargs):
     """
@@ -225,7 +225,7 @@ def dispcf(map, data, V = None, **kwargs):
     if data.ndim != 2:
         raise Exception, "Function \"dispcf\" proceeds with 2D data," \
               + " but input data has " + str(data.ndim) + " dimension(s)."
-    
+
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
         xsize = rcParams['figure.figsize'][0]
@@ -261,7 +261,7 @@ def dispcf(map, data, V = None, **kwargs):
         gcf().axes[1].clear()
         cax = gcf().axes[1]
         colorbar(cax = cax)
-    
+
 
 def cbar():
     """

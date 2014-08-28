@@ -107,7 +107,7 @@ def load_binary_first_level(filename, shape, type = 'f'):
     X, Y and T dimensions (a time sequence of planes).
     If the given binary file is a 4D file (XYZT), the plane Z = 1 is
     extracted.
-    
+
     @type filename: string or Python file object.
     @param filename: The name of the file to load.
 

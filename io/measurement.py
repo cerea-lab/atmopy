@@ -134,7 +134,7 @@ def load_observations(stations, directory):
     """
     Loads observations data from files for given stations
     File names are guessed from station.name.
-    
+
     @type stations: list of Station
     @param stations: Stations for which observation data must be returned.
     @type directory: string

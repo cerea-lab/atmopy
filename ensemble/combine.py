@@ -100,7 +100,7 @@ def collect(sim, obs, dates = None, stations = None, period = None,
     # Output arrays.
     out_obs = []
     out_sim = [[] for i in range(len(sim))]
-    
+
     for istation in range(len(stations)):
         if stations[istation] in stations_out:
             # Searches for the first date in the considered period.
@@ -184,7 +184,7 @@ def collect_dates(sim, obs, dates = None, stations = None, period = None,
     # Output arrays.
     out_obs = []
     out_sim = [[] for i in range(len(sim))]
-    
+
     for istation in range(len(stations)):
         if stations[istation] in stations_out:
             j = 0
@@ -293,7 +293,7 @@ def m_least_squares(sim, obs):
     concentrations).
     @type obs: 1D-array
     @param obs: Observations (or any other target).
-    
+
     @rtype: 1D-array
     @return: The linear combination 'sim^T alpha'.
     """
@@ -624,7 +624,7 @@ def remove_bias_step(dates, sim, bias_dates, bias_step):
     associated with the latest date of 'dates'.
 
     @rtype: list of array
-    
+
     @return: The simulations debiased. It is returned in a list of list of
     1D-arrays, with the same shape as 'sim'.
     """

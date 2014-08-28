@@ -111,7 +111,7 @@ def segplot_date(x, y, fmt, maxdelta, **kwargs):
     """
     Plots x versus y with dates, breaking the plot at any point where
     x[i] - x[i-1] > maxdelta. kwargs are passed on to plot
-    
+
     @type x: sequence of dates represented as float days
     @param x: Dates to plot in absciss.
     @type y: sequence of float or int

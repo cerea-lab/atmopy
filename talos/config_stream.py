@@ -102,7 +102,7 @@ class ConfigStream:
 
         @type section: string
         @param section: Name of the section to list elements from.
-        
+
         @rtype: string
         @return: String containing everything in given section of config file.
         """
@@ -321,7 +321,7 @@ class ConfigStream:
         # First filters useless characters.
         str = [x for x in str if miscellaneous.is_num(x)]
         str = reduce(lambda x, y: x + y, str)
-        
+
         year = int(str[0:4])
         if len(str) > 5:
             month = int(str[4:6])
