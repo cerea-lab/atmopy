@@ -79,6 +79,7 @@ namespace std
 
 %include "../../SeldonData/SeldonDataHeader.hxx"
 %include "../../AtmoData/AtmoDataHeader.hxx"
+%include "../../models/BasePointEmission.hxx"
 %include "../../models/BaseModel.hxx"
 %include "../../models/Polair3DTransport.hxx"
 %include "../../models/Polair3DChemistry.hxx"
@@ -86,7 +87,9 @@ namespace std
 
 namespace Polyphemus
 {
+  %template(BasePointEmissionDouble) BasePointEmission<double>;
   %template(BaseModelDouble) BaseModel<double>;
+
   %template(Polair3DTransportDouble) Polair3DTransport<double, Polyphemus::SplitAdvectionDST3<double>, Polyphemus::DiffusionROS2<double> >;
   %template(Polair3DChemistryDouble) Polair3DChemistry<double, Polyphemus::SplitAdvectionDST3<double>, Polyphemus::DiffusionROS2<double>, Polyphemus::Photochemistry<double> >;
 
