@@ -3,6 +3,22 @@ o----------------o
 o----------------o
 
 
+Version 1.8 (2015-04-20)
+-----------
+
+- Added the submodule "model", with a SWIG interface to 'Polair3DVerdandi'.
+- Added the submodule "manager", with a SWIG interface to
+  'GroundNetworkObservationManager' and 'EnsembleObservationManager'.
+- Added two versions of 'Vector2::Flatten' to the submodule "manager".
+- Added 'HasSameShapeDouble and 'HasSameShapeInt' to the interface to 'Vector2'.
+- Added "Aircraft" observations class.
+- Added Basemap functions to plot cross sections.
+
+** Bug fixes:
+
+- An instantiation of 'Vector3::Flatten' was missing.
+
+
 Version 1.7.2 (2010-12-02)
 -------------
 
