@@ -20,18 +20,24 @@
 # For more information, visit the AtmoPy home page:
 #     http://cerea.enpc.fr/polyphemus/atmopy.html
 
-import os, glob
+import distutils.sysconfig, os, glob
 
+# Put the path to Polyphemus.
+# Also editable from command line with option "polyphemus".
+polyphemus_path = "../../../"
 verdandi_path = "../../verdandi/"
 
 include_path = """../../
                   ../../Talos
+                  ../../verdandi
+                  ../../verdandi/share
                   """
+
+library_list = "python lua"
 
 exclude_target = glob.glob("*.cpp") # excludes all default targets.
 
-execfile(os.path.join(verdandi_path, "share/SConstruct"))
-
+execfile(polyphemus_path + "include/common/SConstruct")
 
 ########
 # SWIG #
@@ -42,17 +48,12 @@ env_swig = env.Clone()
 
 env_swig.Replace(SWIGFLAGS = ["-Wall", "-c++", "-python"])
 env_swig.Append(SWIGPATH = env_swig["CPPPATH"])
-env_swig.Replace(CCFLAGS = debug_flag("debug_cpp"))
 env_swig.Append(CPPFLAGS = ["-DSELDON_EXCLUDE_FROM_EXPLICIT_INSTANTIATION",
                             "-DSELDON_DEBUG_LEVEL_4"])
-env_swig.Append(CPPPATH = distutils.sysconfig.get_python_inc())
 env_swig.Replace(SHLIBPREFIX = "")
 
-if env_swig['PLATFORM'] == 'win32':
-    env_swig.SharedLibrary("_manager.so", ["manager.cpp", "manager.i"])
-else:
+env_swig.SharedLibrary("_manager.so", ["manager.cpp", "manager.i"])
+if env_swig['PLATFORM'] != 'win32':
     env_swig['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
-    env_swig.SharedLibrary("_manager.so",
-                           ["manager.cpp", "manager.i", lua_library])
 
 env_swig.Alias(["swig", "manager.py"], "_manager.so")

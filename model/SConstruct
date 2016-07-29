@@ -37,32 +37,16 @@ include_path = """../../
                   ../../Talos
                   ../../SeldonData
                   ../../AtmoData
+                  ../../Talos
+                  ../../verdandi
+                  ../../verdandi/share
                   """
 
 exclude_target = glob.glob("*.cpp") # excludes all default targets.
 
-execfile(os.path.join(verdandi_path, "share/SConstruct"))
+library_list = "python lua"
 
-
-##################
-# OTHER INCLUDES #
-##################
-
-
-# Dependency list.
-dependency_list = to_string_list("dependency_list")
-for path in include_path_list:
-    dependency_list += glob.glob(os.path.join(path, "*.f"))
-    dependency_list += glob.glob(os.path.join(path, "*.F"))
-    dependency_list += glob.glob(os.path.join(path, "*.f90"))
-    dependency_list += glob.glob(os.path.join(path, "*.C"))
-    dependency_list += glob.glob(os.path.join(path, "*.c"))
-# In case there is a list of dependencies to be excluded.
-exclude_dependency = to_string_list("exclude_dependency")
-for expression in exclude_dependency:
-    for dependency in dependency_list[:]:
-        if re.search(expression, dependency) is not None:
-            dependency_list.remove(dependency)
+execfile(polyphemus_path + "include/common/SConstruct")
 
 
 ########
@@ -74,19 +58,13 @@ env_swig = env.Clone()
 
 env_swig.Replace(SWIGFLAGS = ["-Wall", "-c++", "-python"])
 env_swig.Append(SWIGPATH = env_swig["CPPPATH"])
-env_swig.Replace(CCFLAGS = debug_flag("debug_cpp"))
 env_swig.Append(CPPFLAGS = ["-DSELDON_EXCLUDE_FROM_EXPLICIT_INSTANTIATION",
                             "-DSELDON_DEBUG_LEVEL_4"])
-env_swig.Append(CPPPATH = distutils.sysconfig.get_python_inc())
 env_swig.Replace(SHLIBPREFIX = "")
 
-if env_swig['PLATFORM'] == 'win32':
-    env_swig.SharedLibrary("_polair3d.so", ["polair3d.cpp", "polair3d.i"]
-                           + dependency_list)
-else:
+env_swig.SharedLibrary("_polair3d.so", ["polair3d.cpp", "polair3d.i"]
+                       + dependency_list)
+if env_swig['PLATFORM'] != 'win32':
     env_swig['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
-    env_swig.SharedLibrary("_polair3d.so",
-                           ["polair3d.cpp", "polair3d.i", lua_library]
-                           + dependency_list)
 
 env_swig.Alias(["swig", "polair3d.py"], "_polair3d.so")
