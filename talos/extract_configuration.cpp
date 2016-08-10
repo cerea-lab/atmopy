@@ -33,6 +33,7 @@
 #include <vector>
 using namespace std;
 
+#undef TALOS_DEBUG
 #include "Talos.hxx"
 using namespace Talos;
 
