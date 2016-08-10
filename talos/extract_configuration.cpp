@@ -55,6 +55,7 @@ int main(int argc, char** argv)
       mesg += "  {options}:\n";
       mesg += "    -ls (default): lists all sections.\n";
       mesg += "    -ll: lists all lines (discarding empty lines and comments).\n";
+      mesg += "    -t: test the configuration file for existence.\n";
       mesg += "    -s [section] {elements}: if {elements} is empty, it lists all lines\n";
       mesg += "      (discarding empty lines and comments) in the section; if {elements}\n";
       mesg += "      is not empty, it lists the first values of the elements\n";
@@ -142,6 +143,11 @@ int main(int argc, char** argv)
           sections.push_back(value);
           keys.push_back(list<string>());
           option = "";
+        }
+      // Just a test for configuration existence.
+      else if (option == "t")
+        {
+          return 0;
         }
       // No option: just a key.
       else if (option == "")
