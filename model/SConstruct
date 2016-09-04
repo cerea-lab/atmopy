@@ -52,7 +52,7 @@ exclude_target = glob.glob("*.cpp") # excludes all default targets.
 
 library_list = "python lua"
 
-execfile(polyphemus_path + "include/common/SConstruct")
+SConscript(polyphemus_path + "/scons/main")(globals())
 
 
 ########
