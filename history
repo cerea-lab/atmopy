@@ -2,6 +2,15 @@ o----------------o
 | ATMOPY HISTORY |
 o----------------o
 
+Version 1.8.1 (2018-04-10)
+-------------
+
+- Ported SConstruct files to the new build system.
+- Added a user message when Verdandi is needed and cannot be found.
+- Added error checking in configuration parsing.
+- Added to "extract_configuration" an health test option '-t'.
+- Disables 'TALOS_DEBUG' for "extract_configuration".
+- Fixed the SConstruct files related to SWIG.
 
 Version 1.8 (2015-04-20)
 -----------
