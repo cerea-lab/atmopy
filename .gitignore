@@ -4,6 +4,7 @@
 *.so
 *.os
 *.py[cod]
+talos/extract_configuration
 
 ### SCons files
 *.scon*
