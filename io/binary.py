@@ -94,8 +94,8 @@ def load_binary(filename, shape, type = 'f'):
         length *= l
     d = numpy.fromfile(filename, type, length)
     if d.shape[0] != length:
-        raise Exception, "File \"" + filename \
-              + "\" does not contain enough elements."
+        raise Exception("File \"" + filename \
+              + "\" does not contain enough elements.")
     d.shape = shape
     d = d.astype('d')
     return d

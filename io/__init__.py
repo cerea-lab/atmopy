@@ -27,6 +27,6 @@ operations.
 """
 
 
-from binary import *
-from measurement import *
-from source import *
+from atmopy.io.binary import *
+from atmopy.io.measurement import *
+from atmopy.io.source import *

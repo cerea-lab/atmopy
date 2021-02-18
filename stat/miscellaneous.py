@@ -69,11 +69,11 @@ def spatial_distribution(data, function):
                         else:
                             m[i, j, k, l] = function(data[:, i, j, k, l])
     elif data.ndim > 5:
-        raise ValueError, "Too many dimensions (" + str(data.ndim) \
-              + "). There should be 2, 3, 4 or 5 dimensions."
+        raise ValueError("Too many dimensions (" + str(data.ndim) \
+              + "). There should be 2, 3, 4 or 5 dimensions.")
     else:
-        raise ValueError, "Too few dimensions (" + str(data.ndim) \
-              + "). There should be 2, 3, 4 or 5 dimensions."
+        raise ValueError("Too few dimensions (" + str(data.ndim) \
+              + "). There should be 2, 3, 4 or 5 dimensions.")
 
     return m
 

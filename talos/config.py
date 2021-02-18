@@ -21,7 +21,7 @@
 #     http://cerea.enpc.fr/polyphemus/atmopy.html
 
 
-import config_stream
+from . import config_stream
 
 
 class Config:
@@ -122,15 +122,22 @@ class Config:
            whole section is read and returned in a list made of the section
            lines.
         """
-        try:
+        if not self.show_error:
+            try:
+                val = self.stream.GetElement(x[0], section = x[1], type = x[-1])
+                if len(x) == 4:
+                    setattr(self, x[2], val)
+                else:
+                    setattr(self, x[0], val)
+            except:
+                pass
+        else:
             val = self.stream.GetElement(x[0], section = x[1], type = x[-1])
             if len(x) == 4:
                 setattr(self, x[2], val)
             else:
                 setattr(self, x[0], val)
-        except Exception, e:
-            if self.show_error:
-                raise
+
 
     def SetMetaAttributes(self):
         """

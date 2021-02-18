@@ -57,7 +57,7 @@ class Source:
             self.species = content[5]
             self.rate = content[6]
         else:
-            print 'Error: list of attributes must be of length 7.'
+            print('Error: list of attributes must be of length 7.')
 
 
     def SetSourceLocation(self, coordinates):

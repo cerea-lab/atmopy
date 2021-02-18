@@ -28,6 +28,6 @@ models performances.
 """
 
 
-from measure import *
-from compute import *
-from miscellaneous import *
+from atmopy.stat.measure import *
+from atmopy.stat.compute import *
+from atmopy.stat.miscellaneous import *

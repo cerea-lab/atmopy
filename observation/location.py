@@ -510,8 +510,8 @@ def get_simulated_along_aircraft(origin, delta, data, position,
     # Interpolation impossible.
     if index_x >= data.shape[3] or index_y >= data.shape[2] \
             or index_x < 0 or index_y < 0:
-        print 'interpolation impossible  ', index_x, data.shape[3], \
-        index_y, data.shape[2]
+        print('interpolation impossible  ', index_x, data.shape[3], \
+        index_y, data.shape[2])
         return -999
 
     # Interpolation coefficients.
@@ -544,10 +544,10 @@ def get_simulated_along_aircraft(origin, delta, data, position,
 
     if (position[1] < altitude_z[0]):
         data_point = data_z[0]
-        print 'lower than lowest level'
+        print('lower than lowest level')
     if (position[1] > altitude_z[data.shape[1] - 1]):
         data_point = data_z[data.shape[1] - 1]
-        print 'higher than highest level'
+        print('higher than highest level')
 
     for z in range(data.shape[1] - 1):
         if (altitude_z[z] < position[1] < altitude_z[z + 1]):
@@ -594,8 +594,8 @@ def get_simulated_profil_along_aircraft(origin, delta, data, position,
     # Interpolation impossible.
     if index_x >= data.shape[3] or index_y >= data.shape[2] \
            or index_x < 0 or index_y < 0:
-        print 'interpolation impossible  ',  index_x , data.shape[3], \
-            index_y, data.shape[2]
+        print('interpolation impossible  ',  index_x , data.shape[3], \
+            index_y, data.shape[2])
         profil=[]
         for z in range(data.shape[1]):
             profil.append(-999)
@@ -1074,9 +1074,9 @@ def average_aircraft(aircraft, averaging_time, missing_value):
          aircraft_bis.meas[i] = 0
 
      if (averaging_time < (aircraft.time[1] - aircraft.time[0])):
-         raise ValueError, "Error on averaging aircraft data," \
+         raise ValueError("Error on averaging aircraft data," \
              + "the averaging time is smaller than the timestep " \
-             + "between 2 aircraft data"
+             + "between 2 aircraft data")
 
 
      endtime_in_ss = aircraft.time[-1].hour*3600 \

@@ -27,9 +27,9 @@ forecasts and uncertainty analysis based on ensembles.
 """
 
 
-from combine import *
-from probability import *
+from atmopy.ensemble.combine import *
+from atmopy.ensemble.probability import *
 
-from ensemble_data import *
-from ensemble_method import *
-from learning import *
+from atmopy.ensemble.ensemble_data import *
+from atmopy.ensemble.ensemble_method import *
+from atmopy.ensemble.learning import *

@@ -42,16 +42,15 @@ For more information,visit the AtmoPy home page:
 http://www.enpc.fr/cerea/polyphemus/atmopy.html
 """
 
-
-import display
+import atmopy.display
 try:
-    import ensemble
+    import atmopy.ensemble
 except:
     pass
-import io
-import observation
-import stat
-import talos
+import atmopy.io
+import atmopy.observation
+import atmopy.stat
+import atmopy.talos
 
 
 def atmopy_test():
@@ -82,10 +81,11 @@ def atmopy_test():
     d.tofile(name_data)
 
     # Tests Talos and display capabilities.
-    m = display.getm(name)
-    d = display.getd(name, name_data, Nt = 0, Nz = 1)
-    display.dispcf(m, stat.spatial_distribution(d, "mean")[0], V = 25)
+    m = atmopy.display.getm(name)
+    d = atmopy.display.getd(name, name_data, Nt = 0, Nz = 1)
+    atmopy.display.dispcf(m, stat.spatial_distribution(d, "mean")[0], V = 25)
 
     # Removes temporary files.
     os.remove(name)
     os.remove(name_data)
+

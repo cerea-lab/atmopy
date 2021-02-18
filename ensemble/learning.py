@@ -24,7 +24,7 @@
 import sys, os
 sys.path.insert(0,
                 os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
-from ensemble_method import *
+from atmopy.ensemble.ensemble_method import *
 sys.path.pop(0)
 
 
@@ -408,7 +408,7 @@ class Prod(ExponentiatedGradient):
         loss = 2. * sum((dot(previous_weight, s) - o) * s, 1)
         weight = previous_weight * (1. - self.learning_rate * loss)
         if (weight < 0.).any():
-            raise Exception, "Too large parameter eta"
+            raise Exception("Too large parameter eta")
         weight /= weight.sum()
 
         self.AcquireWeight(weight)
@@ -557,8 +557,8 @@ class Zink(EnsembleMethod):
         self.initial_weight = ones((self.Nsim), 'd') / float(self.Nsim)
         if not(self.projection_function == projection_simplex) \
                and self.extended:
-            raise Exception, \
-                  "'extended' option only allowed with projection_simplex."
+            raise Exception(\
+                  "'extended' option only allowed with projection_simplex.")
 
 
     def UpdateWeight(self, s, o):
@@ -828,7 +828,7 @@ class RidgeRegressionWindow(RidgeRegressionModified):
             del A[0]
             del b[0]
         else:
-            raise Exception, "Length of 'A' strictly greater than 'Nkeep'!"
+            raise Exception("Length of 'A' strictly greater than 'Nkeep'!")
         return A, b
 
 
@@ -1761,14 +1761,14 @@ class InternalExponentiatedGradientDiscounted(InternalMethod):
             if self.ens.config.concentrations == "peak":
                 weight_list = self.weight_ext[:]
             elif self.ens.config.concentrations == "hourly":
-                raise Exception, "hourly mode not available"
+                raise Exception("hourly mode not available")
             weight_list.insert(0, self.GetInitialWeight().copy())
         else:
             N = self.Nsim
             if self.ens.config.concentrations == "peak":
                 weight_list = self.weight[:]
             elif self.ens.config.concentrations == "hourly":
-                raise Exception, "hourly mode not available"
+                raise Exception("hourly mode not available")
             weight_list.insert(0, self.GetInitialWeight().copy())
 
         T = len(confidence)

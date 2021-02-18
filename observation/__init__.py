@@ -31,9 +31,9 @@ import numpy
 import datetime
 import math
 
-from location import *
-from temporal import *
-from space_time import *
+from atmopy.observation.location import *
+from atmopy.observation.temporal import *
+from atmopy.observation.space_time import *
 
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))

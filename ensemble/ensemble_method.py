@@ -29,7 +29,7 @@ sys.path.insert(0, atmopy_path)
 from atmopy import talos, observation, stat
 sys.path.pop(0)
 
-import combine
+import atmopy.ensemble.combine
 
 from numpy import *
 import datetime
@@ -131,14 +131,14 @@ class EnsembleMethod:
             self.weight_ext = [[] for x in range(self.ens.Nstation)]
             self.weight_date = [[] for x in range(self.ens.Nstation)]
         else:
-            raise Exception, "Unknown option: \"" + self.option + "\"."
+            raise Exception("Unknown option: \"" + self.option + "\".")
 
         if Nskip < Nlearning:
-            raise Exception, "Nskip < Nlearning"
+            raise Exception("Nskip < Nlearning")
 
         if statistics and not process:
-            raise Exception, \
-                  "Unable to compute statistics without ensemble combination."
+            raise Exception( \
+                  "Unable to compute statistics without ensemble combination.")
 
         if configuration_file != None:
             self.LoadConfiguration(configuration_file)
@@ -195,18 +195,18 @@ class EnsembleMethod:
                or self.config.t_range[1] > self.config.origin[0] \
                + datetime.timedelta(0, 3600 * self.config.Delta_t
                                     * self.config.Nt):
-            raise Exception, "The period considered for computations must " \
-                  + "be included in the simulated period."
+            raise Exception("The period considered for computations must " \
+                  + "be included in the simulated period.")
 
         # Checks that the required concentrations are supported.
         if self.config.concentrations == "peak":
             # Checks that peaks are not paired.
             if self.config.paired:
-                raise Exception, "Unable to deal with paired peaks."
+                raise Exception("Unable to deal with paired peaks.")
         elif self.config.concentrations != "hourly":
-            raise Exception, "Field \"concentrations\" is set to \"" \
+            raise Exception("Field \"concentrations\" is set to \"" \
                   + self.config.concentrations \
-                  + "\" but should be \"hourly\" or \"peak\"."
+                  + "\" but should be \"hourly\" or \"peak\".")
 
 
     def Init(self):
@@ -248,8 +248,8 @@ class EnsembleMethod:
         elif self.ens.config.concentrations == "hourly":
             length = 24
         else:
-            raise Exception, "Unsupported concentration type: \"" \
-                  + self.ens.config.concentrations + "\"."
+            raise Exception("Unsupported concentration type: \"" \
+                  + self.ens.config.concentrations + "\".")
 
         value_type = type(value)
         if value_type in [int, float]:
@@ -541,8 +541,8 @@ class EnsembleMethod:
             compatible = compatible \
                          and len(sim[istation]) == len(obs[istation])
         if not compatible:
-            raise Exception, "Incompatible data: shapes of simulated " \
-                  + "concentrations and observations do not match."
+            raise Exception("Incompatible data: shapes of simulated " \
+                  + "concentrations and observations do not match.")
 
 
     def CheckDate(self, date, odate):
@@ -558,7 +558,7 @@ class EnsembleMethod:
         for istation in range(len(date)):
             for idate in range(len(date[istation])):
                 if date[istation][idate] != odate[istation][idate]:
-                    raise Exception, "Dates do not match."
+                    raise Exception("Dates do not match.")
 
 
     def GetAllDates(self):
@@ -697,7 +697,7 @@ class EnsembleMean(EnsembleMethod):
         self.weight_date = []
         self.bias_removal = bias_removal
         if self.bias_removal and (Nbias ==None):
-            raise Exception, "You have to give an integer value to 'Nbias'."
+            raise Exception("You have to give an integer value to 'Nbias'.")
         # Number of steps to compute the bias.
         self.Nbias = Nbias
         EnsembleMethod.__init__(self, ens,
@@ -768,7 +768,7 @@ class EnsembleMedian(EnsembleMethod):
         """
         self.bias_removal = bias_removal
         if self.bias_removal and (Nbias ==None):
-            raise Exception, "You have to give an integer value to 'Nbias'."
+            raise Exception("You have to give an integer value to 'Nbias'.")
         self.Nbias = Nbias
         EnsembleMethod.__init__(self, ens,
                                 configuration_file = configuration_file,

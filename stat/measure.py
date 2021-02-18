@@ -51,7 +51,7 @@ def mbe(data1, data2):
     @return: Mean Bias Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     return (data1 - data2).mean()
 
 
@@ -76,7 +76,7 @@ def mage(data1, data2):
     @return: Mean Absolute Gross Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     return (abs(data1 - data2)).mean()
 
 
@@ -107,7 +107,7 @@ def mnge(data1, data2, cutoff = 0.):
     @return: Mean Normalized Gross Error (MNGE) between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     return (abs(data1 - data2) / data2).mean()
@@ -133,7 +133,7 @@ def rmse(data1, data2):
     and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     temp = data1 - data2
     temp = temp*temp
     return math.sqrt(temp.mean())
@@ -159,7 +159,7 @@ def correlation(data1, data2):
     @return: Correlation coefficient between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     diff1 = data1 - data1.mean()
     diff2 = data2 - data2.mean()
     return (diff1 * diff2).mean() / math.sqrt((diff1*diff1).mean() \
@@ -215,7 +215,7 @@ def mnbe(data1, data2, cutoff = 0.):
     @return: Mean Normalized Bias Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     return ((data1 - data2) / data2).mean()
@@ -246,7 +246,7 @@ def mfbe(data1, data2, cutoff = 0.):
     @return: Mean Fractionalized Bias Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     return 2 * ((data1 - data2) / (data1 + data2)).mean()
@@ -277,7 +277,7 @@ def fge(data1, data2, cutoff = 0.):
     @return: Fractional Gross Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     return 2 * (abs((data1 - data2) / (data1 + data2))).mean()
@@ -307,7 +307,7 @@ def bf(data1, data2, cutoff = 0.):
     @return: Bias Factor of data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     return (data1/data2).mean()
@@ -357,7 +357,7 @@ def nmb(data1, data2):
     @return: Normalized Mean Bias between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     return (data1 - data2).sum() / data2.sum()
 
 
@@ -381,7 +381,7 @@ def nme(data1, data2):
     @return: Normalized Mean Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     return (abs(data1 - data2)).sum() / data2.sum()
 
 
@@ -407,7 +407,7 @@ def rnmse_2(data1, data2, cutoff = 0.):
     Error between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data1 = data1[data2 > cutoff]
     data2 = data2[data2 > cutoff]
     tmp = (data1 - data2) / data2
@@ -428,7 +428,7 @@ def fac2(data1, data2):
     """
     fac2 = 0.
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     Nexp = len(data2)
     for i in range(0, Nexp):
         if data1[i] >= 0.5 * data2[i] and data1[i] <= 2. * data2[i]:
@@ -450,7 +450,7 @@ def fac5(data1, data2):
     """
     fac5 = 0.
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     Nexp = len(data1)
     for i in range(0, Nexp):
         if data1[i] >= 0.2 * data2[i] and data1[i] <= 5. * data2[i]:
@@ -478,7 +478,7 @@ def nmse_1(data1, data2):
     between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     temp = data1 - data2
     temp = temp*temp
     return temp.mean() / (data1.mean() * data2.mean())
@@ -505,7 +505,7 @@ def mg(data1, data2, cutoff = 0.):
     """
 
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data2 = data2[data1 > cutoff]
     data1 = data1[data1 > cutoff]
     ldata1 = numpy.log(data1)
@@ -534,7 +534,7 @@ def vg(data1, data2, cutoff = 0.):
     @return: Geometric Variance between data1 and data2.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     data2 = data2[data1 > cutoff]
     data1 = data1[data1 > cutoff]
     temp = numpy.log(data1) - numpy.log(data2)
@@ -560,7 +560,7 @@ def fmt(data1, data2):
     @return: The figure of merit in time of data2 and data1.
     """
     if len(data1) != len(data2):
-        raise ValueError, "Data samples do not have the same length."
+        raise ValueError("Data samples do not have the same length.")
     min_tot = 0.
     max_tot = 0.
     for i in range(len(data1)):

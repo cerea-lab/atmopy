@@ -28,6 +28,6 @@ http://www.enpc.fr/cerea/polyphemus/).
 """
 
 
-from config_stream import *
-from config import *
-from miscellaneous import *
+from atmopy.talos.config_stream import *
+from atmopy.talos.config import *
+from atmopy.talos.miscellaneous import *

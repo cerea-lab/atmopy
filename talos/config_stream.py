@@ -21,9 +21,9 @@
 #     http://cerea.enpc.fr/polyphemus/atmopy.html
 
 
-import commands
+import subprocess
 import datetime
-import miscellaneous
+import atmopy.talos.miscellaneous
 import os
 
 
@@ -39,15 +39,9 @@ class ConfigStream:
                        + "/extract_configuration"
         if os.name == "nt":
             self.extract += ".exe"
-
-        # Tests that "extract_configuration" has been built.
-        if not os.path.isfile(self.extract):
-            raise Exception, \
-                '"' + self.extract + '" does not exist (Did you build it?).'
-
-        # Tests that "extract_configuration" is okay and that the configuration
-        # file is accessible.
-        self.GetOutput("-t " + file)
+        else:
+            self.extract += " "
+       
 
     def GetOutput(self, command):
         """ Calls external program extract_configuration (which must
@@ -62,11 +56,10 @@ class ConfigStream:
         @return: extract_configuration Output and error messages, or
         launch an exception if an error occured.
         """
-        cmd = " ".join([self.extract, self.filename, command])
-        error = None
         if os.name == "nt":
             import popen2
-            o, w, e = popen2.popen3(cmd)
+            o, w, e = popen2.popen3(self.extract + self.filename
+                                    + " " + command)
             errors = e.readlines()
             output = o.readlines()
             e.close()
@@ -75,16 +68,17 @@ class ConfigStream:
             if len(errors) == 0:
                 return "".join(output)[:-1]
             else:
-                error = "".join(errors)[:-1]
+                raise Exception("Unable to launch: \"extract_configuration "\
+                                + self.filename + " " + command + "\"")
+                
         else:
-            (s, o) = commands.getstatusoutput(cmd)
+            (s, o) = subprocess.getstatusoutput(self.extract + self.filename \
+                                                + " " + command)   
             if s == 0:
                 return o
             else:
-                error = o
-        if error:
-            raise Exception, "While running \"" + cmd + "\",\n" \
-                + "the following errors occurred:\n" + error
+                raise Exception("Unable to launch: \"extract_configuration "\
+                                + self.filename + " " + command + "\"")     
 
     def ListSections(self):
         """
@@ -181,7 +175,7 @@ class ConfigStream:
             return [self.StringToDateTime(x) for x in \
                     self.ListSectionLines(element).split('\n')]
         else:
-            raise Exception, "Type \"" + type + "\" is unknown."
+            raise Exception("Type \"" + type + "\" is unknown.")
 
     def GetString(self, element, section = ""):
         """
@@ -287,8 +281,8 @@ class ConfigStream:
         elif elt == "false" or elt == "f" or elt == "n" or elt == "no":
             return False
         else:
-            raise Exception, "Field \"" + element + "\" is not a Boolean " \
-                  "in " + self.filename + "."
+            raise Exception("Field \"" + element + "\" is not a Boolean " \
+                  "in " + self.filename + ".")
 
     def GetDateTime(self, element, section = ""):
         """
@@ -328,7 +322,7 @@ class ConfigStream:
         """
         # First filters useless characters.
         str = [x for x in str if miscellaneous.is_num(x)]
-        str = reduce(lambda x, y: x + y, str)
+        str = ''.join(str)
 
         year = int(str[0:4])
         if len(str) > 5:

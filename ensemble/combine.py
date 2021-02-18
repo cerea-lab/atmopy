@@ -429,8 +429,8 @@ def combine_step(dates, sim, coeff_dates, coeff_step, restricted = False):
                 icoeff += 1
             if icoeff == Ndates:
                 if not restricted:
-                    raise Exception, "Unable to find coefficients for date " \
-                          + str(dates[istation][idate]) + "."
+                    raise Exception("Unable to find coefficients for date " \
+                          + str(dates[istation][idate]) + ".")
                 icoeff = 0
             else:
                 # Concentrations of the ensemble.
@@ -583,8 +583,8 @@ def combine_station_step(dates, sim, coeff_dates, coeff, restricted = False):
         matching_dates = [x for x in dates[istation]
                           if x in coeff_dates[istation]]
         if not matching_dates == coeff_dates and not restricted:
-            raise Exception, "Unable to match all dates, please activate" \
-                  + " 'restricted' option."
+            raise Exception("Unable to match all dates, please activate" \
+                  + " 'restricted' option.")
         for good_date in matching_dates:
             idate = dates[istation].index(good_date)
             icoeff = coeff_dates[istation].index(good_date)
@@ -650,8 +650,8 @@ def remove_bias_step(dates, sim, bias_dates, bias_step):
                       and bias_dates[ibias] != dates[istation][idate]:
                 ibias += 1
             if ibias == Ndates:
-                raise Exception, "Unable to find coefficients for date " \
-                      + str(dates[istation][idate]) + "."
+                raise Exception("Unable to find coefficients for date " \
+                      + str(dates[istation][idate]) + ".")
             for isim in range(Nsim):
                 value = sim[isim][istation][idate] - bias_step[ibias]
                 output_sim[isim][istation].append(value)

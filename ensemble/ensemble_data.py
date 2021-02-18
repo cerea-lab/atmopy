@@ -95,8 +95,8 @@ class EnsembleData:
         """
         import os
         if not os.path.isfile(configuration_file):
-            raise Exception, "Unable to open configuration file " \
-                  + "\"" + configuration_file + "\"."
+            raise Exception("Unable to open configuration file " \
+                  + "\"" + configuration_file + "\".")
 
         self.configuration_file = configuration_file
 
@@ -135,18 +135,18 @@ class EnsembleData:
                or self.config.t_range[1] > self.config.origin[0] \
                + datetime.timedelta(0, 3600 * self.config.Delta_t
                                     * self.config.Nt):
-            raise Exception, "The period considered for computations must " \
-                  + "be included in the simulated period."
+            raise Exception("The period considered for computations must " \
+                  + "be included in the simulated period.")
 
         # Checks that the required concentrations are supported.
         if self.config.concentrations == "peak":
             # Checks that peaks are not paired.
             if self.config.paired:
-                raise Exception, "Unable to deal with paired peaks."
+                raise Exception("Unable to deal with paired peaks.")
         elif self.config.concentrations != "hourly":
-            raise Exception, "Field \"concentrations\" is set to \"" \
+            raise Exception("Field \"concentrations\" is set to \"" \
                   + self.config.concentrations \
-                  + "\" but should be \"hourly\" or \"peak\"."
+                  + "\" but should be \"hourly\" or \"peak\".")
 
 
     def LoadStation(self):
@@ -228,10 +228,10 @@ class EnsembleData:
         if self.verbose:
             # Displays information.
             self.prt.Clear()
-            print "Number of stations:", \
-                  str(len(station_restricted)) + "/" + str(len(self.station))
-            print "Number of observations:", \
-                  array([len(x) for x in self.obs]).sum()
+            print("Number of stations:", \
+                  str(len(station_restricted)) + "/" + str(len(self.station)))
+            print("Number of observations:", \
+                  array([len(x) for x in self.obs]).sum())
 
         # Update the station list.
         self.station = station_restricted
@@ -321,13 +321,13 @@ class EnsembleData:
         """
         if date != None:
             if len(date) != len(self.date):
-                raise Exception, "Inconsistent dates."
+                raise Exception("Inconsistent dates.")
             for istation in range(len(date)):
                 if len(date[istation]) != len(self.date[istation]):
-                    raise Exception, "Inconsistent dates."
+                    raise Exception("Inconsistent dates.")
                 for idate in range(len(date[istation])):
                     if date[istation][idate] != self.date[istation][idate]:
-                        raise Exception, "Inconsistent dates."
+                        raise Exception("Inconsistent dates.")
 
         if duplicate:
             add_sim = [x.copy() for x in sim]

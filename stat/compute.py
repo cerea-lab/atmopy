@@ -26,7 +26,7 @@ import datetime
 import os, sys
 sys.path.insert(0,
                 os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
-import talos, observation, measure
+import atmopy.talos, atmopy.observation, atmopy.stat.measure
 sys.path.pop(0)
 
 
@@ -270,8 +270,8 @@ def compute_stat_step(dates, sim, obs, obs_type, measures, stations = None,
         sim = (sim, )
 
     if obs_type != "hourly" and obs_type != "peak":
-        raise Exception, "Concentrations must be hourly concentrations" \
-              + " or peaks."
+        raise Exception("Concentrations must be hourly concentrations" \
+              + " or peaks.")
 
     if isinstance(period, datetime.datetime) \
            or isinstance(period, datetime.date):

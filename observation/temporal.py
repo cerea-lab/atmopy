@@ -113,7 +113,7 @@ def split_into_days(dates, data):
     corresponding sequence of numpy.array.
     """
     if len(data) != len(dates):
-        raise ValueError, "Data and dates are not of the same length."
+        raise ValueError("Data and dates are not of the same length.")
 
     if len(data) == 0:
         return [numpy.array([])], [[]]
@@ -279,8 +279,8 @@ def mask_for_common_days(sim_dates, simulated, obs_dates, obs):
     in the other array, whereas a 1 value indicates the opposite.
     """
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
-        print len(simulated), len(sim_dates), len(obs), len(obs_dates)
-        raise ValueError, "Incompatible dimensions!"
+        print(len(simulated), len(sim_dates), len(obs), len(obs_dates))
+        raise ValueError("Incompatible dimensions!")
 
     # Dates.
     sim_dates_float = list(sim_dates)
@@ -333,8 +333,8 @@ def apply_mask_for_common_days(sim_dates, simulated, obs_dates, obs, \
     corresponding data arrays for simulation and observation.
     """
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
-        print len(simulated), len(sim_dates), len(obs), len(obs_dates)
-        raise ValueError, "Incompatible dimensions!"
+        print(len(simulated), len(sim_dates), len(obs), len(obs_dates))
+        raise ValueError("Incompatible dimensions!")
 
     common_dates = []
     # Selects the common days.
@@ -365,8 +365,8 @@ def restrict_to_common_dates(sim_dates, simulated, obs_dates, obs):
     """
 
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
-        print len(simulated), len(sim_dates), len(obs), len(obs_dates)
-        raise ValueError, "Incompatible dimensions!"
+        print(len(simulated), len(sim_dates), len(obs), len(obs_dates))
+        raise ValueError("Incompatible dimensions!")
 
     dates = list(sim_dates)
     sim_condition = numpy.zeros(len(simulated))
@@ -446,8 +446,8 @@ def restrict_to_common_days(sim_dates, simulated, obs_dates, obs):
     """
 
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
-        print len(simulated), len(sim_dates), len(obs), len(obs_dates)
-        raise ValueError, "Incompatible dimensions!"
+        print(len(simulated), len(sim_dates), len(obs), len(obs_dates))
+        raise ValueError("Incompatible dimensions!")
 
     # Dates.
     sim_dates_iso = list(sim_dates)
@@ -504,8 +504,8 @@ def restrict_to_common_days2(sim_dates, simulated, obs_dates, obs):
     """
 
     if len(simulated) != len(sim_dates) or len(obs) != len(obs_dates):
-        print len(simulated), len(sim_dates), len(obs), len(obs_dates)
-        raise ValueError, "Incompatible dimensions!"
+        print(len(simulated), len(sim_dates), len(obs), len(obs_dates))
+        raise ValueError("Incompatible dimensions!")
 
     # Dates.
     sim_dates_iso = list(sim_dates)

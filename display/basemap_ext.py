@@ -35,7 +35,7 @@ except:
 import sys, os
 sys.path.insert(0,
                 os.path.split(os.path.dirname(os.path.abspath(__file__)))[0])
-import talos
+from .. import talos
 sys.path.pop(0)
 
 
@@ -59,7 +59,7 @@ def getm(config = None, y_min = None, x_min = None,
         if os.path.exists(config):
             config = talos.Config(config)
         else:
-            raise IOError, "Configuration file \"" + config + "\" not found."
+            raise IOError("Configuration file \"" + config + "\" not found.")
 
     if x_min is None:
         x_min = config.x_min
@@ -137,13 +137,13 @@ def getd(config = None, filename = "", Nt = None,
         Nt = config.Nt
 
     if Nx == 0:
-        Nx = int(os.stat(filename)[6] / 4) / Ny / Nz / Nt
+        Nx = int(int(os.stat(filename)[6] / 4) / Ny / Nz / Nt)
     if Ny == 0:
-        Ny = int(os.stat(filename)[6] / 4) / Nx / Nz / Nt
+        Ny = int(int(os.stat(filename)[6] / 4) / Nx / Nz / Nt)
     if Nz == 0:
-        Nz = int(os.stat(filename)[6] / 4) / Nx / Ny / Nt
+        Nz = int(int(os.stat(filename)[6] / 4) / Nx / Ny / Nt)
     if Nt == 0:
-        Nt = int(os.stat(filename)[6] / 4) / Nx / Ny / Nz
+        Nt = int(int(os.stat(filename)[6] / 4) / Nx / Ny / Nz)
 
     length = 1
     for l in [Nt, Nz, Ny, Nx]:
@@ -244,8 +244,8 @@ def disp(map, data, **kwargs):
     @param data: Data (2D) to be displayed.
     """
     if data.ndim != 2:
-        raise Exception, "Function \"disp\" proceeds with 2D data," \
-              + " but input data has " + str(data.ndim) + " dimension(s)."
+        raise Exception("Function \"disp\" proceeds with 2D data," \
+              + " but input data has " + str(data.ndim) + " dimension(s).")
 
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
@@ -257,7 +257,7 @@ def disp(map, data, **kwargs):
         axes([0.875, 0.1, 0.05, 0.75])
 
     # Clears current image.
-    with_states = kwargs.has_key("states") and kwargs["states"]
+    with_states = ("states" in kwargs) and kwargs["states"]
     try:
         kwargs.pop("states")
     except:
@@ -289,8 +289,8 @@ def dispcf(map, data, V = None, **kwargs):
     @param V: The number of levels or the list of thresholds for the contours.
     """
     if data.ndim != 2:
-        raise Exception, "Function \"dispcf\" proceeds with 2D data," \
-              + " but input data has " + str(data.ndim) + " dimension(s)."
+        raise Exception("Function \"dispcf\" proceeds with 2D data," \
+              + " but input data has " + str(data.ndim) + " dimension(s).")
 
     # If the figure is empty, sets new axes.
     if len(gcf().axes) == 0:
@@ -302,7 +302,7 @@ def dispcf(map, data, V = None, **kwargs):
         axes([0.875, 0.1, 0.05, 0.75])
 
     # Clears current image.
-    with_states = kwargs.has_key("states") and kwargs["states"]
+    with_states = ("states" in kwargs) and kwargs["states"]
     try:
         kwargs.pop("states")
     except:
@@ -311,7 +311,7 @@ def dispcf(map, data, V = None, **kwargs):
     axes(gcf().axes[0])
 
     xrange, yrange = map.makegrid(data.shape[1], data.shape[0])
-    if kwargs.has_key("colors"):
+    if ("colors" in kwargs):
         V = len(kwargs["colors"]) - 1
     if V is None:
         map.contourf(xrange, yrange, data, **kwargs)
@@ -338,7 +338,7 @@ def gridprofile(map, nx = -1, ny = -1, zz = -1):
     if(nx != -1 and ny != -1 and zz != -1) \
               or (nx == -1 and ny == -1) or (nx == -1 and zz == -1) \
               or (ny == -1 and zz == -1):
-        print "ERROR : cannot execute program \"gridprofile\"."
+        print("ERROR : cannot execute program \"gridprofile\".")
 
     if zz == -1:
         lons, lats = map.makegrid(nx, ny)
@@ -373,25 +373,25 @@ def profile2Dcf(config, data, xx = -1, yy = -1, zz = -1,
     """
     # Some Errors' messages.
     if data.ndim != 3:
-        raise Exception, "Function \"profile\" proceeds with 3D data," \
-              + " but input data has " + str(data.ndim) + " dimension(s)."
+        raise Exception("Function \"profile\" proceeds with 3D data," \
+              + " but input data has " + str(data.ndim) + " dimension(s).")
 
     if(xx == -1 and yy == -1 and zz == -1 \
        and lon == -1 and lat == -1 and alt == -1):
-        raise Exception, "Function \"profilecf\" cannot display 3D maps." \
-              + " Missing one argument among xx, yy, zz, lon, lat, or alt."
+        raise Exception("Function \"profilecf\" cannot display 3D maps." \
+              + " Missing one argument among xx, yy, zz, lon, lat, or alt.")
 
     if xx != -1 and lon != -1:
-        raise Exception, "You cannot specify a \"xx\" value and a \"lon\"" \
-              + " value at the same time."
+        raise Exception("You cannot specify a \"xx\" value and a \"lon\"" \
+              + " value at the same time.")
 
     if yy != -1 and lat != -1:
-        raise Exception, "You cannot specify a \"yy\" value and a \"lat\"" \
-              + " value at the same time."
+        raise Exception("You cannot specify a \"yy\" value and a \"lat\"" \
+              + " value at the same time.")
 
     if zz != -1 and alt != -1:
-        raise Exception, "You cannot specify a \"zz\" value and a \"alt\"" \
-              + " value at the same time."
+        raise Exception("You cannot specify a \"zz\" value and a \"alt\"" \
+              + " value at the same time.")
 
     arg_num = 0
     arg_list = [xx, yy, zz, lon, lat, alt]
@@ -400,19 +400,19 @@ def profile2Dcf(config, data, xx = -1, yy = -1, zz = -1,
             arg_num += 1
 
     if arg_num != 1:
-        raise Exception, "Cannot execute \"profilecf\". Only one argument" \
+        raise Exception("Cannot execute \"profilecf\". Only one argument" \
               + " among \"xx\", \"yy\", \"zz\", \"lon\", \"lat\", \"alt\"" \
-              + " should be specified."
+              + " should be specified.")
 
     # Reads configuration file 'config'.
     if isinstance(config, str):
         if os.path.isfile(config):
             config = talos.Config(config)
         else:
-            raise Exception, "Cannot read configuration file : \" " \
-                  + str(config) + " \"."
+            raise Exception("Cannot read configuration file : \" " \
+                  + str(config) + " \".")
     else:
-        raise Exception, "First argument has to be a config file's name."
+        raise Exception("First argument has to be a config file's name.")
 
     x_min = config.x_min
     y_min = config.y_min
@@ -429,21 +429,21 @@ def profile2Dcf(config, data, xx = -1, yy = -1, zz = -1,
 
     # Some other Errors' messages.
     if(xx > data.shape[2] or (lon !=-1 and (lon < x_min or lon > x_max))):
-        raise Exception, "Cannot display profile. data's maximum x_" \
+        raise Exception("Cannot display profile. data's maximum x_" \
               + "coordinate is " + str(data.shape[2]) + " and data's" \
               + " longitude is in [" + str(x_min) + "; " + str(x_max) + "]" \
-              + " (degrees)."
+              + " (degrees).")
 
     if(yy > data.shape[1] or (lat !=-1 and (lat < y_min or lat > y_max))):
-        raise Exception, "Cannot display profile. data's maximum y_" \
+        raise Exception("Cannot display profile. data's maximum y_" \
               + "coordinate is " + str(data.shape[1]) + " and data's" \
               + " latitude is in [" + str(y_min) + "; " + str(y_max) + "]" \
-              + " (degrees)."
+              + " (degrees).")
 
     if(zz > data.shape[0] or alt > z_max):
-        raise Exception, "Cannot display profile. data's maximum z_" \
+        raise Exception("Cannot display profile. data's maximum z_" \
               + "coordinate is " + str(data.shape[0]) + " and data's" \
-              + " maximum altitude is " +  str(z_max) + " (m)."
+              + " maximum altitude is " +  str(z_max) + " (m).")
 
     # Transformation of lon, lat, alt in xx, yy, zz if necessary.
 
@@ -519,8 +519,8 @@ def profile2Dcf(config, data, xx = -1, yy = -1, zz = -1,
             V = arange(NLevels) / float(NLevels - 1) *\
                 (data2.max() - data2.min()) + data2.min()
         yrange, zrange = gridprofile(mref, -1, data2.shape[1], levels)
-        print yrange[0][0], yrange[0][-1], zrange[0][0], zrange[-1][0]
-        print zrange
+        print(yrange[0][0], yrange[0][-1], zrange[0][0], zrange[-1][0])
+        print(zrange)
         if kwargs.has_key("colors"):
             V = len(kwargs["colors"]) - 1
         contourf(yrange, zrange, data2, V, extend='both', **kwargs)
@@ -545,31 +545,31 @@ def profile2DJ(config, data, yy=-1, zz =-1, dd=-1, theta=-1,
     """
     # Some Errors' messages.
     if data.ndim != 4:
-        raise Exception, "Function \"profileJ\" proceeds with," \
+        raise Exception("Function \"profileJ\" proceeds with," \
             + " 4D data, but input data has " + \
-            str(data.ndim) + " dimension(s)."
+            str(data.ndim) + " dimension(s).")
 
     if(yy == -1 and zz == -1 and dd == -1 and theta == -1 \
        and lat == -1 and alt == -1 and days == -1 and time_angle == -1):
-        raise Exception, "Function \"profilecf\" cannot display" \
+        raise Exception("Function \"profilecf\" cannot display" \
             + " 4D maps. Missing one argument among  yy, zz, " \
-            + "dd, theta, lat, alt, days, time_angle."
+            + "dd, theta, lat, alt, days, time_angle.")
 
     if yy != -1 and lat != -1:
-        raise Exception, "You cannot specify a \"yy\" value" \
-            + " and a \"lat\" value at the same time."
+        raise Exception("You cannot specify a \"yy\" value" \
+            + " and a \"lat\" value at the same time.")
 
     if zz != -1 and alt != -1:
-        raise Exception, "You cannot specify a \"zz\" value " \
-            + "  and a \"alt\" value at the same time."
+        raise Exception("You cannot specify a \"zz\" value " \
+            + "  and a \"alt\" value at the same time.")
 
     if dd != -1 and days != -1:
-        raise Exception, "You cannot specify a \"dd\" value " \
-            + " and a \"days\" value at the same time."
+        raise Exception("You cannot specify a \"dd\" value " \
+            + " and a \"days\" value at the same time.")
 
     if theta != -1 and time_angle != -1:
-        raise Exception, "You cannot specify a \"theta\" value " \
-            + " and a \"time_angle\" value at the same time."
+        raise Exception("You cannot specify a \"theta\" value " \
+            + " and a \"time_angle\" value at the same time.")
 
     arg_num = 0
     arg_list = [yy, zz, dd, theta, lat, alt, days, time_angle]
@@ -578,21 +578,21 @@ def profile2DJ(config, data, yy=-1, zz =-1, dd=-1, theta=-1,
             arg_num += 1
 
     if arg_num != 2:
-        raise Exception, "Cannot execute \"profilecf\"." \
+        raise Exception("Cannot execute \"profilecf\"." \
             + " Two argument among \"yy\", \"zz\", \"dd\"," \
             + " \"theta\", \"lat\", \"alt\", \"days\", " \
-            + " \"time_angle\" should be specified."
+            + " \"time_angle\" should be specified.")
 
     # Reads configuration file 'config'.
     if isinstance(config, str):
         if os.path.isfile(config):
             config = talos.Config(config)
         else:
-            raise Exception, "Cannot read configuration " \
+            raise Exception("Cannot read configuration " \
                 + "file : \" " \
-                + str(config) + " \"."
+                + str(config) + " \".")
     else:
-        raise Exception, "First argument has to be a config file's name."
+        raise Exception("First argument has to be a config file's name.")
 
     y_min = config.y_min
     time_angle_min = config.time_angle_min
@@ -615,28 +615,28 @@ def profile2DJ(config, data, yy=-1, zz =-1, dd=-1, theta=-1,
     # Errors messages
 
     if(yy > data.shape[1] or (lat !=-1 and (lat < y_min or lat > y_max))):
-        raise Exception, "Cannot display profile. Data's maximum y_" \
+        raise Exception("Cannot display profile. Data's maximum y_" \
             + "coordinate is " + str(data.shape[1]) + " and data's" \
             + " latitude is in [" + str(y_min) + "; " + str(y_max) + "]" \
-            + " (degrees)."
+            + " (degrees).")
 
     if(zz > data.shape[0] or alt > z_max):
-        raise Exception, "Cannot display profile. Data's maximum z_" \
+        raise Exception("Cannot display profile. Data's maximum z_" \
             + "coordinate is " + str(data.shape[0]) + " and data's" \
-            + " maximum altitude is " +  str(z_max) + " (m)."
+            + " maximum altitude is " +  str(z_max) + " (m).")
 
     if(theta > data.shape[2] or (time_angle !=-1 and
                                  (time_angle < time_angle_min or
                                   time_angle > time_angle_max))):
-        raise Exception, "Cannot display profile. Data's maximum " \
+        raise Exception("Cannot display profile. Data's maximum " \
             + "time_angle coordinate is " + str(data.shape[2]) \
             + " and data's maximum time angle is " + str(time_angle_max) \
-            + " (degrees)."
+            + " (degrees).")
 
     if(dd > data.shape[3] or days > day_max):
-        raise Exception, "Cannot display profile. data's maximum dd_" \
+        raise Exception("Cannot display profile. data's maximum dd_" \
             + "coordinate is " + str(data.shape[3]) + " and data's" \
-            + " maximum days is " +  str(day_max) + "."
+            + " maximum days is " +  str(day_max) + ".")
 
     # Transformation of lon, lat, alt in xx, yy, zz if necessary.
 

@@ -75,7 +75,7 @@ def to_num(str):
     elif is_num(str):
         return float(str)
     else:
-        raise Exception, "\"" + str + "\" is not a number."
+        raise Exception("\"" + str + "\" is not a number.")
 
 
 def replace_string(string_in, string_out, files):
@@ -96,7 +96,7 @@ def replace_string(string_in, string_out, files):
     if len(files) == 0:
         return
     for line in fileinput.input(files, 1):
-        print line.replace(string_in, string_out),
+        print(line.replace(string_in, string_out),)
 
 
 def remove_file(files):
