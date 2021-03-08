@@ -23,7 +23,7 @@
 
 import subprocess
 import datetime
-import atmopy.talos.miscellaneous
+from atmopy.talos import miscellaneous
 import os
 
 
