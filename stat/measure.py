@@ -571,3 +571,71 @@ def fmt(data1, data2):
     else:
         fmt = 0.
     return fmt
+
+
+def mnfb(data1, data2, cutoff = 0.):
+    """ Computes Mean Fractionalized Bias Error (MFBE) between
+    data1 and data2 1D arrays.
+
+    @type data1: numpy.array
+    @param data1: 1D array to compute MFBE.
+
+    @type data2: numpy.array
+    @param data2: 1D array to compute MFBE.
+
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
+    @rtype: float
+    @return: Mean Fractionalized Bias Error between data1 and data2.
+    """
+    if len(data1) != len(data2):
+        raise ValueError("Data samples do not have the same length.")
+    data1 = data1[data2 > cutoff]
+    data2 = data2[data2 > cutoff]
+
+    temp = []
+    for i in range(len(data1)):
+        Si = (data1[i] - data2[i]) / abs(data1[i] - data2[i])
+        temp.append(Si * (numpy.exp(abs(numpy.log(data1[i] / data2[i]))) - 1.0))
+    return numpy.array(temp).mean()
+
+
+def fb(data1, data2):
+    """ Computes Normalized Mean Error (NME) between data1 and data2.
+
+    @type data1: numpy.array
+    @param data1: 1D array to compute NME.
+
+    @type data2: numpy.array
+    @param data2: 1D array to compute NME.
+
+    @rtype: float
+    @return: Normalized Mean Error between data1 and data2.
+    """
+    if len(data1) != len(data2):
+        raise ValueError("Data samples do not have the same length.")
+    return 2.0 * (data1.mean() - data2.mean()) / (data1.mean() + data2.mean())
+
+def er(data1, data2):
+    if len(data1) != len(data2):
+        raise ValueError("Data samples do not have the same length.")
+    temp = []
+    for i in range(len(data1)):
+        temp.append(2.0 * abs(data1[i] - data2[i]) / (data1[i] + data2[i]))
+    return numpy.array(temp).mean()    
+
+def nmse(data1, data2):
+    if len(data1) != len(data2):
+        raise ValueError("Data samples do not have the same length.")
+
+    temp1 = []
+    for i in range(len(data1)):
+        temp1.append(data1[i] * data2[i])
+    temp2 = numpy.array(temp1).mean()    
+    temp = []
+    for i in range(len(data1)):
+        delta = data1[i] - data2[i]
+        temp.append((delta * delta) / temp2)
+    return numpy.array(temp).mean()
