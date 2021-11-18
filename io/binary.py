@@ -41,7 +41,7 @@ def get_filesize(filename):
     """
     fileSize = 0
     try:
-        f = open(filename, "r", 0)
+        f = open(filename, "rb", 0)
         try:
             f.seek(0,2)
             fileSize = f.tell()
