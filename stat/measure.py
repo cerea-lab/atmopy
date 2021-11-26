@@ -639,3 +639,28 @@ def nmse(data1, data2):
         delta = data1[i] - data2[i]
         temp.append((delta * delta) / temp2)
     return numpy.array(temp).mean()
+
+
+def nad(data1, data2):
+    """ Computes Normalized absolute difference (NAD) between
+    data1 and data2 1D arrays.
+
+    @type data1: numpy.array
+    @param data1: 1D array.
+
+    @type data2: numpy.array
+    @param data2: 1D array.
+
+    @type cutoff: float
+    @param cutoff: The value below (or equal) which data is discarded. This
+    filters 'data2' and corresponding 'data1' values.
+
+    @rtype: float
+    @return: NAD between data1 and data2.
+    """
+    
+    if len(data1) != len(data2):
+        raise ValueError("Data samples do not have the same length.")
+
+    temp = (abs(data1 - data2)).mean()
+    return numpy.array(temp / (data1.mean() + data2.mean()))
