@@ -39,10 +39,14 @@ class ConfigStream:
                        + "/extract_configuration"
         if os.name == "nt":
             self.extract += ".exe"
-        else:
-            self.extract += " "
-       
 
+        is_compiled = os.path.isfile(self.extract)
+        if (is_compiled == False):
+            raise Exception("File not found. Please compile " \
+                            "\"extract_configuration.cpp\" in " \
+                            + os.path.dirname(os.path.abspath(__file__)))
+
+        
     def GetOutput(self, command):
         """ Calls external program extract_configuration (which must
         be in the PATH), and returns output of execution on success.
@@ -58,7 +62,7 @@ class ConfigStream:
         """
         if os.name == "nt":
             import popen2
-            o, w, e = popen2.popen3(self.extract + self.filename
+            o, w, e = popen2.popen3(self.extract + " " + self.filename
                                     + " " + command)
             errors = e.readlines()
             output = o.readlines()
@@ -72,7 +76,8 @@ class ConfigStream:
                                 + self.filename + " " + command + "\"")
                 
         else:
-            (s, o) = subprocess.getstatusoutput(self.extract + self.filename \
+            (s, o) = subprocess.getstatusoutput(self.extract + " " + \
+                                                self.filename \
                                                 + " " + command)   
             if s == 0:
                 return o
