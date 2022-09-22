@@ -2,6 +2,16 @@ o----------------o
 | ATMOPY HISTORY |
 o----------------o
 
+# Version 1.8.2 (2022-09-22)
+---------------
+
+- Added an error message when extract_configuration is not compiled.
+- Added new statistical indicators: fb, er, nmse, nad.
+- Added a new script draw_street_map.py.
+- Improved the compatibility with Python3.
+- Added a new function append_binary.
+
+
 Version 1.8.1 (2018-04-10)
 -------------
 
